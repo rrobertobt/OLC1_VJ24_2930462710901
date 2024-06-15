@@ -3,32 +3,39 @@ package edu.robertob.olc1.vj24.Analysis;
 //importaciones
 import java_cup.runtime.Symbol;
 import java.util.LinkedList;
-import abstracto.Instruccion;
-import simbolo.Tipo;
-import simbolo.tipoDato;
-import excepciones.Errores;
-
-//instrucciones
-import instrucciones.Print;
-import instrucciones.Declaracion;
-import instrucciones.AsignacionVar;
-import instrucciones.If;
-
-//expresiones
-import expresiones.Nativo;
-import expresiones.Aritmeticas;
-import expresiones.OperadoresAritmeticos;
-import expresiones.Relacionales;
-import expresiones.OperadoresRelacionales;
-import expresiones.AccesoVar;
+//import abstracto.Instruccion;
+import edu.robertob.olc1.vj24.Engine.Base.Instruction;
+import edu.robertob.olc1.vj24.Engine.Structs.Types;
+import edu.robertob.olc1.vj24.Engine.Structs.JCError;
+//import simbolo.Tipo;
+//import simbolo.tipoDato;
+//import excepciones.Errores;
+//
+////instrucciones
+//import instrucciones.Print;
+import edu.robertob.olc1.vj24.Engine.Statements.Print;
+//import instrucciones.Declaracion;
+//import instrucciones.AsignacionVar;
+//import instrucciones.If;
+//
+////expresiones
+//import expresiones.Nativo;
+import edu.robertob.olc1.vj24.Engine.Expressions.Primitive;
+//import expresiones.Aritmeticas;
+import edu.robertob.olc1.vj24.Engine.Expressions.Arithmetic;
+//import expresiones.OperadoresAritmeticos;
+import edu.robertob.olc1.vj24.Engine.Structs.ArithmeticOperands;
+//import expresiones.Relacionales;
+//import expresiones.OperadoresRelacionales;
+//import expresiones.AccesoVar;
 
 // parser
 parser code
 {:
     JCLexer s;
-    parser(scanner s){this.s = s;}
+    Parser(JCLexer s){this.s = s;}
 
-    public LinkedList<Errores> listaErrores = new LinkedList<>();
+//    public LinkedList<Errores> listaErrores = new LinkedList<>();
 
     public void syntax_error(Symbol s){
 //        listaErrores.add(new Errores("SINTACTICO RECUPERABLE",
@@ -59,22 +66,25 @@ action code
 //terminal IGUAL, EQUALS;
 //terminal TRUE, FALSE, IF, BOOL;
 //terminal LLAVE1, LLAVE2;
-terminal String STRING, ID, INTEGER, DECIMAL;
-terminal ENDLINE, PLUS, MINUS, EQUAL, OPENBRACE, CLOSEBRACE;
+terminal UNIT_MINUS;
+terminal String STRING, ID, INTEGER, DECIMAL, CHAR;
+terminal ENDLINE, PLUS, MINUS, EQUALS, OPENBRACE, CLOSEBRACE, ASTERISK, SLASH, MODULO, DOUBLEASTERISK;
 terminal OPENPAR, CLOSEPAR;
 terminal RW_PRINT, RW_INT, RW_DOUBLE, RW_STRING, RW_IF, RW_TRUE, RW_FALSE, RW_BOOL;
 
 //no terminales
-nonterminal LinkedList<Instruccion> INICIO, INSTRUCCIONES;
-nonterminal Instruccion INSTRUCCION;
-nonterminal Instruccion IMPRESION, DECLARACION, ASIGNACION;
+nonterminal LinkedList<Instruction> INICIO, INSTRUCCIONES;
+nonterminal Instruction INSTRUCCION;
+nonterminal Instruction IMPRESION, DECLARACION, ASIGNACION;
 //nonterminal Instruccion SIF;
 //nonterminal Tipo TIPOS;
-nonterminal Instruccion EXPRESION;
+nonterminal Instruction EXPRESION;
 
 precedence left EQUALS;
-precedence left PLUS;
-precedence left UNIT_MINUS;
+precedence left PLUS, MINUS;
+precedence left ASTERISK, SLASH;
+precedence left DOUBLEASTERISK, MODULO;
+precedence right UNIT_MINUS;
 
 start with INICIO;
 
@@ -89,10 +99,10 @@ INSTRUCCION ::= IMPRESION: a        {:   RESULT=a;   :}
 //              | DECLARACION:a       {:   RESULT=a;   :}
 //              | ASIGNACION:a        {:   RESULT=a;   :}
 //              | SIF:a               {:   RESULT=a;   :}
-              | error FINCADENA
+              | error ENDLINE
 ;
 
-IMPRESION ::= IMPRIMIR PAR1 EXPRESION:a PAR2 FINCADENA      {:   RESULT = new Print(a, aleft, aright);   :}
+IMPRESION ::= RW_PRINT OPENPAR EXPRESION:a CLOSEPAR ENDLINE      {:   RESULT = new Print(a, aleft, aright);   :}
 ;
 
 //DECLARACION ::= TIPOS:a ID:b IGUAL EXPRESION:c FINCADENA    {:   RESULT = new Declaracion(b, c, a, aleft, aright);   :}
@@ -110,14 +120,21 @@ IMPRESION ::= IMPRIMIR PAR1 EXPRESION:a PAR2 FINCADENA      {:   RESULT = new Pr
 //        | BOOL      {:   RESULT=new Tipo(tipoDato.BOOLEANO);   :}
 //;
 
-EXPRESION ::= MENOS EXPRESION:a             {:   RESULT = new Aritmeticas(a, OperadoresAritmeticos.NEGACION, aleft, aright);   :} %prec UNIT_MINUS
-            | EXPRESION:a MAS EXPRESION:b   {:   RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.SUMA, aleft, aright);   :}
+EXPRESION ::= MINUS EXPRESION:a             {:   RESULT = new Arithmetic(a, ArithmeticOperands.NEG, aleft, aright);   :} %prec UNIT_MINUS
+            | EXPRESION:a PLUS EXPRESION:b   {:   RESULT = new Arithmetic(a, b, ArithmeticOperands.SUM, aleft, aright);   :}
+            | EXPRESION:a MINUS EXPRESION:b  {:   RESULT = new Arithmetic(a, b, ArithmeticOperands.SUB, aleft, aright);   :}
+            | EXPRESION:a ASTERISK EXPRESION:b{:   RESULT = new Arithmetic(a, b, ArithmeticOperands.MUL, aleft, aright);   :}
+            | EXPRESION:a SLASH EXPRESION:b   {:   RESULT = new Arithmetic(a, b, ArithmeticOperands.DIV, aleft, aright);   :}
+            | EXPRESION:a DOUBLEASTERISK EXPRESION:b{:   RESULT = new Arithmetic(a, b, ArithmeticOperands.POW, aleft, aright);   :}
+            | EXPRESION:a MODULO EXPRESION:b  {:   RESULT = new Arithmetic(a, b, ArithmeticOperands.MOD, aleft, aright);   :}
+
 //            | EXPRESION:a IGUAL IGUAL EXPRESION:b {:    RESULT = new Relacionales(a, b, OperadoresRelacionales.EQUALS, aleft, aright);    :}%prec EQUALS
-            | ENTERO:a      {:   RESULT = new Nativo(Integer.parseInt(a), new Tipo(tipoDato.ENTERO), aleft, aright );   :}
-            | DECIMAL:a     {:   RESULT = new Nativo(new Double(a), new Tipo(tipoDato.DECIMAL), aleft, aright );   :}
-            | STRING:a      {:   RESULT = new Nativo(a, new Tipo(tipoDato.CADENA), aleft, aright );   :}
-//            | TRUE:a        {:   RESULT = new Nativo(true, new Tipo(tipoDato.BOOLEANO), aleft, aright );   :}
+            | INTEGER:a      {:   RESULT = new Primitive(Types.INTEGER,Integer.parseInt(a),  aleft, aright );   :}
+            | DECIMAL:a     {:   RESULT = new Primitive(Types.DOUBLE,new Double(a),  aleft, aright );   :}
+            | STRING:a      {:   RESULT = new Primitive( Types.STRING,a, aleft, aright );   :}
+            | CHAR:a        {:   RESULT = new Primitive(Types.CHARACTER, a, aleft, aright );   :}
+//            | TRUE:a        {:   RESULT = new Nativo(true,     new Tipo(tipoDato.BOOLEANO), aleft, aright );   :}
 //            | FALSE:a       {:   RESULT = new Nativo(false, new Tipo(tipoDato.BOOLEANO), aleft, aright );    :}
 //            | ID:a          {:   RESULT = new AccesoVar(a, aleft, aright);   :}
-            | PAR1 EXPRESION:a PAR2     {:   RESULT = a;   :}
+            | OPENPAR EXPRESION:a CLOSEPAR     {:   RESULT = a;   :}
 ;

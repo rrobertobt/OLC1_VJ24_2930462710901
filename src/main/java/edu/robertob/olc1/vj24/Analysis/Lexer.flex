@@ -21,19 +21,24 @@ import java.util.LinkedList;
 //caracteristicas de jflex
 %cup
 %class JCLexer
+
 %public
 %line
 %char
 %column
 %full
-%debug
+//%debug
 %ignorecase
 
 OPENPAR="("
 CLOSEPAR=")"
 PLUS="+"
 MINUS="-"
-EQUAL="="
+ASTERISK="*"
+DOUBLEASTERISK="**"
+SLASH="/"
+MODULO="%"
+EQUALS="="
 ENDLINE=";"
 OPENBRACE="{"
 CLOSEBRACE="}"
@@ -42,6 +47,7 @@ INTEGER=[0-9]+
 DECIMAL=[0-9]+"."[0-9]+
 ID=[a-zA-z][a-zA-Z0-9_]*
 STRING = [\"]([^\"])*[\"]
+CHAR = [']([^\'])*[']
 COMMENT_ONE_LINE = [\/]{2}.*
 COMMENT_MULTIPLE_LINES = [\/][*]([^\*]|[\*][^\/])*[\*][\/]
 
@@ -55,7 +61,7 @@ RW_FALSE="false"
 RW_BOOL="bool"
 
 %%
-<YYINITIAL> {PRINT} {return new Symbol(sym.RW_PRINT, yyline, yycolumn,yytext());}
+<YYINITIAL> {RW_PRINT} {return new Symbol(sym.RW_PRINT, yyline, yycolumn,yytext());}
 //<YYINITIAL> {INT} {return new Symbol(sym.INT, yyline, yycolumn,yytext());}
 //<YYINITIAL> {DOUBLE} {return new Symbol(sym.DOUBLE, yyline, yycolumn,yytext());}
 //<YYINITIAL> {STRING} {return new Symbol(sym.STRING, yyline, yycolumn,yytext());}
@@ -72,8 +78,15 @@ RW_BOOL="bool"
 <YYINITIAL> {STRING} {
     String foundString = yytext();
     String stringObj = foundString.substring(1, foundString.length()-1);
-    return new Symbol(sym.CADENA, yyline, yycolumn, stringObj);
+    return new Symbol(sym.STRING, yyline, yycolumn, stringObj);
     }
+
+<YYINITIAL> {CHAR} {
+    String foundString = yytext();
+    String stringObj = foundString.substring(1, foundString.length()-1);
+    char charObj = stringObj.charAt(0);
+    return new Symbol(sym.CHAR, yyline, yycolumn, charObj);
+}
 
 <YYINITIAL> {ENDLINE} {return new Symbol(sym.ENDLINE, yyline, yycolumn,yytext());}
 <YYINITIAL> {OPENPAR} {return new Symbol(sym.OPENPAR, yyline, yycolumn,yytext());}
@@ -84,7 +97,11 @@ RW_BOOL="bool"
 
 <YYINITIAL> {PLUS} {return new Symbol(sym.PLUS, yyline, yycolumn,yytext());}
 <YYINITIAL> {MINUS} {return new Symbol(sym.MINUS, yyline, yycolumn,yytext());}
-<YYINITIAL> {EQUAL} {return new Symbol(sym.EQUAL, yyline, yycolumn,yytext());}
+<YYINITIAL> {DOUBLEASTERISK} {return new Symbol(sym.DOUBLEASTERISK, yyline, yycolumn,yytext());}
+<YYINITIAL> {ASTERISK} {return new Symbol(sym.ASTERISK, yyline, yycolumn,yytext());}
+<YYINITIAL> {SLASH} {return new Symbol(sym.SLASH, yyline, yycolumn,yytext());}
+//<YYINITIAL> {MODULO} {return new Symbol(sym.MODULO, yyline, yycolumn,yytext());}
+<YYINITIAL> {EQUALS} {return new Symbol(sym.EQUALS, yyline, yycolumn,yytext());}
 
 
 <YYINITIAL> {BLANKS} {}

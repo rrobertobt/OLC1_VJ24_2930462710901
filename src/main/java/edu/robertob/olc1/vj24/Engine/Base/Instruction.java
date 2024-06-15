@@ -1,5 +1,7 @@
 package edu.robertob.olc1.vj24.Engine.Base;
 
+import edu.robertob.olc1.vj24.Engine.Structs.SymbolTable;
+import edu.robertob.olc1.vj24.Engine.Structs.Tree;
 import edu.robertob.olc1.vj24.Engine.Structs.Types;
 
 public abstract class Instruction {
@@ -13,5 +15,9 @@ public abstract class Instruction {
         this.column = column;
     }
 
-    public abstract Object interpret();
+    public abstract Object execute(Tree tree, SymbolTable table);
+
+    public Types getType(){
+        return this.type;
+    }
 }

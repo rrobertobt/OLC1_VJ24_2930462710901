@@ -1,7 +1,7 @@
 package edu.robertob.olc1.vj24.Analysis;
 
 public class AnalysisGenerator {
-    public static void generateCompiler() {
+    public static void main(String[] args) {
         try {
             String path = "src/main/java/edu/robertob/olc1/vj24/Analysis/";
             String Flex[] = {path + "Lexer.flex", "-d", path};

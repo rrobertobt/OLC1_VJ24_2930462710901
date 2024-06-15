@@ -1,11 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package edu.robertob.olc1.vj24.Frames;
 
+import edu.robertob.olc1.vj24.Analysis.JCLexer;
+import edu.robertob.olc1.vj24.Analysis.Parser;
 import edu.robertob.olc1.vj24.Data.CurrentSession;
 import edu.robertob.olc1.vj24.Data.JCFile;
+import edu.robertob.olc1.vj24.Engine.Base.Instruction;
+import edu.robertob.olc1.vj24.Engine.Structs.JCError;
+import edu.robertob.olc1.vj24.Engine.Structs.Tree;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -14,6 +15,8 @@ import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.StringReader;
+import java.util.LinkedList;
 
 /**
  * @author robertob
@@ -348,7 +351,25 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_saveFileBtnActionPerformed
 
     private void runCodeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runCodeBtnActionPerformed
-        // TODO add your handling code here:
+        JCLexer lexer = new JCLexer(new StringReader(currentSession.getActiveFile().getContent()));
+        Parser parser = new Parser(lexer);
+        try {
+            var result = parser.parse();
+            var tree = new Tree((LinkedList<Instruction>) result.value);
+            for (Instruction instruction : tree.getInstructions()) {
+                if (instruction == null) {
+                    continue;
+                }
+                var insResult = instruction.execute(tree, null);
+                if (insResult instanceof JCError) {
+                    System.out.println(((JCError) insResult).getDescription());
+                }
+            }
+            jTextPane1.setText(tree.getConsole());
+            System.out.println(tree.getConsole());
+        } catch (Exception e) {
+            jTextPane1.setText(e.getMessage());
+        }
     }//GEN-LAST:event_runCodeBtnActionPerformed
 
 
