@@ -1,5 +1,6 @@
 package edu.robertob.olc1.vj24;
 
+import edu.robertob.olc1.vj24.Analysis.AnalysisGenerator;
 import edu.robertob.olc1.vj24.Frames.MainFrame;
 
 public class OLC1VJ242930462710901 {
@@ -27,7 +28,11 @@ public class OLC1VJ242930462710901 {
             Crear un jfilechooser para abrir archivos
             
         */
-
-        new MainFrame().setVisible(true);
+        try {
+//            AnalysisGenerator.generateCompiler();
+            new MainFrame().setVisible(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

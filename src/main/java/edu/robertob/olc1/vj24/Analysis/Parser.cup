@@ -1,0 +1,123 @@
+package edu.robertob.olc1.vj24.Analysis;
+
+//importaciones
+import java_cup.runtime.Symbol;
+import java.util.LinkedList;
+import abstracto.Instruccion;
+import simbolo.Tipo;
+import simbolo.tipoDato;
+import excepciones.Errores;
+
+//instrucciones
+import instrucciones.Print;
+import instrucciones.Declaracion;
+import instrucciones.AsignacionVar;
+import instrucciones.If;
+
+//expresiones
+import expresiones.Nativo;
+import expresiones.Aritmeticas;
+import expresiones.OperadoresAritmeticos;
+import expresiones.Relacionales;
+import expresiones.OperadoresRelacionales;
+import expresiones.AccesoVar;
+
+// parser
+parser code
+{:
+    JCLexer s;
+    parser(scanner s){this.s = s;}
+
+    public LinkedList<Errores> listaErrores = new LinkedList<>();
+
+    public void syntax_error(Symbol s){
+//        listaErrores.add(new Errores("SINTACTICO RECUPERABLE",
+//                        "No se esperaba el componente "+s.value,
+//                        s.left,
+//                        s.right));
+System.out.println("Error sintactico recuperable"+ s.value);
+    }
+
+    public void unrecovered_syntax_error (Symbol s){
+//        listaErrores.add(new Errores("SINTACTICO NO RECUPERABLE",
+//                        "No se esperaba el componente "+s.value,
+//                        s.left,
+//                        s.right));
+System.out.println("Error sintactico no recuperable"+ s.value);
+    }
+
+:}
+
+action code
+{:
+:}
+
+//terminales
+//terminal String CADENA, ENTERO, DECIMAL, ID;
+//terminal FINCADENA, IMPRIMIR, INT, DOUBLE, STRING;
+//terminal PAR1, PAR2, MAS, MENOS, UMENOS;
+//terminal IGUAL, EQUALS;
+//terminal TRUE, FALSE, IF, BOOL;
+//terminal LLAVE1, LLAVE2;
+terminal String STRING, ID, INTEGER, DECIMAL;
+terminal ENDLINE, PLUS, MINUS, EQUAL, OPENBRACE, CLOSEBRACE;
+terminal OPENPAR, CLOSEPAR;
+terminal RW_PRINT, RW_INT, RW_DOUBLE, RW_STRING, RW_IF, RW_TRUE, RW_FALSE, RW_BOOL;
+
+//no terminales
+nonterminal LinkedList<Instruccion> INICIO, INSTRUCCIONES;
+nonterminal Instruccion INSTRUCCION;
+nonterminal Instruccion IMPRESION, DECLARACION, ASIGNACION;
+//nonterminal Instruccion SIF;
+//nonterminal Tipo TIPOS;
+nonterminal Instruccion EXPRESION;
+
+precedence left EQUALS;
+precedence left PLUS;
+precedence left UNIT_MINUS;
+
+start with INICIO;
+
+INICIO ::= INSTRUCCIONES:a      {:   RESULT = a;   :}
+;
+
+INSTRUCCIONES ::= INSTRUCCIONES:a INSTRUCCION:b     {: RESULT = a; RESULT.add(b); :}
+                | INSTRUCCION:a                   {: RESULT = new LinkedList<>(); RESULT.add(a); :}
+;
+
+INSTRUCCION ::= IMPRESION: a        {:   RESULT=a;   :}
+//              | DECLARACION:a       {:   RESULT=a;   :}
+//              | ASIGNACION:a        {:   RESULT=a;   :}
+//              | SIF:a               {:   RESULT=a;   :}
+              | error FINCADENA
+;
+
+IMPRESION ::= IMPRIMIR PAR1 EXPRESION:a PAR2 FINCADENA      {:   RESULT = new Print(a, aleft, aright);   :}
+;
+
+//DECLARACION ::= TIPOS:a ID:b IGUAL EXPRESION:c FINCADENA    {:   RESULT = new Declaracion(b, c, a, aleft, aright);   :}
+//;
+//
+//ASIGNACION ::= ID:a IGUAL EXPRESION:b FINCADENA  {:   RESULT=new AsignacionVar(a, b, aleft, aright);  :}
+//;
+
+//SIF ::= IF PAR1 EXPRESION:a PAR2 LLAVE1 INSTRUCCIONES:b LLAVE2  {:   RESULT = new If(a, b, aleft, aright);   :}
+//;
+
+//TIPOS ::= INT       {:   RESULT=new Tipo(tipoDato.ENTERO);   :}
+//        | DOUBLE    {:   RESULT=new Tipo(tipoDato.DECIMAL);   :}
+//        | STRING    {:   RESULT=new Tipo(tipoDato.CADENA);   :}
+//        | BOOL      {:   RESULT=new Tipo(tipoDato.BOOLEANO);   :}
+//;
+
+EXPRESION ::= MENOS EXPRESION:a             {:   RESULT = new Aritmeticas(a, OperadoresAritmeticos.NEGACION, aleft, aright);   :} %prec UNIT_MINUS
+            | EXPRESION:a MAS EXPRESION:b   {:   RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.SUMA, aleft, aright);   :}
+//            | EXPRESION:a IGUAL IGUAL EXPRESION:b {:    RESULT = new Relacionales(a, b, OperadoresRelacionales.EQUALS, aleft, aright);    :}%prec EQUALS
+            | ENTERO:a      {:   RESULT = new Nativo(Integer.parseInt(a), new Tipo(tipoDato.ENTERO), aleft, aright );   :}
+            | DECIMAL:a     {:   RESULT = new Nativo(new Double(a), new Tipo(tipoDato.DECIMAL), aleft, aright );   :}
+            | STRING:a      {:   RESULT = new Nativo(a, new Tipo(tipoDato.CADENA), aleft, aright );   :}
+//            | TRUE:a        {:   RESULT = new Nativo(true, new Tipo(tipoDato.BOOLEANO), aleft, aright );   :}
+//            | FALSE:a       {:   RESULT = new Nativo(false, new Tipo(tipoDato.BOOLEANO), aleft, aright );    :}
+//            | ID:a          {:   RESULT = new AccesoVar(a, aleft, aright);   :}
+            | PAR1 EXPRESION:a PAR2     {:   RESULT = a;   :}
+;

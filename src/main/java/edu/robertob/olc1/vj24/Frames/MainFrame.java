@@ -16,7 +16,6 @@ import java.io.FileReader;
 import java.io.IOException;
 
 /**
- *
  * @author robertob
  */
 public class MainFrame extends javax.swing.JFrame {
@@ -28,17 +27,11 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         initComponents();
-        // testing
+
         jToolBar2.setFloatable(false);
         jToolBar2.setLayout(new FlowLayout(FlowLayout.LEADING, 10, 5));
 
-//        jTabbedPane1.add("Tab 1", new JTextArea("testing 1"));
-//        jTabbedPane1.setTabComponentAt(0, new ButtonTabComponent(jTabbedPane1));
-//        jTabbedPane1.add("Tab 2", new JLabel("Tab 2"));
-//        jTabbedPane1.setTabComponentAt(1, new ButtonTabComponent(jTabbedPane1));
-//        jTabbedPane1.add("Tab 3", new JLabel("Tab 3"));
-//        jTabbedPane1.setTabComponentAt(2, new ButtonTabComponent(jTabbedPane1));
-//        jTabbedPane1.setTabLayoutPolicy(JTabbedPane.WRAP_TAB_LAYOUT);
+        consoleOutputLabel.setFont(consoleOutputLabel.getFont().deriveFont(Font.BOLD));
     }
 
     /**
@@ -59,6 +52,10 @@ public class MainFrame extends javax.swing.JFrame {
         fileStatusLabel = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel2 = new javax.swing.JPanel();
+        consoleOutputLabel = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextPane1 = new javax.swing.JTextPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -113,6 +110,11 @@ public class MainFrame extends javax.swing.JFrame {
         runCodeBtn.setFocusable(false);
         runCodeBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         runCodeBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        runCodeBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                runCodeBtnActionPerformed(evt);
+            }
+        });
         jToolBar2.add(runCodeBtn);
         jToolBar2.add(fileStatusLabel);
 
@@ -125,12 +127,35 @@ public class MainFrame extends javax.swing.JFrame {
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 871, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 648, Short.MAX_VALUE)
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 353, Short.MAX_VALUE)
+        );
+
+        consoleOutputLabel.setText("Salida de la consola");
+
+        jTextPane1.setEditable(false);
+        jScrollPane1.setViewportView(jTextPane1);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jScrollPane1)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(consoleOutputLabel)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addComponent(consoleOutputLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE))
         );
 
         jMenuBar1.setBackground(new java.awt.Color(252, 252, 252));
@@ -149,39 +174,99 @@ public class MainFrame extends javax.swing.JFrame {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBar2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 883, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jToolBar2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 883, Short.MAX_VALUE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addContainerGap())
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void newFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newFileBtnActionPerformed
-        // TODO add your handling code here:
+        var name = JOptionPane.showInputDialog(this, "Nombre del archivo");
+        if (name == null || name.isEmpty()) {
+            return;
+        }
+        var content = "";
+        var sessionFile = new JCFile(name, "", content, false, true, jTabbedPane1.getTabCount());
+        currentSession.addFile(sessionFile);
+
+        var textArea = new JTextArea(content);
+        var scrollPane = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+        jTabbedPane1.add(name, scrollPane);
+        jTabbedPane1.setTabComponentAt(jTabbedPane1.getTabCount() - 1, new ButtonTabComponent(jTabbedPane1, currentSession));
+        fileStatusLabel.setText("Modificado");
+        fileStatusLabel.setFont(fileStatusLabel.getFont().deriveFont(Font.BOLD));
+        switchTabAndSetDocumentListener(sessionFile, textArea);
     }//GEN-LAST:event_newFileBtnActionPerformed
+
+    private void switchTabAndSetDocumentListener(JCFile sessionFile, JTextArea textArea) {
+        jTabbedPane1.setSelectedIndex(jTabbedPane1.getTabCount() - 1);
+
+        textArea.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                sessionFile.setContent(textArea.getText());
+
+                if (sessionFile.isSaved()) {
+                    sessionFile.setSaved(false);
+                    MainFrame.this.jTabbedPane1.setTitleAt(sessionFile.getIndex(), "*" + sessionFile.getName() );
+                    MainFrame.this.fileStatusLabel.setText("Modificado");
+                    MainFrame.this.fileStatusLabel.setFont(MainFrame.this.fileStatusLabel.getFont().deriveFont(Font.BOLD));
+                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                sessionFile.setContent(textArea.getText());
+
+                if (sessionFile.isSaved()) {
+                    sessionFile.setSaved(false);
+                    MainFrame.this.jTabbedPane1.setTitleAt(sessionFile.getIndex(), "*" + sessionFile.getName() );
+                    MainFrame.this.fileStatusLabel.setText("Modificado");
+                    MainFrame.this.fileStatusLabel.setFont(MainFrame.this.fileStatusLabel.getFont().deriveFont(Font.BOLD));
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                sessionFile.setContent(textArea.getText());
+
+                if (sessionFile.isSaved()) {
+                    sessionFile.setSaved(false);
+                    MainFrame.this.jTabbedPane1.setTitleAt(sessionFile.getIndex(), "*" + sessionFile.getName() );
+                    MainFrame.this.fileStatusLabel.setText("Modificado");
+                    MainFrame.this.fileStatusLabel.setFont(MainFrame.this.fileStatusLabel.getFont().deriveFont(Font.BOLD));
+                }
+            }
+        });
+    }
 
     private void openFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openFileBtnActionPerformed
         var fileChooser = new JFileChooser();
         var result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
-            System.out.println("You chose to open this file: " + fileChooser.getSelectedFile().getName());
             var file = fileChooser.getSelectedFile();
             var path = file.getAbsolutePath();
             var name = file.getName();
             var content = "";
-            var sessionFile = new JCFile(name, path, content, true, jTabbedPane1.getTabCount());
+            var sessionFile = new JCFile(name, path, content, true, false, jTabbedPane1.getTabCount());
 
             for (int i = 0; i < currentSession.getFiles().size(); i++) {
                 if (currentSession.getFiles().get(i) != null && currentSession.getFiles().get(i).getSystemPath().equals(path)) {
@@ -207,42 +292,7 @@ public class MainFrame extends javax.swing.JFrame {
 
             jTabbedPane1.add(name, scrollPane);
             jTabbedPane1.setTabComponentAt(jTabbedPane1.getTabCount() - 1, new ButtonTabComponent(jTabbedPane1, currentSession));
-
-            textArea.getDocument().addDocumentListener(new DocumentListener() {
-                @Override
-                public void insertUpdate(DocumentEvent e) {
-                    sessionFile.setContent(textArea.getText());
-
-                    if (sessionFile.isSaved()) {
-                        sessionFile.setSaved(false);
-                        MainFrame.this.fileStatusLabel.setText("Modificado");
-                        //set bold font to the label in the tab
-                        MainFrame.this.fileStatusLabel.setFont(MainFrame.this.fileStatusLabel.getFont().deriveFont(Font.BOLD));
-                    }
-                }
-
-                @Override
-                public void removeUpdate(DocumentEvent e) {
-                    sessionFile.setContent(textArea.getText());
-
-                    if (sessionFile.isSaved()) {
-                        sessionFile.setSaved(false);
-                        MainFrame.this.fileStatusLabel.setText("Modificado");
-                        MainFrame.this.fileStatusLabel.setFont(MainFrame.this.fileStatusLabel.getFont().deriveFont(Font.BOLD));
-                    }
-                }
-
-                @Override
-                public void changedUpdate(DocumentEvent e) {
-                    sessionFile.setContent(textArea.getText());
-
-                  if (sessionFile.isSaved()) {
-                      sessionFile.setSaved(false);
-                        MainFrame.this.fileStatusLabel.setText("Modificado");
-                      MainFrame.this.fileStatusLabel.setFont(MainFrame.this.fileStatusLabel.getFont().deriveFont(Font.BOLD));
-                  }
-                }
-            });
+            switchTabAndSetDocumentListener(sessionFile, textArea);
         }
 
 
@@ -252,37 +302,68 @@ public class MainFrame extends javax.swing.JFrame {
         // change the active file
         var index = jTabbedPane1.getSelectedIndex();
         if (index == -1) {
+            fileStatusLabel.setText("");
             return;
         }
         currentSession.setActiveFile(jTabbedPane1.getSelectedIndex());
-        var status = currentSession.getActiveFile().isSaved() ? "Guardado" : "Modificado";
-        fileStatusLabel.setText(status);
-        if (status.equals("Modificado")) {
-            fileStatusLabel.setFont(fileStatusLabel.getFont().deriveFont(Font.BOLD));
-        } else {
+        if (currentSession.getActiveFile().isSaved()) {
+            fileStatusLabel.setText("Guardado");
             fileStatusLabel.setFont(fileStatusLabel.getFont().deriveFont(Font.PLAIN));
+            jTabbedPane1.setTitleAt(currentSession.getActiveFileIndex(), currentSession.getActiveFile().getName());
+        } else {
+            fileStatusLabel.setText("Modificado");
+            fileStatusLabel.setFont(fileStatusLabel.getFont().deriveFont(Font.BOLD));
+            jTabbedPane1.setTitleAt(currentSession.getActiveFileIndex(), "*"+currentSession.getActiveFile().getName());
         }
     }//GEN-LAST:event_jTabbedPane1StateChanged
 
     private void saveFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveFileBtnActionPerformed
         var activeFile = currentSession.getActiveFile();
         if (activeFile != null) {
-            activeFile.setSaved(true);
-            activeFile.saveFile(activeFile.getContent());
-            fileStatusLabel.setText("Guardado");
-            fileStatusLabel.setFont(fileStatusLabel.getFont().deriveFont(Font.PLAIN));
+            if (!activeFile.isNew()) {
+                activeFile.setSaved(true);
+                activeFile.saveFile(activeFile.getContent());
+                fileStatusLabel.setText("Guardado");
+                jTabbedPane1.setTitleAt(currentSession.getActiveFileIndex(), activeFile.getName());
+                fileStatusLabel.setFont(fileStatusLabel.getFont().deriveFont(Font.PLAIN));
+            } else {
+                var fileChooser = new JFileChooser();
+                fileChooser.setSelectedFile(new java.io.File(activeFile.getName()+".jc"));
+                var result = fileChooser.showSaveDialog(this);
+                // also set the default file name to the current file name
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    var file = fileChooser.getSelectedFile();
+                    var path = file.getAbsolutePath();
+                    activeFile.setSystemPath(path);
+                    activeFile.setIsNew(false);
+                    activeFile.setSaved(true);
+                    activeFile.saveFile(activeFile.getContent());
+                    fileStatusLabel.setText("Guardado");
+                    fileStatusLabel.setFont(fileStatusLabel.getFont().deriveFont(Font.PLAIN));
+                    jTabbedPane1.setTitleAt(currentSession.getActiveFileIndex(), file.getName());
+                }
+            }
+
         }
     }//GEN-LAST:event_saveFileBtnActionPerformed
 
+    private void runCodeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runCodeBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_runCodeBtnActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel consoleOutputLabel;
     private javax.swing.JLabel fileStatusLabel;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTextPane jTextPane1;
     private javax.swing.JToolBar jToolBar2;
     private javax.swing.JButton newFileBtn;
     private javax.swing.JButton openFileBtn;

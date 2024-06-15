@@ -7,6 +7,7 @@ package edu.robertob.olc1.vj24.Data;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import jflex.generator.*;
 
 /**
  *
@@ -18,13 +19,24 @@ public class JCFile {
     private String systemPath;
     private String content;
     private boolean saved;
+    private boolean isNew;
     private int index;
+    private String consoleOutput;
 
     public JCFile(String name, String systemPath, String content, boolean saved, int index) {
         this.name = name;
         this.systemPath = systemPath;
         this.content = content;
         this.saved = saved;
+        this.index = index;
+    }
+
+    public JCFile(String name, String systemPath, String content, boolean saved, boolean isNew, int index) {
+        this.name = name;
+        this.systemPath = systemPath;
+        this.content = content;
+        this.saved = saved;
+        this.isNew = isNew;
         this.index = index;
     }
 
@@ -80,5 +92,21 @@ public class JCFile {
 
     public void setIndex(int index) {
         this.index = index;
+    }
+
+    public String getConsoleOutput() {
+        return consoleOutput;
+    }
+
+    public void setConsoleOutput(String consoleOutput) {
+        this.consoleOutput = consoleOutput;
+    }
+
+    public boolean isNew() {
+        return isNew;
+    }
+
+    public void setIsNew(boolean isNew) {
+        this.isNew = isNew;
     }
 }

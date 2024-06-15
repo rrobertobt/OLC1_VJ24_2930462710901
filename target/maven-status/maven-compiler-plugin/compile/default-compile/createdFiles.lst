@@ -1,8 +1,16 @@
 edu/robertob/olc1/vj24/Frames/MainFrame$2.class
 edu/robertob/olc1/vj24/Frames/ButtonTabComponent$1.class
 edu/robertob/olc1/vj24/Frames/MainFrame.class
+edu/robertob/olc1/vj24/Data/CurrentSession.class
 edu/robertob/olc1/vj24/Frames/ButtonTabComponent.class
+edu/robertob/olc1/vj24/Engine/Base/Instruction.class
+edu/robertob/olc1/vj24/Frames/MainFrame$5.class
 edu/robertob/olc1/vj24/Frames/ButtonTabComponent$2.class
 edu/robertob/olc1/vj24/Frames/ButtonTabComponent$TabButton.class
+edu/robertob/olc1/vj24/Engine/Structs/Types.class
 edu/robertob/olc1/vj24/Frames/MainFrame$1.class
+edu/robertob/olc1/vj24/Frames/MainFrame$4.class
 edu/robertob/olc1/vj24/OLC1VJ242930462710901.class
+edu/robertob/olc1/vj24/Data/JCFile.class
+edu/robertob/olc1/vj24/Analysis/AnalysisGenerator.class
+edu/robertob/olc1/vj24/Frames/MainFrame$3.class
