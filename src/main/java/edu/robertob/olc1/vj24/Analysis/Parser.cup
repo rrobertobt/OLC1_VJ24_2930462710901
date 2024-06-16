@@ -14,6 +14,7 @@ import edu.robertob.olc1.vj24.Engine.Expressions.SymbolAccess;
 
 import edu.robertob.olc1.vj24.Engine.Expressions.Primitive;
 import edu.robertob.olc1.vj24.Engine.Statements.IfStatement;
+import edu.robertob.olc1.vj24.Engine.Statements.WhileStatement;
 
 import edu.robertob.olc1.vj24.Engine.Expressions.Arithmetic;
 import edu.robertob.olc1.vj24.Engine.Expressions.Comparison;
@@ -53,17 +54,18 @@ terminal String STRING, ID, INTEGER, DECIMAL, CHAR;
 terminal ENDLINE, PLUS, MINUS, EQUALS, OPENBRACE, CLOSEBRACE, ASTERISK, SLASH, MODULO, DOUBLEASTERISK, NEGATION, COLON;
 terminal DOUBLEEQUALS, LESS, GREATER, LESSEQUAL, GREATEREQUAL, NOT_EQUALS;
 terminal OPENPAR, CLOSEPAR;
-terminal RW_PRINT, RW_INT, RW_DOUBLE, RW_STRING, RW_IF, RW_TRUE, RW_FALSE, RW_BOOL, RW_CHAR;
-terminal RW_CONST, RW_VAR;
+terminal RW_PRINT, RW_INT, RW_DOUBLE, RW_STRING, RW_IF, RW_TRUE, RW_FALSE, RW_BOOL, RW_CHAR, RW_ELSE;
+terminal RW_CONST, RW_VAR, RW_WHILE, RW_BREAK, RW_CONTINUE;
 terminal OR, AND, XOR;
 
 //no terminales
 nonterminal LinkedList<Instruction> START, STATEMENTS;
 nonterminal Instruction STATEMENT;
 nonterminal Instruction IMPRESION, DECLARATION, ASSIGNATION;
-nonterminal Instruction IF_STMT;
+nonterminal Instruction IF_STMT, WHILE_STMT;
 nonterminal Types TYPES;
 nonterminal Instruction EXPRESION;
+nonterminal Instruction INCREMENT, DECREMENT, BREAK, CONTINUE;
 
 precedence left OR;
 precedence left AND;
@@ -88,7 +90,18 @@ STATEMENT ::= IMPRESION: a        {:   RESULT=a;   :}
                 | DECLARATION:a       {:   RESULT=a;   :}
                 | ASSIGNATION:a        {:   RESULT=a;   :}
                 | IF_STMT:a               {:   RESULT=a;   :}
+                | INCREMENT:a           {:   RESULT=a;   :}
+                | DECREMENT:a           {:   RESULT=a;   :}
+                | WHILE_STMT:a       {:   RESULT=a;   :}
+                | BREAK:a                   {:   RESULT=a;   :}
+                | CONTINUE:a               {:   RESULT=a;   :}
                 | error:e ENDLINE       {:   System.out.println(e);   :}
+;
+
+BREAK ::= RW_BREAK:a ENDLINE {:   RESULT = new Break(aleft, aright);   :}
+;
+
+CONTINUE ::= RW_CONTINUE:a ENDLINE {:   RESULT = new Continue(aleft, aright);   :}
 ;
 
 IMPRESION ::= RW_PRINT OPENPAR EXPRESION:a CLOSEPAR ENDLINE      {:   RESULT = new Print(a, aleft, aright);   :}
@@ -105,7 +118,15 @@ ASSIGNATION ::= ID:a EQUALS EXPRESION:b ENDLINE  {:   RESULT=new SymbolAssignati
             ;
 
 IF_STMT ::= RW_IF OPENPAR EXPRESION:a CLOSEPAR OPENBRACE STATEMENTS:b CLOSEBRACE {:   RESULT = new IfStatement(a, b, aleft, aright);   :}
+        | RW_IF OPENPAR EXPRESION:a CLOSEPAR OPENBRACE STATEMENTS:b CLOSEBRACE RW_ELSE OPENBRACE STATEMENTS:c CLOSEBRACE {:   RESULT = new IfStatement(a, b, c, aleft, aright);   :}
         ;
+
+WHILE_STMT ::= RW_WHILE OPENPAR EXPRESION:a CLOSEPAR OPENBRACE STATEMENTS:b CLOSEBRACE {:   RESULT = new WhileStatement(a, b, aleft, aright);   :}
+        ;
+
+        INCREMENT ::= ID:a PLUS PLUS ENDLINE {:   RESULT = new SymbolAssignation(a, new Arithmetic(new SymbolAccess(a, aleft, aright),new Primitive(Types.INTEGER, 1, aleft, aright),ArithmeticOperands.SUM, aleft, aright), aleft, aright);   :};
+        DECREMENT ::= ID:a MINUS MINUS ENDLINE {:   RESULT = new SymbolAssignation(a, new Arithmetic(new SymbolAccess(a, aleft, aright), new Primitive(Types.INTEGER, 1, aleft, aright), ArithmeticOperands.SUB, aleft, aright), aleft, aright);   :};
+
 
 TYPES ::= RW_INT       {:   RESULT=Types.INTEGER;   :}
         | RW_DOUBLE    {:   RESULT=Types.DOUBLE;   :}

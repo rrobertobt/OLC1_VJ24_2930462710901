@@ -19,7 +19,7 @@ public class SymbolTable {
     }
 
     public boolean setSymbol(SymbolVariable symbol) {
-        SymbolVariable search = (SymbolVariable) this.symbols.get(symbol.getId().toLowerCase());
+        SymbolVariable search = (SymbolVariable) this.getSymbol(symbol.getId());
         if (search == null) {
             this.symbols.put(symbol.getId().toLowerCase(), symbol);
             return true;
@@ -37,6 +37,7 @@ public class SymbolTable {
 
     public SymbolTable(SymbolTable parentTable) {
         this.parentTable = parentTable;
+        this.children = new LinkedList<>();
         this.symbols = new HashMap<>();
         this.name = "";
     }

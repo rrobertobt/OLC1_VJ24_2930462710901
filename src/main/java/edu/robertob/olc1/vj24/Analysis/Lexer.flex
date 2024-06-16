@@ -70,11 +70,15 @@ RW_DOUBLE="double"
 RW_STRING="string"
 RW_CHAR="char"
 RW_IF="if"
+RW_ELSE="else"
 RW_TRUE="true"
 RW_FALSE="false"
 RW_BOOL="bool"
 RW_VAR="var"
 RW_CONST="const"
+RW_WHILE="while"
+RW_BREAK="break"
+RW_CONTINUE="continue"
 
 %%
 <YYINITIAL> {XOR} {
@@ -86,6 +90,10 @@ RW_CONST="const"
 <YYINITIAL> {RW_CHAR} {return new Symbol(sym.RW_CHAR, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_BOOL} {return new Symbol(sym.RW_BOOL, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_IF} {return new Symbol(sym.RW_IF, yyline, yycolumn,yytext());}
+<YYINITIAL> {RW_ELSE} {return new Symbol(sym.RW_ELSE, yyline, yycolumn,yytext());}
+<YYINITIAL> {RW_WHILE} {return new Symbol(sym.RW_WHILE, yyline, yycolumn,yytext());}
+<YYINITIAL> {RW_BREAK} {return new Symbol(sym.RW_BREAK, yyline, yycolumn,yytext());}
+<YYINITIAL> {RW_CONTINUE} {return new Symbol(sym.RW_CONTINUE, yyline, yycolumn,yytext());}
 
 <YYINITIAL> {RW_TRUE} {return new Symbol(sym.RW_TRUE, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_FALSE} {return new Symbol(sym.RW_FALSE, yyline, yycolumn,yytext());}

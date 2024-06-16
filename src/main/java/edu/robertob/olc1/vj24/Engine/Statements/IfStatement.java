@@ -12,11 +12,19 @@ public class IfStatement extends Instruction {
 
     private Instruction condition;
     private LinkedList<Instruction> ifBody;
+    private LinkedList<Instruction> elseBody;
 
     public IfStatement(Instruction condition, LinkedList<Instruction> ifBody, int line, int column) {
         super(Types.VOID, line, column);
         this.condition = condition;
         this.ifBody = ifBody;
+    }
+
+    public IfStatement(Instruction condition, LinkedList<Instruction> ifBody, LinkedList<Instruction> elseBody, int line, int column) {
+        super(Types.VOID, line, column);
+        this.condition = condition;
+        this.ifBody = ifBody;
+        this.elseBody = elseBody;
     }
 
     @Override
@@ -32,12 +40,28 @@ public class IfStatement extends Instruction {
         table.getChildren().add(newTable);
         this.scopeTable = newTable;
         newTable.setName("IF@"+line+":"+column);
-        if((boolean) resultCondition){
-            for (var instruction : ifBody) {
-                var result = instruction.execute(tree, newTable);
-                if (result instanceof JCError) return result;
+
+        if (elseBody == null) {
+            if((boolean) resultCondition){
+                for (var instruction : ifBody) {
+                    var result = instruction.execute(tree, newTable);
+                    if (result instanceof JCError || result instanceof Break || result instanceof Continue) return result;
+                }
+            }
+        } else {
+            if ((boolean) resultCondition) {
+                for (var instruction : ifBody) {
+                    var result = instruction.execute(tree, newTable);
+                    if (result instanceof JCError || result instanceof Break || result instanceof Continue) return result;
+                }
+            } else {
+                for (var instruction : elseBody) {
+                    var result = instruction.execute(tree, newTable);
+                    if (result instanceof JCError || result instanceof Break || result instanceof Continue) return result;
+                }
             }
         }
+
         return null;
     }
 }

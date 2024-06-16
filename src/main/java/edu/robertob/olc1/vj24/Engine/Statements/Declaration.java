@@ -52,10 +52,17 @@ public class Declaration extends Instruction {
         var symbol = new SymbolVariable(this.type, this.constant, this.id, result, this.line, this.column);
 
 
-
-        if (!table.setSymbol(symbol))
-            return new JCError("Semantica", "La variable " + this.id + " ya esta definida", this.line, this.column);
+        boolean created = table.setSymbol(symbol);
+        if (!created) {
+            return new JCError("Semantica", "Variable " + this.id + " ya existe", this.line, this.column);
+        }
+//        if (!table.setSymbol(symbol))
+//            return new JCError("Semantica", "La variable " + this.id + " ya esta definida", this.line, this.column);
 
         return null;
+    }
+
+    public String getId() {
+        return id;
     }
 }
