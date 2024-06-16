@@ -23,6 +23,8 @@ import edu.robertob.olc1.vj24.Engine.Statements.Print;
 import edu.robertob.olc1.vj24.Engine.Expressions.Primitive;
 //import expresiones.Aritmeticas;
 import edu.robertob.olc1.vj24.Engine.Expressions.Arithmetic;
+import edu.robertob.olc1.vj24.Engine.Expressions.Comparison;
+import edu.robertob.olc1.vj24.Engine.Structs.ComparisonOperands;
 //import expresiones.OperadoresAritmeticos;
 import edu.robertob.olc1.vj24.Engine.Structs.ArithmeticOperands;
 //import expresiones.Relacionales;
@@ -68,7 +70,8 @@ action code
 //terminal LLAVE1, LLAVE2;
 terminal UNIT_MINUS;
 terminal String STRING, ID, INTEGER, DECIMAL, CHAR;
-terminal ENDLINE, PLUS, MINUS, EQUALS, OPENBRACE, CLOSEBRACE, ASTERISK, SLASH, MODULO, DOUBLEASTERISK;
+terminal ENDLINE, PLUS, MINUS, EQUALS, OPENBRACE, CLOSEBRACE, ASTERISK, SLASH, MODULO, DOUBLEASTERISK, EXCLAMATION;
+terminal DOUBLEEQUALS, LESS, GREATER, LESSEQUAL, GREATEREQUAL, NOT_EQUALS;
 terminal OPENPAR, CLOSEPAR;
 terminal RW_PRINT, RW_INT, RW_DOUBLE, RW_STRING, RW_IF, RW_TRUE, RW_FALSE, RW_BOOL;
 
@@ -80,7 +83,7 @@ nonterminal Instruction IMPRESION, DECLARACION, ASIGNACION;
 //nonterminal Tipo TIPOS;
 nonterminal Instruction EXPRESION;
 
-//precedence left EQUALS;
+precedence left DOUBLEEQUALS, LESS, GREATER, LESSEQUAL, GREATEREQUAL, NOT_EQUALS;
 precedence left PLUS, MINUS;
 precedence left ASTERISK, SLASH, MODULO;
 precedence nonassoc DOUBLEASTERISK;
@@ -127,6 +130,13 @@ EXPRESION ::= MINUS EXPRESION:a             {:   RESULT = new Arithmetic(a, Arit
             | EXPRESION:a MODULO EXPRESION:b  {:   RESULT = new Arithmetic(a, b, ArithmeticOperands.MOD, aleft, aright);   :}
             | EXPRESION:a MINUS EXPRESION:b  {:   RESULT = new Arithmetic(a, b, ArithmeticOperands.SUB, aleft, aright);   :}
             | EXPRESION:a PLUS EXPRESION:b   {:   RESULT = new Arithmetic(a, b, ArithmeticOperands.SUM, aleft, aright);   :}
+            | EXPRESION:a DOUBLEEQUALS EXPRESION:b {:    RESULT = new Comparison(a, b, ComparisonOperands.EQUALS, aleft, aright);    :} %prec DOUBLEEQUALS
+            | EXPRESION:a LESS EXPRESION:b {:    RESULT = new Comparison(a, b, ComparisonOperands.LESS_THAN, aleft, aright);    :} %prec LESS
+            | EXPRESION:a LESSEQUAL EXPRESION:b {:    RESULT = new Comparison(a, b, ComparisonOperands.LESS_THAN_OR_EQUALS, aleft, aright);    :} %prec LESSEQUAL
+            | EXPRESION:a GREATER EXPRESION:b {:    RESULT = new Comparison(a, b, ComparisonOperands.GREATER_THAN, aleft, aright);    :} %prec GREATER
+            | EXPRESION:a GREATEREQUAL EXPRESION:b {:    RESULT = new Comparison(a, b, ComparisonOperands.GREATER_THAN_OR_EQUALS, aleft, aright);    :} %prec GREATEREQUAL
+            | EXCLAMATION EXPRESION:a {:    RESULT = new Comparison(a, null, ComparisonOperands.NOT_EQUALS, aleft, aright);    :}
+
 //            | EXPRESION:a IGUAL IGUAL EXPRESION:b {:    RESULT = new Relacionales(a, b, OperadoresRelacionales.EQUALS, aleft, aright);    :}%prec EQUALS
             | INTEGER:a      {:   RESULT = new Primitive(Types.INTEGER,Integer.parseInt(a),  aleft, aright );   :}
             | DECIMAL:a     {:   RESULT = new Primitive(Types.DOUBLE,new Double(a),  aleft, aright );   :}

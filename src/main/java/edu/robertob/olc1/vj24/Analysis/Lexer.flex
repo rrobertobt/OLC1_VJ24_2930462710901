@@ -39,6 +39,13 @@ DOUBLEASTERISK="**"
 SLASH="/"
 MODULO="%"
 EQUALS="="
+DOUBLEEQUALS="=="
+EXCLAMATION="!"
+EXCLAMATIONEQUALS="!="
+LESS="<"
+LESSEQUALS="<="
+GREATER=">"
+GREATEREQUALS=">="
 ENDLINE=";"
 OPENBRACE="{"
 CLOSEBRACE="}"
@@ -103,7 +110,16 @@ RW_BOOL="bool"
 <YYINITIAL> {ASTERISK} {return new Symbol(sym.ASTERISK, yyline, yycolumn,yytext());}
 <YYINITIAL> {SLASH} {return new Symbol(sym.SLASH, yyline, yycolumn,yytext());}
 <YYINITIAL> {MODULO} {return new Symbol(sym.MODULO, yyline, yycolumn,yytext());}
+      // double equals
+<YYINITIAL> {DOUBLEEQUALS} {return new Symbol(sym.DOUBLEEQUALS, yyline, yycolumn,yytext());}
+      // single equals
 <YYINITIAL> {EQUALS} {return new Symbol(sym.EQUALS, yyline, yycolumn,yytext());}
+<YYINITIAL> {LESSEQUALS} {return new Symbol(sym.LESSEQUAL, yyline, yycolumn,yytext());}
+<YYINITIAL> {GREATEREQUALS} {return new Symbol(sym.GREATEREQUAL, yyline, yycolumn,yytext());}
+<YYINITIAL> {LESS} {return new Symbol(sym.LESS, yyline, yycolumn,yytext());}
+<YYINITIAL> {GREATER} {return new Symbol(sym.GREATER, yyline, yycolumn,yytext());}
+      <YYINITIAL> {EXCLAMATIONEQUALS} {return new Symbol(sym.NOT_EQUALS, yyline, yycolumn,yytext());}
+<YYINITIAL> {EXCLAMATION} {return new Symbol(sym.EXCLAMATION, yyline, yycolumn,yytext());}
 
 
 <YYINITIAL> {BLANKS} {

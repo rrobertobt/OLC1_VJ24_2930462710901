@@ -10,32 +10,39 @@ public class sym {
   /* terminals */
   public static final int CLOSEBRACE = 13;
   public static final int ASTERISK = 14;
+  public static final int EXCLAMATION = 18;
   public static final int OPENBRACE = 12;
   public static final int PLUS = 9;
   public static final int UNIT_MINUS = 2;
   public static final int CHAR = 7;
   public static final int DECIMAL = 6;
-  public static final int RW_TRUE = 25;
+  public static final int RW_TRUE = 32;
   public static final int SLASH = 15;
-  public static final int CLOSEPAR = 19;
+  public static final int CLOSEPAR = 26;
   public static final int DOUBLEASTERISK = 17;
+  public static final int GREATER = 21;
+  public static final int DOUBLEEQUALS = 19;
   public static final int MODULO = 16;
+  public static final int LESSEQUAL = 22;
   public static final int ID = 4;
-  public static final int OPENPAR = 18;
-  public static final int RW_IF = 24;
+  public static final int OPENPAR = 25;
+  public static final int RW_IF = 31;
   public static final int EQUALS = 11;
   public static final int STRING = 3;
   public static final int EOF = 0;
-  public static final int RW_FALSE = 26;
-  public static final int RW_PRINT = 20;
-  public static final int RW_BOOL = 27;
+  public static final int RW_FALSE = 33;
+  public static final int RW_PRINT = 27;
+  public static final int RW_BOOL = 34;
   public static final int MINUS = 10;
+  public static final int NOT_EQUALS = 24;
   public static final int error = 1;
   public static final int ENDLINE = 8;
-  public static final int RW_DOUBLE = 22;
-  public static final int RW_STRING = 23;
+  public static final int RW_DOUBLE = 29;
+  public static final int RW_STRING = 30;
   public static final int INTEGER = 5;
-  public static final int RW_INT = 21;
+  public static final int RW_INT = 28;
+  public static final int GREATEREQUAL = 23;
+  public static final int LESS = 20;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
@@ -55,6 +62,13 @@ public class sym {
   "SLASH",
   "MODULO",
   "DOUBLEASTERISK",
+  "EXCLAMATION",
+  "DOUBLEEQUALS",
+  "LESS",
+  "GREATER",
+  "LESSEQUAL",
+  "GREATEREQUAL",
+  "NOT_EQUALS",
   "OPENPAR",
   "CLOSEPAR",
   "RW_PRINT",

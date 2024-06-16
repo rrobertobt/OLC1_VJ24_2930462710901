@@ -1,17 +1,301 @@
 package edu.robertob.olc1.vj24.Engine.Expressions;
 
 import edu.robertob.olc1.vj24.Engine.Base.Instruction;
-import edu.robertob.olc1.vj24.Engine.Structs.SymbolTable;
-import edu.robertob.olc1.vj24.Engine.Structs.Tree;
-import edu.robertob.olc1.vj24.Engine.Structs.Types;
+import edu.robertob.olc1.vj24.Engine.Structs.*;
 
 public class Comparison extends Instruction {
     public Comparison(Types type, int line, int column) {
         super(type, line, column);
     }
 
+    private Instruction leftCondition;
+    private Instruction rightCondition;
+    private ComparisonOperands operand;
+
+    public Comparison(Instruction leftCondition, Instruction rightCondition, ComparisonOperands operand, int line, int column) {
+        super(Types.BOOLEAN, line, column);
+        this.leftCondition = leftCondition;
+        this.rightCondition = rightCondition;
+        this.operand = operand;
+    }
+
     @Override
     public Object execute(Tree tree, SymbolTable table) {
-        return null;
+        Object left = leftCondition.execute(tree, table);
+        if (left instanceof JCError) {
+            return left;
+        }
+
+        Object right = rightCondition.execute(tree, table);
+        if (right instanceof JCError) {
+            return right;
+        }
+
+        Types leftType = leftCondition.getType();
+        Types rightType = rightCondition.getType();
+
+        switch (leftType) {
+            case Types.INTEGER:
+                switch (rightType) {
+                    case Types.INTEGER:
+//                        return (int) left == (int) right;
+                        switch (operand) {
+                            case EQUALS:
+                                return (int) left == (int) right;
+                            case NOT_EQUALS:
+                                return (int) left != (int) right;
+                            case GREATER_THAN:
+                                return (int) left > (int) right;
+                            case LESS_THAN:
+                                return (int) left < (int) right;
+                            case GREATER_THAN_OR_EQUALS:
+                                return (int) left >= (int) right;
+                            case LESS_THAN_OR_EQUALS:
+                                return (int) left <= (int) right;
+                            default:
+                                return new JCError("Semántico", "Operador relacional inválido", line, column);
+                        }
+                    case Types.DOUBLE:
+//                        return (int) left == (double) right;
+                        switch (operand) {
+                            case EQUALS:
+                                return (int) left == (double) right;
+                            case NOT_EQUALS:
+                                return (int) left != (double) right;
+                            case GREATER_THAN:
+                                return (int) left > (double) right;
+                            case LESS_THAN:
+                                return (int) left < (double) right;
+                            case GREATER_THAN_OR_EQUALS:
+                                return (int) left >= (double) right;
+                            case LESS_THAN_OR_EQUALS:
+                                return (int) left <= (double) right;
+                            default:
+                                return new JCError("Semántico", "Operador relacional inválido", line, column);
+                        }
+                    case Types.CHARACTER:
+                        //return (int) left == Character.getNumericValue((char) right);
+                        switch (operand) {
+                            case EQUALS:
+                                return (int) left == Character.getNumericValue((char) right);
+                            case NOT_EQUALS:
+                                return (int) left != Character.getNumericValue((char) right);
+                            case GREATER_THAN:
+                                return (int) left > Character.getNumericValue((char) right);
+                            case LESS_THAN:
+                                return (int) left < Character.getNumericValue((char) right);
+                            case GREATER_THAN_OR_EQUALS:
+                                return (int) left >= Character.getNumericValue((char) right);
+                            case LESS_THAN_OR_EQUALS:
+                                return (int) left <= Character.getNumericValue((char) right);
+                            default:
+                                return new JCError("Semántico", "Operador relacional inválido", line, column);
+                        }
+                    default:
+                        return new JCError("Semántico", "No es posible comparar los tipos: " + leftType + " con " + rightType, line, column);
+                }
+            case Types.DOUBLE:
+                switch (rightType) {
+                    case Types.INTEGER:
+//                        return (double) left == (int) right;
+                        switch (operand) {
+                            case EQUALS:
+                                return (double) left == (int) right;
+                            case NOT_EQUALS:
+                                return (double) left != (int) right;
+                            case GREATER_THAN:
+                                return (double) left > (int) right;
+                            case LESS_THAN:
+                                return (double) left < (int) right;
+                            case GREATER_THAN_OR_EQUALS:
+                                return (double) left >= (int) right;
+                            case LESS_THAN_OR_EQUALS:
+                                return (double) left <= (int) right;
+                            default:
+                                return new JCError("Semántico", "Operador relacional inválido", line, column);
+                        }
+                    case Types.DOUBLE:
+//                        return (double) left == (double) right;
+                        switch (operand) {
+                            case EQUALS:
+                                return (double) left == (double) right;
+                            case NOT_EQUALS:
+                                return (double) left != (double) right;
+                            case GREATER_THAN:
+                                return (double) left > (double) right;
+                            case LESS_THAN:
+                                return (double) left < (double) right;
+                            case GREATER_THAN_OR_EQUALS:
+                                return (double) left >= (double) right;
+                            case LESS_THAN_OR_EQUALS:
+                                return (double) left <= (double) right;
+                            default:
+                                return new JCError("Semántico", "Operador relacional inválido", line, column);
+                        }
+                    case Types.CHARACTER:
+//                        return (double) left == Character.getNumericValue((char) right);
+                        switch (operand) {
+                            case EQUALS:
+                                return (double) left == Character.getNumericValue((char) right);
+                            case NOT_EQUALS:
+                                return (double) left != Character.getNumericValue((char) right);
+                            case GREATER_THAN:
+                                return (double) left > Character.getNumericValue((char) right);
+                            case LESS_THAN:
+                                return (double) left < Character.getNumericValue((char) right);
+                            case GREATER_THAN_OR_EQUALS:
+                                return (double) left >= Character.getNumericValue((char) right);
+                            case LESS_THAN_OR_EQUALS:
+                                return (double) left <= Character.getNumericValue((char) right);
+                            default:
+                                return new JCError("Semántico", "Operador relacional inválido", line, column);
+                        }
+                    default:
+                        return new JCError("Semántico", "No es posible comparar los tipos: " + leftType + " con " + rightType, line, column);
+                }
+            case Types.BOOLEAN:
+                if (rightType == Types.BOOLEAN) {
+                    return left == right;
+                } else {
+                    return new JCError("Semántico", "No es posible comparar los tipos: " + leftType + " con " + rightType, line, column);
+                }
+            case Types.CHARACTER:
+                switch (rightType) {
+                    case Types.INTEGER:
+//                        return (char) left == (int) right;
+                        switch (operand) {
+                            case EQUALS:
+                                return Character.getNumericValue((char) left) == (int) right;
+                            case NOT_EQUALS:
+                                return Character.getNumericValue((char) left) != (int) right;
+                            case GREATER_THAN:
+                                return Character.getNumericValue((char) left) > (int) right;
+                            case LESS_THAN:
+                                return Character.getNumericValue((char) left) < (int) right;
+                            case GREATER_THAN_OR_EQUALS:
+                                return Character.getNumericValue((char) left) >= (int) right;
+                            case LESS_THAN_OR_EQUALS:
+                                return Character.getNumericValue((char) left) <= (int) right;
+                            default:
+                                return new JCError("Semántico", "Operador relacional inválido", line, column);
+                        }
+                    case Types.DOUBLE:
+//                        return (char) left == (double) right;
+                        switch (operand) {
+                            case EQUALS:
+                                return Character.getNumericValue((char) left) == (double) right;
+                            case NOT_EQUALS:
+                                return Character.getNumericValue((char) left) != (double) right;
+                            case GREATER_THAN:
+                                return Character.getNumericValue((char) left) > (double) right;
+                            case LESS_THAN:
+                                return Character.getNumericValue((char) left) < (double) right;
+                            case GREATER_THAN_OR_EQUALS:
+                                return Character.getNumericValue((char) left) >= (double) right;
+                            case LESS_THAN_OR_EQUALS:
+                                return Character.getNumericValue((char) left) <= (double) right;
+                            default:
+                                return new JCError("Semántico", "Operador relacional inválido", line, column);
+                        }
+                    case Types.CHARACTER:
+//                        return (char) left == (char) right;
+                        switch (operand) {
+                            case EQUALS:
+                                return Character.getNumericValue((char) left) == Character.getNumericValue((char) right);
+                            case NOT_EQUALS:
+                                return Character.getNumericValue((char) left) != Character.getNumericValue((char) right);
+                            case GREATER_THAN:
+                                return Character.getNumericValue((char) left) > Character.getNumericValue((char) right);
+                            case LESS_THAN:
+                                return Character.getNumericValue((char) left) < Character.getNumericValue((char) right);
+                            case GREATER_THAN_OR_EQUALS:
+                                return Character.getNumericValue((char) left) >= Character.getNumericValue((char) right);
+                            case LESS_THAN_OR_EQUALS:
+                                return Character.getNumericValue((char) left) <= Character.getNumericValue((char) right);
+                            default:
+                                return new JCError("Semántico", "Operador relacional inválido", line, column);
+                        }
+                    default:
+                        return new JCError("Semántico", "No es posible comparar los tipos: " + leftType + " con " + rightType, line, column);
+                }
+            case STRING:
+                if (rightType == Types.STRING) {
+                    return left.equals(right);
+                } else {
+                    return new JCError("Semántico", "No es posible comparar los tipos: " + leftType + " con " + rightType, line, column);
+                }
+            default:
+                return new JCError("Semántico", "No es posible comparar los tipos: " + leftType + " con " + rightType, line, column);
+        }
+    }
+
+    private Object equals(Object left, Object right) {
+        Types leftType = leftCondition.getType();
+        Types rightType = rightCondition.getType();
+
+        /*
+         * possible combinations:
+         * int with int
+         * int with double
+         * int with char
+         * double with int
+         * double with double
+         * double with char
+         * boolean with boolean
+         * char with int
+         * char with double
+         * char with char
+         * string with string
+         * */
+
+        switch (leftType) {
+            case Types.INTEGER:
+                switch (rightType) {
+                    case Types.INTEGER:
+                        return (int) left == (int) right;
+                    case Types.DOUBLE:
+                        return (int) left == (double) right;
+                    case Types.CHARACTER:
+                        return (int) left == (char) right;
+                    default:
+                        return new JCError("Semántico", "No es posible comparar los tipos: " + leftType + " con " + rightType, line, column);
+                }
+            case Types.DOUBLE:
+                switch (rightType) {
+                    case Types.INTEGER:
+                        return (double) left == (int) right;
+                    case Types.DOUBLE:
+                        return (double) left == (double) right;
+                    case Types.CHARACTER:
+                        return (double) left == (char) right;
+                    default:
+                        return new JCError("Semántico", "No es posible comparar los tipos: " + leftType + " con " + rightType, line, column);
+                }
+            case Types.BOOLEAN:
+                if (rightType == Types.BOOLEAN) {
+                    return left == right;
+                } else {
+                    return new JCError("Semántico", "No es posible comparar los tipos: " + leftType + " con " + rightType, line, column);
+                }
+            case Types.CHARACTER:
+                switch (rightType) {
+                    case Types.INTEGER:
+                        return (char) left == (int) right;
+                    case Types.DOUBLE:
+                        return (char) left == (double) right;
+                    case Types.CHARACTER:
+                        return (char) left == (char) right;
+                    default:
+                        return new JCError("Semántico", "No es posible comparar los tipos: " + leftType + " con " + rightType, line, column);
+                }
+            case STRING:
+                if (rightType == Types.STRING) {
+                    return left.equals(right);
+                } else {
+                    return new JCError("Semántico", "No es posible comparar los tipos: " + leftType + " con " + rightType, line, column);
+                }
+            default:
+                return new JCError("Semántico", "No es posible comparar los tipos: " + leftType + " con " + rightType, line, column);
+        }
     }
 }
