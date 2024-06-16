@@ -95,7 +95,7 @@ public class Arithmetic extends Instruction {
                     case Types.CHARACTER -> {
                         // this should result in an integer, so lets convert the character to its ASCII value
                         this.type = Types.INTEGER;
-                        return (int) leftOperand + Character.getNumericValue((char) rightOperand);
+                        return (int) leftOperand + (int) (char) rightOperand;
                     }
                     default -> {
                         return new JCError("Semantico", "No se puede sumar " + leftType + " con " + rightType, this.line, this.column);
@@ -119,7 +119,7 @@ public class Arithmetic extends Instruction {
                     case Types.CHARACTER -> {
                         // this should result in a double, so lets convert the character to its ASCII value
                         this.type = Types.DOUBLE;
-                        return (double) leftOperand + Character.getNumericValue((char) rightOperand);
+                        return (double) leftOperand + (int)(char) rightOperand;
                     }
                     default -> {
                         return new JCError("Semantico", "No se puede sumar " + leftType + " con " + rightType, this.line, this.column);
@@ -142,12 +142,12 @@ public class Arithmetic extends Instruction {
                     case Types.INTEGER -> {
                         // this should result in an integer, so lets convert the character to its ASCII value
                         this.type = Types.INTEGER;
-                        return (int) leftOperand + Character.getNumericValue((char) rightOperand);
+                        return (int) (char) leftOperand + (int) rightOperand;
                     }
                     case Types.DOUBLE -> {
                         // this should result in a double, so lets convert the character to its ASCII value
                         this.type = Types.DOUBLE;
-                        return Character.getNumericValue((char) leftOperand) + (double) rightOperand;
+                        return (int) (char) leftOperand + (double) rightOperand;
                     }
                     case Types.STRING -> {
                         this.type = Types.STRING;
@@ -190,13 +190,17 @@ public class Arithmetic extends Instruction {
         switch (leftType) {
             case Types.INTEGER -> {
                 switch (rightType) {
-                    case Types.INTEGER, Types.CHARACTER -> {
+                    case Types.INTEGER -> {
                         this.type = Types.INTEGER;
                         return (int) leftOperand - (int) rightOperand;
                     }
                     case Types.DOUBLE -> {
                         this.type = Types.DOUBLE;
                         return (int) leftOperand - (double) rightOperand;
+                    }
+                    case Types.CHARACTER -> {
+                        this.type = Types.INTEGER;
+                        return (int) leftOperand - (int) (char) rightOperand;
                     }
                     default -> {
                         return new JCError("Semantico", "No se puede restar " + leftType + " con " + rightType, this.line, this.column);
@@ -246,13 +250,17 @@ public class Arithmetic extends Instruction {
         switch (leftType) {
             case Types.INTEGER -> {
                 switch (rightType) {
-                    case Types.INTEGER, Types.CHARACTER -> {
+                    case Types.INTEGER -> {
                         this.type = Types.INTEGER;
                         return (int) leftOperand * (int) rightOperand;
                     }
                     case Types.DOUBLE -> {
                         this.type = Types.DOUBLE;
                         return (int) leftOperand * (double) rightOperand;
+                    }
+                    case Types.CHARACTER -> {
+                        this.type = Types.INTEGER;
+                        return (int) leftOperand * (int) (char) rightOperand;
                     }
                     default -> {
                         return new JCError("Semantico", "No se puede multiplicar " + leftType + " con " + rightType, this.line, this.column);
@@ -271,7 +279,7 @@ public class Arithmetic extends Instruction {
                     }
                     case CHARACTER -> {
                         this.type = Types.DOUBLE;
-                        return Double.parseDouble(leftOperand.toString()) * Character.getNumericValue((char) rightOperand);
+                        return Double.parseDouble(leftOperand.toString()) * (int)(char) rightOperand;
                     }
                     default -> {
                         return new JCError("Semantico", "No se puede multiplicar " + leftType + " con " + rightType, this.line, this.column);
@@ -282,11 +290,13 @@ public class Arithmetic extends Instruction {
                 switch (rightType) {
                     case Types.INTEGER -> {
                         this.type = Types.INTEGER;
-                        return (int) leftOperand * (int) rightOperand;
+//                        return Character.getNumericValue((char) leftOperand) * (int) rightOperand;
+                        return (int) (char) leftOperand * (int) rightOperand;
                     }
                     case Types.DOUBLE -> {
                         this.type = Types.DOUBLE;
-                        return (int) leftOperand * (double) rightOperand;
+//                        return Character.getNumericValue((char) leftOperand) * (double) rightOperand;
+                        return (int) (char) leftOperand * (double) rightOperand;
                     }
                     default -> {
                         return new JCError("Semantico", "No se puede multiplicar " + leftType + " con " + rightType, this.line, this.column);
@@ -306,7 +316,7 @@ public class Arithmetic extends Instruction {
         switch (leftType) {
             case Types.INTEGER -> {
                 switch (rightType) {
-                    case Types.INTEGER, Types.CHARACTER -> {
+                    case Types.INTEGER -> {
                         this.type = Types.DOUBLE;
                         // also check for division by zero
                         if ((int) rightOperand == 0) {
@@ -322,6 +332,13 @@ public class Arithmetic extends Instruction {
                         }
                         return (double) ((int) leftOperand / (double) rightOperand);
                     }
+                    case Types.CHARACTER -> {
+                        this.type = Types.DOUBLE;
+                        if ((int) (char) rightOperand == 0) {
+                            return new JCError("Semantico", "No se puede dividir entre 0", this.line, this.column);
+                        }
+                        return (double) (int) leftOperand / (int) (char) rightOperand;
+                    }
                     default -> {
                         return new JCError("Semantico", "No se puede dividir " + leftType + " con " + rightType, this.line, this.column);
                     }
@@ -329,7 +346,7 @@ public class Arithmetic extends Instruction {
             }
             case Types.DOUBLE -> {
                 switch (rightType) {
-                    case Types.INTEGER, CHARACTER -> {
+                    case Types.INTEGER ->{
                         this.type = Types.DOUBLE;
                         if ((int) rightOperand == 0) {
                             return new JCError("Semantico", "No se puede dividir entre 0", this.line, this.column);
@@ -342,6 +359,13 @@ public class Arithmetic extends Instruction {
                             return new JCError("Semantico", "No se puede dividir entre 0", this.line, this.column);
                         }
                         return (double) leftOperand / (double) rightOperand;
+                    }
+                    case Types.CHARACTER -> {
+                        this.type = Types.DOUBLE;
+                        if ((int) (char) rightOperand == 0) {
+                            return new JCError("Semantico", "No se puede dividir entre 0", this.line, this.column);
+                        }
+                        return (double) leftOperand / (int) (char) rightOperand;
                     }
                     default -> {
                         return new JCError("Semantico", "No se puede dividir " + leftType + " con " + rightType, this.line, this.column);

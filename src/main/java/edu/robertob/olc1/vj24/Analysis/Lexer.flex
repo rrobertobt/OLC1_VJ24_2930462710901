@@ -62,6 +62,7 @@ RW_PRINT="println"
 RW_INT="int"
 RW_DOUBLE="double"
 RW_STRING="string"
+RW_CHAR="char"
 RW_IF="if"
 RW_TRUE="true"
 RW_FALSE="false"
@@ -69,9 +70,12 @@ RW_BOOL="bool"
 
 %%
 <YYINITIAL> {RW_PRINT} {return new Symbol(sym.RW_PRINT, yyline, yycolumn,yytext());}
-//<YYINITIAL> {INT} {return new Symbol(sym.INT, yyline, yycolumn,yytext());}
-//<YYINITIAL> {DOUBLE} {return new Symbol(sym.DOUBLE, yyline, yycolumn,yytext());}
-//<YYINITIAL> {STRING} {return new Symbol(sym.STRING, yyline, yycolumn,yytext());}
+<YYINITIAL> {RW_INT} {return new Symbol(sym.RW_INT, yyline, yycolumn,yytext());}
+<YYINITIAL> {RW_DOUBLE} {return new Symbol(sym.RW_DOUBLE, yyline, yycolumn,yytext());}
+<YYINITIAL> {RW_STRING} {return new Symbol(sym.RW_STRING, yyline, yycolumn,yytext());}
+<YYINITIAL> {RW_CHAR} {return new Symbol(sym.RW_CHAR, yyline, yycolumn,yytext());}
+<YYINITIAL> {RW_BOOL} {return new Symbol(sym.RW_BOOL, yyline, yycolumn,yytext());}
+
 //<YYINITIAL> {TRUE} {return new Symbol(sym.TRUE, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_TRUE} {return new Symbol(sym.RW_TRUE, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_FALSE} {return new Symbol(sym.RW_FALSE, yyline, yycolumn,yytext());}
@@ -120,7 +124,6 @@ RW_BOOL="bool"
 <YYINITIAL> {GREATER} {return new Symbol(sym.GREATER, yyline, yycolumn,yytext());}
       <YYINITIAL> {EXCLAMATIONEQUALS} {return new Symbol(sym.NOT_EQUALS, yyline, yycolumn,yytext());}
 <YYINITIAL> {EXCLAMATION} {return new Symbol(sym.EXCLAMATION, yyline, yycolumn,yytext());}
-
 
 <YYINITIAL> {BLANKS} {
       }

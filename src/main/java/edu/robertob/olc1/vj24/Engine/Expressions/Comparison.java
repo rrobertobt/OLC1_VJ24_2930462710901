@@ -74,20 +74,20 @@ public class Comparison extends Instruction {
                                 return new JCError("Semántico", "Operador relacional inválido", line, column);
                         }
                     case Types.CHARACTER:
-                        //return (int) left == Character.getNumericValue((char) right);
+                        //return (int) left == (int)(char) right);
                         switch (operand) {
                             case EQUALS:
-                                return (int) left == Character.getNumericValue((char) right);
+                                return (int) left == (int)(char)right;
                             case NOT_EQUALS:
-                                return (int) left != Character.getNumericValue((char) right);
+                                return (int) left != (int)(char)right;
                             case GREATER_THAN:
-                                return (int) left > Character.getNumericValue((char) right);
+                                return (int) left > (int)(char)right;
                             case LESS_THAN:
-                                return (int) left < Character.getNumericValue((char) right);
+                                return (int) left < (int)(char)right;
                             case GREATER_THAN_OR_EQUALS:
-                                return (int) left >= Character.getNumericValue((char) right);
+                                return (int) left >= (int)(char)right;
                             case LESS_THAN_OR_EQUALS:
-                                return (int) left <= Character.getNumericValue((char) right);
+                                return (int) left <= (int)(char)right;
                             default:
                                 return new JCError("Semántico", "Operador relacional inválido", line, column);
                         }
@@ -136,17 +136,17 @@ public class Comparison extends Instruction {
 //                        return (double) left == Character.getNumericValue((char) right);
                         switch (operand) {
                             case EQUALS:
-                                return (double) left == Character.getNumericValue((char) right);
+                                return (double) left == (int)(char)right;
                             case NOT_EQUALS:
-                                return (double) left != Character.getNumericValue((char) right);
+                                return (double) left != (int)(char)right;
                             case GREATER_THAN:
-                                return (double) left > Character.getNumericValue((char) right);
+                                return (double) left > (int)(char)right;
                             case LESS_THAN:
-                                return (double) left < Character.getNumericValue((char) right);
+                                return (double) left < (int)(char)right;
                             case GREATER_THAN_OR_EQUALS:
-                                return (double) left >= Character.getNumericValue((char) right);
+                                return (double) left >= (int)(char)right;
                             case LESS_THAN_OR_EQUALS:
-                                return (double) left <= Character.getNumericValue((char) right);
+                                return (double) left <= (int)(char)right;
                             default:
                                 return new JCError("Semántico", "Operador relacional inválido", line, column);
                         }
@@ -165,17 +165,17 @@ public class Comparison extends Instruction {
 //                        return (char) left == (int) right;
                         switch (operand) {
                             case EQUALS:
-                                return Character.getNumericValue((char) left) == (int) right;
+                                return (int)(char)left == (int) right;
                             case NOT_EQUALS:
-                                return Character.getNumericValue((char) left) != (int) right;
+                                return (int)(char)left != (int) right;
                             case GREATER_THAN:
-                                return Character.getNumericValue((char) left) > (int) right;
+                                return (int)(char)left > (int) right;
                             case LESS_THAN:
-                                return Character.getNumericValue((char) left) < (int) right;
+                                return (int)(char)left < (int) right;
                             case GREATER_THAN_OR_EQUALS:
-                                return Character.getNumericValue((char) left) >= (int) right;
+                                return (int)(char)left >= (int) right;
                             case LESS_THAN_OR_EQUALS:
-                                return Character.getNumericValue((char) left) <= (int) right;
+                                return (int)(char)left <= (int) right;
                             default:
                                 return new JCError("Semántico", "Operador relacional inválido", line, column);
                         }
@@ -183,17 +183,17 @@ public class Comparison extends Instruction {
 //                        return (char) left == (double) right;
                         switch (operand) {
                             case EQUALS:
-                                return Character.getNumericValue((char) left) == (double) right;
+                                return (int)(char)left == (double) right;
                             case NOT_EQUALS:
-                                return Character.getNumericValue((char) left) != (double) right;
+                                return (int)(char)left != (double) right;
                             case GREATER_THAN:
-                                return Character.getNumericValue((char) left) > (double) right;
+                                return (int)(char)left > (double) right;
                             case LESS_THAN:
-                                return Character.getNumericValue((char) left) < (double) right;
+                                return (int)(char)left < (double) right;
                             case GREATER_THAN_OR_EQUALS:
-                                return Character.getNumericValue((char) left) >= (double) right;
+                                return (int)(char)left >= (double) right;
                             case LESS_THAN_OR_EQUALS:
-                                return Character.getNumericValue((char) left) <= (double) right;
+                                return (int)(char)left <= (double) right;
                             default:
                                 return new JCError("Semántico", "Operador relacional inválido", line, column);
                         }
@@ -201,17 +201,17 @@ public class Comparison extends Instruction {
 //                        return (char) left == (char) right;
                         switch (operand) {
                             case EQUALS:
-                                return Character.getNumericValue((char) left) == Character.getNumericValue((char) right);
+                                return (int)(char)left == (int)(char)right;
                             case NOT_EQUALS:
-                                return Character.getNumericValue((char) left) != Character.getNumericValue((char) right);
+                                return (int)(char)left != (int)(char)right;
                             case GREATER_THAN:
-                                return Character.getNumericValue((char) left) > Character.getNumericValue((char) right);
+                                return (int)(char)left > (int)(char)right;
                             case LESS_THAN:
-                                return Character.getNumericValue((char) left) < Character.getNumericValue((char) right);
+                                return (int)(char)left < (int)(char)right;
                             case GREATER_THAN_OR_EQUALS:
-                                return Character.getNumericValue((char) left) >= Character.getNumericValue((char) right);
+                                return (int)(char)left >= (int)(char)right;
                             case LESS_THAN_OR_EQUALS:
-                                return Character.getNumericValue((char) left) <= Character.getNumericValue((char) right);
+                                return (int)(char)left <= (int)(char)right;
                             default:
                                 return new JCError("Semántico", "Operador relacional inválido", line, column);
                         }

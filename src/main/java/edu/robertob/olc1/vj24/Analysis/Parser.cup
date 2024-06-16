@@ -1,37 +1,22 @@
 package edu.robertob.olc1.vj24.Analysis;
 
-//importaciones
+
 import java_cup.runtime.Symbol;
 import java.util.LinkedList;
-//import abstracto.Instruccion;
 import edu.robertob.olc1.vj24.Engine.Base.Instruction;
 import edu.robertob.olc1.vj24.Engine.Structs.Types;
 import edu.robertob.olc1.vj24.Engine.Structs.JCError;
-//import simbolo.Tipo;
-//import simbolo.tipoDato;
-//import excepciones.Errores;
-//
-////instrucciones
-//import instrucciones.Print;
+
 import edu.robertob.olc1.vj24.Engine.Statements.Print;
-//import instrucciones.Declaracion;
-//import instrucciones.AsignacionVar;
-//import instrucciones.If;
-//
-////expresiones
-//import expresiones.Nativo;
+
 import edu.robertob.olc1.vj24.Engine.Expressions.Primitive;
-//import expresiones.Aritmeticas;
+
 import edu.robertob.olc1.vj24.Engine.Expressions.Arithmetic;
 import edu.robertob.olc1.vj24.Engine.Expressions.Comparison;
 import edu.robertob.olc1.vj24.Engine.Structs.ComparisonOperands;
-//import expresiones.OperadoresAritmeticos;
-import edu.robertob.olc1.vj24.Engine.Structs.ArithmeticOperands;
-//import expresiones.Relacionales;
-//import expresiones.OperadoresRelacionales;
-//import expresiones.AccesoVar;
 
-// parser
+import edu.robertob.olc1.vj24.Engine.Structs.ArithmeticOperands;
+
 parser code
 {:
     JCLexer s;
@@ -73,7 +58,7 @@ terminal String STRING, ID, INTEGER, DECIMAL, CHAR;
 terminal ENDLINE, PLUS, MINUS, EQUALS, OPENBRACE, CLOSEBRACE, ASTERISK, SLASH, MODULO, DOUBLEASTERISK, EXCLAMATION;
 terminal DOUBLEEQUALS, LESS, GREATER, LESSEQUAL, GREATEREQUAL, NOT_EQUALS;
 terminal OPENPAR, CLOSEPAR;
-terminal RW_PRINT, RW_INT, RW_DOUBLE, RW_STRING, RW_IF, RW_TRUE, RW_FALSE, RW_BOOL;
+terminal RW_PRINT, RW_INT, RW_DOUBLE, RW_STRING, RW_IF, RW_TRUE, RW_FALSE, RW_BOOL, RW_CHAR;
 
 //no terminales
 nonterminal LinkedList<Instruction> INICIO, INSTRUCCIONES;
