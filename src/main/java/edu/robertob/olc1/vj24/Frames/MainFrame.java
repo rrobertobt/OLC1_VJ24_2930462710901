@@ -25,6 +25,8 @@ import java.util.LinkedList;
 public class MainFrame extends javax.swing.JFrame {
 
     CurrentSession currentSession = new CurrentSession();
+    SymbolsReportFrame symbolsReportFrame = new SymbolsReportFrame();
+    ErrorsReportFrame errorsReportFrame = new ErrorsReportFrame();
 
     /**
      * Creates new form MainFrame
@@ -61,8 +63,9 @@ public class MainFrame extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextPane1 = new javax.swing.JTextPane();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
+        reportsMenu = new javax.swing.JMenu();
+        errorsMenuItem = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(252, 252, 252));
@@ -72,6 +75,7 @@ public class MainFrame extends javax.swing.JFrame {
         jToolBar2.setEnabled(false);
 
         newFileBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/file-plus.png"))); // NOI18N
+        newFileBtn.setText("Nuevo archivo");
         newFileBtn.setFocusable(false);
         newFileBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         newFileBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -83,6 +87,7 @@ public class MainFrame extends javax.swing.JFrame {
         jToolBar2.add(newFileBtn);
 
         openFileBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/file-import.png"))); // NOI18N
+        openFileBtn.setText("Abrir archivo");
         openFileBtn.setFocusable(false);
         openFileBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         openFileBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -94,6 +99,8 @@ public class MainFrame extends javax.swing.JFrame {
         jToolBar2.add(openFileBtn);
 
         saveFileBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/download.png"))); // NOI18N
+        saveFileBtn.setText("Guardar archivo");
+        saveFileBtn.setEnabled(false);
         saveFileBtn.setFocusable(false);
         saveFileBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         saveFileBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -105,12 +112,14 @@ public class MainFrame extends javax.swing.JFrame {
         jToolBar2.add(saveFileBtn);
 
         jSeparator2.setBackground(new java.awt.Color(204, 204, 204));
-        jSeparator2.setForeground(new java.awt.Color(0, 102, 255));
+        jSeparator2.setForeground(new java.awt.Color(0, 0, 0));
         jSeparator2.setOpaque(true);
         jSeparator2.setSeparatorSize(new java.awt.Dimension(1, 30));
         jToolBar2.add(jSeparator2);
 
         runCodeBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/player-play.png"))); // NOI18N
+        runCodeBtn.setText("Ejecutar");
+        runCodeBtn.setEnabled(false);
         runCodeBtn.setFocusable(false);
         runCodeBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         runCodeBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -131,12 +140,12 @@ public class MainFrame extends javax.swing.JFrame {
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
-                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 871, Short.MAX_VALUE)
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 871, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
-                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 353, Short.MAX_VALUE)
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)
         );
 
         consoleOutputLabel.setText("Salida de la consola");
@@ -147,55 +156,71 @@ public class MainFrame extends javax.swing.JFrame {
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
-                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jScrollPane1)
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(consoleOutputLabel)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(consoleOutputLabel)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
-                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(consoleOutputLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE))
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addComponent(consoleOutputLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE))
         );
 
         jMenuBar1.setBackground(new java.awt.Color(252, 252, 252));
         jMenuBar1.setBorder(null);
         jMenuBar1.setFont(new java.awt.Font("Helvetica Neue", 0, 15)); // NOI18N
 
-        jMenu1.setText("Archivo");
+        reportsMenu.setText("Reportes");
+        reportsMenu.setEnabled(false);
 
-        jMenu2.setText("jMenu2");
-        jMenu1.add(jMenu2);
+        errorsMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/file-sad.png"))); // NOI18N
+        errorsMenuItem.setText("Ver errores");
+        errorsMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                errorsMenuItemActionPerformed(evt);
+            }
+        });
+        reportsMenu.add(errorsMenuItem);
 
-        jMenuBar1.add(jMenu1);
+        jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/file-code.png"))); // NOI18N
+        jMenuItem2.setText("Ver tabla de simbolos");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        reportsMenu.add(jMenuItem2);
+
+        jMenuBar1.add(reportsMenu);
 
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jToolBar2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 883, Short.MAX_VALUE)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addContainerGap())
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jToolBar2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 883, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap())
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
@@ -230,7 +255,7 @@ public class MainFrame extends javax.swing.JFrame {
 
                 if (sessionFile.isSaved()) {
                     sessionFile.setSaved(false);
-                    MainFrame.this.jTabbedPane1.setTitleAt(sessionFile.getIndex(), "*" + sessionFile.getName() );
+                    MainFrame.this.jTabbedPane1.setTitleAt(sessionFile.getIndex(), "*" + sessionFile.getName());
                     MainFrame.this.fileStatusLabel.setText("Modificado");
                     MainFrame.this.fileStatusLabel.setFont(MainFrame.this.fileStatusLabel.getFont().deriveFont(Font.BOLD));
                 }
@@ -242,7 +267,7 @@ public class MainFrame extends javax.swing.JFrame {
 
                 if (sessionFile.isSaved()) {
                     sessionFile.setSaved(false);
-                    MainFrame.this.jTabbedPane1.setTitleAt(sessionFile.getIndex(), "*" + sessionFile.getName() );
+                    MainFrame.this.jTabbedPane1.setTitleAt(sessionFile.getIndex(), "*" + sessionFile.getName());
                     MainFrame.this.fileStatusLabel.setText("Modificado");
                     MainFrame.this.fileStatusLabel.setFont(MainFrame.this.fileStatusLabel.getFont().deriveFont(Font.BOLD));
                 }
@@ -254,7 +279,7 @@ public class MainFrame extends javax.swing.JFrame {
 
                 if (sessionFile.isSaved()) {
                     sessionFile.setSaved(false);
-                    MainFrame.this.jTabbedPane1.setTitleAt(sessionFile.getIndex(), "*" + sessionFile.getName() );
+                    MainFrame.this.jTabbedPane1.setTitleAt(sessionFile.getIndex(), "*" + sessionFile.getName());
                     MainFrame.this.fileStatusLabel.setText("Modificado");
                     MainFrame.this.fileStatusLabel.setFont(MainFrame.this.fileStatusLabel.getFont().deriveFont(Font.BOLD));
                 }
@@ -311,9 +336,13 @@ public class MainFrame extends javax.swing.JFrame {
         if (index == -1) {
             fileStatusLabel.setText("");
             jTextPane1.setText("");
+            saveFileBtn.setEnabled(false);
+            runCodeBtn.setEnabled(false);
+            reportsMenu.setEnabled(false);
             return;
         }
         currentSession.setActiveFile(jTabbedPane1.getSelectedIndex());
+        jTextPane1.setText(currentSession.getActiveFile().getConsoleOutput());
         if (currentSession.getActiveFile().isSaved()) {
             fileStatusLabel.setText("Guardado");
             fileStatusLabel.setFont(fileStatusLabel.getFont().deriveFont(Font.PLAIN));
@@ -321,8 +350,11 @@ public class MainFrame extends javax.swing.JFrame {
         } else {
             fileStatusLabel.setText("Modificado");
             fileStatusLabel.setFont(fileStatusLabel.getFont().deriveFont(Font.BOLD));
-            jTabbedPane1.setTitleAt(currentSession.getActiveFileIndex(), "*"+currentSession.getActiveFile().getName());
+            jTabbedPane1.setTitleAt(currentSession.getActiveFileIndex(), "*" + currentSession.getActiveFile().getName());
         }
+        saveFileBtn.setEnabled(true);
+        runCodeBtn.setEnabled(true);
+        reportsMenu.setEnabled(true);
     }//GEN-LAST:event_jTabbedPane1StateChanged
 
     private void saveFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveFileBtnActionPerformed
@@ -336,7 +368,7 @@ public class MainFrame extends javax.swing.JFrame {
                 fileStatusLabel.setFont(fileStatusLabel.getFont().deriveFont(Font.PLAIN));
             } else {
                 var fileChooser = new JFileChooser();
-                fileChooser.setSelectedFile(new java.io.File(activeFile.getName()+".jc"));
+                fileChooser.setSelectedFile(new java.io.File(activeFile.getName() + ".jc"));
                 var result = fileChooser.showSaveDialog(this);
                 // also set the default file name to the current file name
                 if (result == JFileChooser.APPROVE_OPTION) {
@@ -360,6 +392,8 @@ public class MainFrame extends javax.swing.JFrame {
         code = code.trim();
         JCLexer lexer = new JCLexer(new StringReader(code));
         Parser parser = new Parser(lexer);
+        currentSession.getActiveFile().getErrors().clear();
+        LinkedList<JCError> allErrors = new LinkedList<>();
         try {
             var result = parser.parse();
             var tree = new Tree((LinkedList<Instruction>) result.value);
@@ -371,24 +405,54 @@ public class MainFrame extends javax.swing.JFrame {
                 }
                 var insResult = instruction.execute(tree, globalTable);
                 if (insResult instanceof JCError) {
-                    System.out.println(((JCError) insResult).getDescription());
+                    currentSession.getActiveFile().getErrors().add((JCError) insResult);
+                    allErrors.add((JCError) insResult);
                 }
             }
+
+
             jTextPane1.setText(tree.getConsole());
+
 //            System.out.println(tree.getConsole());
         } catch (Exception e) {
-            jTextPane1.setText(e.getMessage()+ "\n");
+            jTextPane1.setText(e.getMessage() + "\n");
             e.printStackTrace();
         }
+        allErrors.addAll(lexer.getLexicalErrorList());
+        currentSession.getActiveFile().getErrors().addAll(lexer.getLexicalErrorList());
+        allErrors.addAll(parser.getSyntaxErrorList());
+        currentSession.getActiveFile().getErrors().addAll(parser.getSyntaxErrorList());
+        if (allErrors.size() == 0) {
+            jTextPane1.setText(jTextPane1.getText() + "\n --> Compilación exitosa\n");
+        } else {
+            jTextPane1.setText(jTextPane1.getText() + "\n !--> Compilación con errores - Ver menu de reportes para detalles\n");
+            for (JCError error : allErrors) {
+                jTextPane1.setText(jTextPane1.getText() + error.toString() + "\n");
+                System.out.println(error.getDescription());
+            }
+        }
+        currentSession.getActiveFile().setConsoleOutput(jTextPane1.getText());
     }//GEN-LAST:event_runCodeBtnActionPerformed
+
+    private void errorsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_errorsMenuItemActionPerformed
+        var activeFile = currentSession.getActiveFile();
+        if (activeFile != null) {
+            errorsReportFrame.setErrorsAndShow(activeFile.getErrors());
+
+        }
+    }//GEN-LAST:event_errorsMenuItemActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel consoleOutputLabel;
+    private javax.swing.JMenuItem errorsMenuItem;
     private javax.swing.JLabel fileStatusLabel;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -398,6 +462,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JToolBar jToolBar2;
     private javax.swing.JButton newFileBtn;
     private javax.swing.JButton openFileBtn;
+    private javax.swing.JMenu reportsMenu;
     private javax.swing.JButton runCodeBtn;
     private javax.swing.JButton saveFileBtn;
     // End of variables declaration//GEN-END:variables

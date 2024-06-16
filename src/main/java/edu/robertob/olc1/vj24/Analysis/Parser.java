@@ -272,12 +272,17 @@ public class Parser extends java_cup.runtime.lr_parser {
     Parser(JCLexer s){this.s = s;}
 
 //    public LinkedList<Errores> listaErrores = new LinkedList<>();
+    private LinkedList<JCError> errorList = new LinkedList<>();
+    public LinkedList<JCError> getSyntaxErrorList(){
+        return errorList;
+    }
 
     public void syntax_error(Symbol s){
 //        listaErrores.add(new Errores("SINTACTICO RECUPERABLE",
 //                        "No se esperaba el componente "+s.value,
 //                        s.left,
 //                        s.right));
+        errorList.add(new JCError("Sintaxis", "Error en la instruccion, componente: "+s.value, s.left, s.right));
 System.out.println("Error sintactico recuperable"+ s.value);
     }
 
@@ -286,6 +291,7 @@ System.out.println("Error sintactico recuperable"+ s.value);
 //                        "No se esperaba el componente "+s.value,
 //                        s.left,
 //                        s.right));
+        errorList.add(new JCError("Sintaxis - FATAL", "Error en la instruccion, componente: "+s.value, s.left, s.right));
 System.out.println("Error sintactico no recuperable"+ s.value);
     }
 
@@ -411,7 +417,10 @@ class CUP$Parser$actions {
           case 7: // INSTRUCCION ::= error ENDLINE 
             {
               Instruction RESULT =null;
-
+		int eleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).left;
+		int eright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).right;
+		Object e = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
+		   System.out.println(e);   
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("INSTRUCCION",2, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;

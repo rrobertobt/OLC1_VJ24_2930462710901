@@ -26,12 +26,17 @@ parser code
     Parser(JCLexer s){this.s = s;}
 
 //    public LinkedList<Errores> listaErrores = new LinkedList<>();
+    private LinkedList<JCError> errorList = new LinkedList<>();
+    public LinkedList<JCError> getSyntaxErrorList(){
+        return errorList;
+    }
 
     public void syntax_error(Symbol s){
 //        listaErrores.add(new Errores("SINTACTICO RECUPERABLE",
 //                        "No se esperaba el componente "+s.value,
 //                        s.left,
 //                        s.right));
+        errorList.add(new JCError("Sintaxis", "Error en la instruccion, componente: "+s.value, s.left, s.right));
 System.out.println("Error sintactico recuperable"+ s.value);
     }
 
@@ -40,6 +45,7 @@ System.out.println("Error sintactico recuperable"+ s.value);
 //                        "No se esperaba el componente "+s.value,
 //                        s.left,
 //                        s.right));
+        errorList.add(new JCError("Sintaxis - FATAL", "Error en la instruccion, componente: "+s.value, s.left, s.right));
 System.out.println("Error sintactico no recuperable"+ s.value);
     }
 
@@ -84,7 +90,7 @@ INSTRUCCION ::= IMPRESION: a        {:   RESULT=a;   :}
                 | DECLARATION:a       {:   RESULT=a;   :}
                 | ASSIGNATION:a        {:   RESULT=a;   :}
 //              | SIF:a               {:   RESULT=a;   :}
-              | error ENDLINE
+              | error:e ENDLINE       {:   System.out.println(e);   :}
 ;
 
 IMPRESION ::= RW_PRINT OPENPAR EXPRESION:a CLOSEPAR ENDLINE      {:   RESULT = new Print(a, aleft, aright);   :}

@@ -1,24 +1,25 @@
 package edu.robertob.olc1.vj24.Analysis;
 
-//importaciones
+import edu.robertob.olc1.vj24.Engine.Structs.JCError;
 import java_cup.runtime.Symbol;
 import java.util.LinkedList;
-//import excepciones.Errores;
 
 %%
 
 //codigo de usuario
 %{
-//    public LinkedList<Errores> listaErrores = new LinkedList<>();
+    private LinkedList<JCError> errorList = new LinkedList<>();
+    public LinkedList<JCError> getLexicalErrorList(){
+        return errorList;
+    }
 %}
 
 %init{
     yyline = 1;
     yycolumn = 1;
-//    listaErrores = new LinkedList<>();
+    errorList = new LinkedList<>();
 %init}
 
-//caracteristicas de jflex
 %cup
 %class JCLexer
 
@@ -54,7 +55,8 @@ BLANKS=[\ \r\t\f\n]+
 INTEGER=[0-9]+
 DECIMAL=[0-9]+"."[0-9]+
 ID=[a-zA-z][a-zA-Z0-9_]*
-STRING = [\"]([^\"])*[\"]
+//STRING = [\"]([^\"])*[\"]
+STRING = [\"]([^\"\\]|\\.)*[\"]
 CHAR = [']([^\'])*[']
 COMMENT_ONE_LINE = [\/]{2}.*
 COMMENT_MULTIPLE_LINES = [\/][*]([^\*]|[\*][^\/])*[\*][\/]
@@ -79,14 +81,10 @@ RW_CONST="const"
 <YYINITIAL> {RW_CHAR} {return new Symbol(sym.RW_CHAR, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_BOOL} {return new Symbol(sym.RW_BOOL, yyline, yycolumn,yytext());}
 
-//<YYINITIAL> {TRUE} {return new Symbol(sym.TRUE, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_TRUE} {return new Symbol(sym.RW_TRUE, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_FALSE} {return new Symbol(sym.RW_FALSE, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_CONST} {return new Symbol(sym.RW_CONST, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_VAR} {return new Symbol(sym.RW_VAR, yyline, yycolumn,yytext());}
-//<YYINITIAL> {FALSE} {return new Symbol(sym.FALSE, yyline, yycolumn,yytext());}
-//<YYINITIAL> {IF} {return new Symbol(sym.IF, yyline, yycolumn,yytext());}
-//<YYINITIAL> {BOOL} {return new Symbol(sym.BOOL, yyline, yycolumn,yytext());}
 
 <YYINITIAL> {ID} {return new Symbol(sym.ID, yyline, yycolumn,yytext());}
 
@@ -120,9 +118,9 @@ RW_CONST="const"
 <YYINITIAL> {ASTERISK} {return new Symbol(sym.ASTERISK, yyline, yycolumn,yytext());}
 <YYINITIAL> {SLASH} {return new Symbol(sym.SLASH, yyline, yycolumn,yytext());}
 <YYINITIAL> {MODULO} {return new Symbol(sym.MODULO, yyline, yycolumn,yytext());}
-      // double equals
+
 <YYINITIAL> {DOUBLEEQUALS} {return new Symbol(sym.DOUBLEEQUALS, yyline, yycolumn,yytext());}
-      // single equals
+
 <YYINITIAL> {EQUALS} {return new Symbol(sym.EQUALS, yyline, yycolumn,yytext());}
 <YYINITIAL> {LESSEQUALS} {return new Symbol(sym.LESSEQUAL, yyline, yycolumn,yytext());}
 <YYINITIAL> {GREATEREQUALS} {return new Symbol(sym.GREATEREQUAL, yyline, yycolumn,yytext());}
@@ -131,15 +129,10 @@ RW_CONST="const"
       <YYINITIAL> {EXCLAMATIONEQUALS} {return new Symbol(sym.NOT_EQUALS, yyline, yycolumn,yytext());}
 <YYINITIAL> {EXCLAMATION} {return new Symbol(sym.EXCLAMATION, yyline, yycolumn,yytext());}
 
-<YYINITIAL> {BLANKS} {
-      }
-<YYINITIAL> {COMMENT_ONE_LINE} {
-      }
-<YYINITIAL> {COMMENT_MULTIPLE_LINES} {
-      }
+<YYINITIAL> {BLANKS} {}
+<YYINITIAL> {COMMENT_ONE_LINE} {}
+<YYINITIAL> {COMMENT_MULTIPLE_LINES} {}
 
 <YYINITIAL> . {
-//                listaErrores.add(new Errores("LEXICO","El caracter "+
-//                yytext()+" NO pertenece al lenguaje", yyline, yycolumn));
-System.out.println("El caracter "+yytext()+" NO pertenece al lenguaje");
+errorList.add(new JCError("Lexico", "El caracter " + yytext() + " no pertenece al lenguaje, en: "+yyline+":"+yycolumn, yyline, yycolumn));
 }

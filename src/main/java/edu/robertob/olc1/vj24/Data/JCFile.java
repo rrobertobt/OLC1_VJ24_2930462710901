@@ -7,6 +7,9 @@ package edu.robertob.olc1.vj24.Data;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.LinkedList;
+
+import edu.robertob.olc1.vj24.Engine.Structs.JCError;
 import jflex.generator.*;
 
 /**
@@ -22,6 +25,7 @@ public class JCFile {
     private boolean isNew;
     private int index;
     private String consoleOutput;
+    private LinkedList<JCError> errors = new LinkedList<>();
 
     public JCFile(String name, String systemPath, String content, boolean saved, int index) {
         this.name = name;
@@ -108,5 +112,13 @@ public class JCFile {
 
     public void setIsNew(boolean isNew) {
         this.isNew = isNew;
+    }
+
+    public void setErrors(LinkedList<JCError> errors) {
+        this.errors = errors;
+    }
+
+    public LinkedList<JCError> getErrors() {
+        return this.errors;
     }
 }

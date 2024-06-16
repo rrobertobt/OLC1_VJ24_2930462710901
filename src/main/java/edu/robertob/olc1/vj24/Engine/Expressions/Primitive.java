@@ -10,7 +10,23 @@ public class Primitive extends Instruction {
 
     public Primitive(Types type, Object value, int line, int column) {
         super(type, line, column);
-        this.value = value;
+        this.value = processValue(type, value);
+    }
+
+    private Object processValue(Types type, Object value) {
+        if (type == Types.STRING && value instanceof String) {
+            return interpretEscapeSequences((String) value);
+        }
+        return value;
+    }
+
+    private String interpretEscapeSequences(String input) {
+        return input
+                .replace("\\n", "\n")
+                .replace("\\\"", "\"")
+                .replace("\\t", "\t")
+                .replace("\\'", "'")
+                .replace("\\\\", "\\");
     }
 
     @Override

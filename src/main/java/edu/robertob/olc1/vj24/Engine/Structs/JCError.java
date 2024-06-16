@@ -46,6 +46,6 @@ public class JCError {
     }
 
     public String toString(){
-        return "Error: " + this.type + " - " + this.description + " en: " + this.line + " column: " + this.column;
+        return "!> Error: " + this.type + " - " + this.description + " en: " + this.line + " column: " + this.column;
     }
 }
