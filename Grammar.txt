@@ -1,66 +1,69 @@
-<start> ::= <statements>
+START ::= STATEMENTS
 
-<statements> ::= <statements> <statement>
-               | <statement>
+STATEMENTS ::= STATEMENTS STATEMENT
+             | STATEMENT
 
-<statement> ::= <impresion>
-              | <declaration>
-              | <assignation>
-              | <if_stmt>
-              | error <endline>
+STATEMENT ::= IMPRESION
+            | DECLARATION
+            | ASSIGNATION
+            | IF_STMT
+            | INCREMENT
+            | DECREMENT
+            | WHILE_STMT
+            | BREAK
+            | CONTINUE
+            | error ";"
 
-<impresion> ::= "println" <openpar> <expresion> <closepar> <endline>
+BREAK ::= "break" ";"
 
-<declaration> ::= "const" <id> <colon> <types> <equals> <expresion> <endline>
-                | "const" <id> <colon> <types> <endline>
-                | "var" <id> <colon> <types> <endline>
-                | "var" <id> <colon> <types> <equals> <expresion> <endline>
+CONTINUE ::= "continue" ";"
 
-<assignation> ::= <id> <equals> <expresion> <endline>
+IMPRESION ::= "println" "(" EXPRESION ")" ";"
 
-<if_stmt> ::= "if" <openpar> <expresion> <closepar> <openbrace> <statements> <closebrace>
+DECLARATION ::= "const" ID ":" TYPES "=" EXPRESION ";"
+              | "const" ID ":" TYPES ";"
+              | "var" ID ":" TYPES ";"
+              | "var" ID ":" TYPES "=" EXPRESION ";"
 
-<types> ::= "int"
-          | "double"
-          | "string"
-          | "bool"
-          | "char"
+ASSIGNATION ::= ID "=" EXPRESION ";"
 
-<expresion> ::= "-" <expresion>
-              | <expresion> "*" <expresion>
-              | <expresion> "/" <expresion>
-              | <expresion> "**" <expresion>
-              | <expresion> "%" <expresion>
-              | <expresion> "-" <expresion>
-              | <expresion> "+" <expresion>
-              | <expresion> "==" <expresion>
-              | <expresion> "!=" <expresion>
-              | <expresion> "<" <expresion>
-              | <expresion> "<=" <expresion>
-              | <expresion> ">" <expresion>
-              | <expresion> ">=" <expresion>
-              | "!" <expresion>
-              | <expresion> "||" <expresion>
-              | <expresion> "&&" <expresion>
-              | <expresion> "^" <expresion>
-              | <integer>
-              | <decimal>
-              | <string>
-              | <char>
-              | "true"
-              | "false"
-              | <id>
-              | <openpar> <expresion> <closepar>
+IF_STMT ::= "if" "(" EXPRESION ")" "{" STATEMENTS "}"
+          | "if" "(" EXPRESION ")" "{" STATEMENTS "}" "else" "{" STATEMENTS "}"
 
-<openpar> ::= "("
-<closepar> ::= ")"
-<equals> ::= "="
-<endline> ::= ";"
-<colon> ::= ":"
-<openbrace> ::= "{"
-<closebrace> ::= "}"
-<id> ::= [a-zA-Z][a-zA-Z0-9_]*
-<integer> ::= [0-9]+
-<decimal> ::= [0-9]+"."[0-9]+
-<string> ::= <string>
-<char> ::= <char>
+WHILE_STMT ::= "while" "(" EXPRESION ")" "{" STATEMENTS "}"
+
+INCREMENT ::= ID "++" ";"
+
+DECREMENT ::= ID "--" ";"
+
+TYPES ::= "int"
+        | "double"
+        | "string"
+        | "bool"
+        | "char"
+
+EXPRESION ::= "-" EXPRESION
+            | EXPRESION "*" EXPRESION
+            | EXPRESION "/" EXPRESION
+            | EXPRESION "**" EXPRESION
+            | EXPRESION "%" EXPRESION
+            | EXPRESION "-" EXPRESION
+            | EXPRESION "+" EXPRESION
+            | EXPRESION "==" EXPRESION
+            | EXPRESION "!=" EXPRESION
+            | EXPRESION "<" EXPRESION
+            | EXPRESION "<=" EXPRESION
+            | EXPRESION ">" EXPRESION
+            | EXPRESION ">=" EXPRESION
+            | "!" EXPRESION
+            | EXPRESION "||" EXPRESION
+            | EXPRESION "&&" EXPRESION
+            | EXPRESION "^" EXPRESION
+            | INTEGER
+            | DECIMAL
+            | STRING
+            | CHAR
+            | "true"
+            | "false"
+            | ID
+            | "(" EXPRESION ")"

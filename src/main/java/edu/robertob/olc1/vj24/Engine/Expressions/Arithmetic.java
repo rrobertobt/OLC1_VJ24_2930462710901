@@ -142,7 +142,7 @@ public class Arithmetic extends Instruction {
                     case Types.INTEGER -> {
                         // this should result in an integer, so lets convert the character to its ASCII value
                         this.type = Types.INTEGER;
-                        return (int) (char) leftOperand + (int) rightOperand;
+                        return (int) ((char) leftOperand) + (int) rightOperand;
                     }
                     case Types.DOUBLE -> {
                         // this should result in a double, so lets convert the character to its ASCII value
@@ -227,11 +227,11 @@ public class Arithmetic extends Instruction {
                 switch (rightType) {
                     case Types.INTEGER -> {
                         this.type = Types.INTEGER;
-                        return (int) leftOperand - (int) rightOperand;
+                        return (int) ((char) leftOperand) - ((int) rightOperand);
                     }
                     case Types.DOUBLE -> {
                         this.type = Types.DOUBLE;
-                        return (int) leftOperand - (double) rightOperand;
+                        return (int)  (char)leftOperand - (double) rightOperand;
                     }
                     default -> {
                         return new JCError("Semantico", "No se puede restar " + leftType + " con " + rightType, this.line, this.column);
