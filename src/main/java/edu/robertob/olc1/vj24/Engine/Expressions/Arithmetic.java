@@ -77,7 +77,6 @@ public class Arithmetic extends Instruction {
     public Object add(Object leftOperand, Object rightOperand) {
         var leftType = this.firstOperand.getType();
         var rightType = this.secondOperand.getType();
-
         switch (leftType) {
             case Types.INTEGER -> {
                 switch (rightType) {
@@ -96,7 +95,7 @@ public class Arithmetic extends Instruction {
                     case Types.CHARACTER -> {
                         // this should result in an integer, so lets convert the character to its ASCII value
                         this.type = Types.INTEGER;
-                        return (int) leftOperand + (int) rightOperand;
+                        return (int) leftOperand + Character.getNumericValue((char) rightOperand);
                     }
                     default -> {
                         return new JCError("Semantico", "No se puede sumar " + leftType + " con " + rightType, this.line, this.column);
@@ -107,7 +106,7 @@ public class Arithmetic extends Instruction {
                 switch (rightType) {
                     case Types.INTEGER -> {
                         this.type = Types.DOUBLE;
-                        return (double) leftOperand + (int) rightOperand;
+                        return Double.parseDouble(leftOperand.toString()) + Integer.parseInt(rightOperand.toString());
                     }
                     case Types.DOUBLE -> {
                         this.type = Types.DOUBLE;
@@ -120,7 +119,7 @@ public class Arithmetic extends Instruction {
                     case Types.CHARACTER -> {
                         // this should result in a double, so lets convert the character to its ASCII value
                         this.type = Types.DOUBLE;
-                        return (double) leftOperand + (int) rightOperand;
+                        return (double) leftOperand + Character.getNumericValue((char) rightOperand);
                     }
                     default -> {
                         return new JCError("Semantico", "No se puede sumar " + leftType + " con " + rightType, this.line, this.column);
@@ -143,21 +142,20 @@ public class Arithmetic extends Instruction {
                     case Types.INTEGER -> {
                         // this should result in an integer, so lets convert the character to its ASCII value
                         this.type = Types.INTEGER;
-                        return (int) leftOperand + (int) rightOperand;
+                        return (int) leftOperand + Character.getNumericValue((char) rightOperand);
                     }
                     case Types.DOUBLE -> {
                         // this should result in a double, so lets convert the character to its ASCII value
                         this.type = Types.DOUBLE;
-                        return (int) leftOperand + (double) rightOperand;
+                        return Character.getNumericValue((char) leftOperand) + (double) rightOperand;
                     }
                     case Types.STRING -> {
                         this.type = Types.STRING;
-                        return leftOperand.toString() + rightOperand.toString();
+                        return (char) leftOperand + rightOperand.toString();
                     }
                     case Types.CHARACTER -> {
-                        // this should result in an integer, so lets convert the character to its ASCII value
                         this.type = Types.STRING;
-                        return leftOperand.toString() + rightOperand.toString();
+                        return String.valueOf(leftOperand) + rightOperand;
                     }
                     default -> {
                         return new JCError("Semantico", "No se puede sumar " + leftType + " con " + rightType, this.line, this.column);
@@ -165,8 +163,19 @@ public class Arithmetic extends Instruction {
                 }
             }
             case Types.STRING -> {
-                this.type = Types.STRING;
-                return leftOperand.toString() + rightOperand.toString();
+                switch (rightType) {
+                    case Types.STRING -> {
+                        this.type = Types.STRING;
+                        return leftOperand.toString() + rightOperand.toString();
+                    }
+                    case Types.CHARACTER -> {
+                        this.type = Types.STRING;
+                        return leftOperand.toString() + (char) rightOperand;
+                    }
+                    default -> {
+                        return new JCError("Semantico", "No se puede sumar " + leftType + " con " + rightType, this.line, this.column);
+                    }
+                }
             }
             default -> {
                 return new JCError("Semantico", "No se puede sumar " + leftType + " con " + rightType, this.line, this.column);
@@ -252,13 +261,17 @@ public class Arithmetic extends Instruction {
             }
             case Types.DOUBLE -> {
                 switch (rightType) {
-                    case Types.INTEGER, CHARACTER -> {
+                    case Types.INTEGER -> {
                         this.type = Types.DOUBLE;
-                        return (double) leftOperand * (int) rightOperand;
+                        return Double.parseDouble(leftOperand.toString()) * Integer.parseInt(rightOperand.toString());
                     }
                     case Types.DOUBLE -> {
                         this.type = Types.DOUBLE;
                         return (double) leftOperand * (double) rightOperand;
+                    }
+                    case CHARACTER -> {
+                        this.type = Types.DOUBLE;
+                        return Double.parseDouble(leftOperand.toString()) * Character.getNumericValue((char) rightOperand);
                     }
                     default -> {
                         return new JCError("Semantico", "No se puede multiplicar " + leftType + " con " + rightType, this.line, this.column);
@@ -289,7 +302,7 @@ public class Arithmetic extends Instruction {
     public Object divide(Object leftOperand, Object rightOperand) {
         var leftType = this.firstOperand.getType();
         var rightType = this.secondOperand.getType();
-    // in the case of division, it will always return a double
+        // in the case of division, it will always return a double
         switch (leftType) {
             case Types.INTEGER -> {
                 switch (rightType) {
@@ -303,10 +316,11 @@ public class Arithmetic extends Instruction {
                     }
                     case Types.DOUBLE -> {
                         this.type = Types.DOUBLE;
-                        if ((double) rightOperand == 0) {
+                        System.out.println(rightOperand);
+                        if (Double.parseDouble(rightOperand.toString()) == 0) {
                             return new JCError("Semantico", "No se puede dividir entre 0", this.line, this.column);
                         }
-                        return (double) (int) leftOperand / (double) rightOperand;
+                        return (double) ((int) leftOperand / (double) rightOperand);
                     }
                     default -> {
                         return new JCError("Semantico", "No se puede dividir " + leftType + " con " + rightType, this.line, this.column);
@@ -403,7 +417,7 @@ public class Arithmetic extends Instruction {
                 switch (rightType) {
                     case Types.INTEGER -> {
                         this.type = Types.INTEGER;
-                        return Math.pow((int) leftOperand, (int) rightOperand);
+                        return (int) Math.pow((int) leftOperand, (int) rightOperand);
                     }
                     case Types.DOUBLE -> {
                         this.type = Types.DOUBLE;
@@ -431,7 +445,11 @@ public class Arithmetic extends Instruction {
         }
     }
 
-    public Object negate(Object operand){
+    public static boolean isIntegerValue(double value) {
+        return value == Math.floor(value) && !Double.isInfinite(value);
+    }
+
+    public Object negate(Object operand) {
         var type = this.uniqueOperand.getType();
         switch (type) {
             case Types.INTEGER:

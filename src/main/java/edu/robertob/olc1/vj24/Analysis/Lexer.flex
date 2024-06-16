@@ -84,8 +84,8 @@ RW_BOOL="bool"
 <YYINITIAL> {CHAR} {
     String foundString = yytext();
     String stringObj = foundString.substring(1, foundString.length()-1);
-    char charObj = stringObj.charAt(0);
-    return new Symbol(sym.CHAR, yyline, yycolumn, charObj);
+    // Remember to transform the string to a char in CUP
+    return new Symbol(sym.CHAR, yyline, yycolumn, stringObj);
 }
 
 <YYINITIAL> {ENDLINE} {return new Symbol(sym.ENDLINE, yyline, yycolumn,yytext());}
@@ -100,13 +100,16 @@ RW_BOOL="bool"
 <YYINITIAL> {DOUBLEASTERISK} {return new Symbol(sym.DOUBLEASTERISK, yyline, yycolumn,yytext());}
 <YYINITIAL> {ASTERISK} {return new Symbol(sym.ASTERISK, yyline, yycolumn,yytext());}
 <YYINITIAL> {SLASH} {return new Symbol(sym.SLASH, yyline, yycolumn,yytext());}
-//<YYINITIAL> {MODULO} {return new Symbol(sym.MODULO, yyline, yycolumn,yytext());}
+<YYINITIAL> {MODULO} {return new Symbol(sym.MODULO, yyline, yycolumn,yytext());}
 <YYINITIAL> {EQUALS} {return new Symbol(sym.EQUALS, yyline, yycolumn,yytext());}
 
 
-<YYINITIAL> {BLANKS} {}
-<YYINITIAL> {COMMENT_ONE_LINE} {}
-<YYINITIAL> {COMMENT_MULTIPLE_LINES} {}
+<YYINITIAL> {BLANKS} {
+      }
+<YYINITIAL> {COMMENT_ONE_LINE} {
+      }
+<YYINITIAL> {COMMENT_MULTIPLE_LINES} {
+      }
 
 <YYINITIAL> . {
 //                listaErrores.add(new Errores("LEXICO","El caracter "+

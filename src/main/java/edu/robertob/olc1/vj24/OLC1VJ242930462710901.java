@@ -29,7 +29,7 @@ public class OLC1VJ242930462710901 {
             
         */
         try {
-//            AnalysisGenerator.generateCompiler();
+//            AnalysisGenerator.generateCompiler();r
             new MainFrame().setVisible(true);
         } catch (Exception e) {
             e.printStackTrace();

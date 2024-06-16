@@ -286,6 +286,8 @@ public class MainFrame extends javax.swing.JFrame {
                     content += line + "\n";
                     line = reader.readLine();
                 }
+                content = content.substring(0, content.length() - 1);
+                sessionFile.setContent(content);
                 reader.close();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -295,6 +297,7 @@ public class MainFrame extends javax.swing.JFrame {
 
             jTabbedPane1.add(name, scrollPane);
             jTabbedPane1.setTabComponentAt(jTabbedPane1.getTabCount() - 1, new ButtonTabComponent(jTabbedPane1, currentSession));
+            currentSession.setActiveFile(jTabbedPane1.getTabCount() - 1);
             switchTabAndSetDocumentListener(sessionFile, textArea);
         }
 
@@ -306,6 +309,7 @@ public class MainFrame extends javax.swing.JFrame {
         var index = jTabbedPane1.getSelectedIndex();
         if (index == -1) {
             fileStatusLabel.setText("");
+            jTextPane1.setText("");
             return;
         }
         currentSession.setActiveFile(jTabbedPane1.getSelectedIndex());
@@ -351,7 +355,9 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_saveFileBtnActionPerformed
 
     private void runCodeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runCodeBtnActionPerformed
-        JCLexer lexer = new JCLexer(new StringReader(currentSession.getActiveFile().getContent()));
+        var code = currentSession.getActiveFile().getContent();
+        code = code.trim();
+        JCLexer lexer = new JCLexer(new StringReader(code));
         Parser parser = new Parser(lexer);
         try {
             var result = parser.parse();
@@ -368,7 +374,8 @@ public class MainFrame extends javax.swing.JFrame {
             jTextPane1.setText(tree.getConsole());
             System.out.println(tree.getConsole());
         } catch (Exception e) {
-            jTextPane1.setText(e.getMessage());
+            jTextPane1.setText(e.getMessage()+ "\n");
+            e.printStackTrace();
         }
     }//GEN-LAST:event_runCodeBtnActionPerformed
 

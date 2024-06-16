@@ -80,10 +80,10 @@ nonterminal Instruction IMPRESION, DECLARACION, ASIGNACION;
 //nonterminal Tipo TIPOS;
 nonterminal Instruction EXPRESION;
 
-precedence left EQUALS;
+//precedence left EQUALS;
 precedence left PLUS, MINUS;
-precedence left ASTERISK, SLASH;
-precedence left DOUBLEASTERISK, MODULO;
+precedence left ASTERISK, SLASH, MODULO;
+precedence nonassoc DOUBLEASTERISK;
 precedence right UNIT_MINUS;
 
 start with INICIO;
@@ -121,20 +121,19 @@ IMPRESION ::= RW_PRINT OPENPAR EXPRESION:a CLOSEPAR ENDLINE      {:   RESULT = n
 //;
 
 EXPRESION ::= MINUS EXPRESION:a             {:   RESULT = new Arithmetic(a, ArithmeticOperands.NEG, aleft, aright);   :} %prec UNIT_MINUS
-            | EXPRESION:a PLUS EXPRESION:b   {:   RESULT = new Arithmetic(a, b, ArithmeticOperands.SUM, aleft, aright);   :}
-            | EXPRESION:a MINUS EXPRESION:b  {:   RESULT = new Arithmetic(a, b, ArithmeticOperands.SUB, aleft, aright);   :}
             | EXPRESION:a ASTERISK EXPRESION:b{:   RESULT = new Arithmetic(a, b, ArithmeticOperands.MUL, aleft, aright);   :}
             | EXPRESION:a SLASH EXPRESION:b   {:   RESULT = new Arithmetic(a, b, ArithmeticOperands.DIV, aleft, aright);   :}
             | EXPRESION:a DOUBLEASTERISK EXPRESION:b{:   RESULT = new Arithmetic(a, b, ArithmeticOperands.POW, aleft, aright);   :}
             | EXPRESION:a MODULO EXPRESION:b  {:   RESULT = new Arithmetic(a, b, ArithmeticOperands.MOD, aleft, aright);   :}
-
+            | EXPRESION:a MINUS EXPRESION:b  {:   RESULT = new Arithmetic(a, b, ArithmeticOperands.SUB, aleft, aright);   :}
+            | EXPRESION:a PLUS EXPRESION:b   {:   RESULT = new Arithmetic(a, b, ArithmeticOperands.SUM, aleft, aright);   :}
 //            | EXPRESION:a IGUAL IGUAL EXPRESION:b {:    RESULT = new Relacionales(a, b, OperadoresRelacionales.EQUALS, aleft, aright);    :}%prec EQUALS
             | INTEGER:a      {:   RESULT = new Primitive(Types.INTEGER,Integer.parseInt(a),  aleft, aright );   :}
             | DECIMAL:a     {:   RESULT = new Primitive(Types.DOUBLE,new Double(a),  aleft, aright );   :}
             | STRING:a      {:   RESULT = new Primitive( Types.STRING,a, aleft, aright );   :}
-            | CHAR:a        {:   RESULT = new Primitive(Types.CHARACTER, a, aleft, aright );   :}
+            | CHAR:a        {:   RESULT = new Primitive(Types.CHARACTER, a.charAt(0), aleft, aright );   :}
+            | OPENPAR EXPRESION:a CLOSEPAR     {:   RESULT = a;   :}
 //            | TRUE:a        {:   RESULT = new Nativo(true,     new Tipo(tipoDato.BOOLEANO), aleft, aright );   :}
 //            | FALSE:a       {:   RESULT = new Nativo(false, new Tipo(tipoDato.BOOLEANO), aleft, aright );    :}
 //            | ID:a          {:   RESULT = new AccesoVar(a, aleft, aright);   :}
-            | OPENPAR EXPRESION:a CLOSEPAR     {:   RESULT = a;   :}
 ;
