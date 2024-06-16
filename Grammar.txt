@@ -1,69 +1,69 @@
-START ::= STATEMENTS
+<START> ::= <STATEMENTS>
 
-STATEMENTS ::= STATEMENTS STATEMENT
-             | STATEMENT
+<STATEMENTS> ::= <STATEMENTS> <STATEMENT>
+               | <STATEMENT>
 
-STATEMENT ::= IMPRESION
-            | DECLARATION
-            | ASSIGNATION
-            | IF_STMT
-            | INCREMENT
-            | DECREMENT
-            | WHILE_STMT
-            | BREAK
-            | CONTINUE
-            | error ";"
+<STATEMENT> ::= <IMPRESION>
+              | <DECLARATION>
+              | <ASSIGNATION>
+              | <IF_STMT>
+              | <INCREMENT>
+              | <DECREMENT>
+              | <WHILE_STMT>
+              | <BREAK>
+              | <CONTINUE>
+              | "error" <ENDLINE>
 
-BREAK ::= "break" ";"
+<BREAK> ::= "break" <ENDLINE>
 
-CONTINUE ::= "continue" ";"
+<CONTINUE> ::= "continue" <ENDLINE>
 
-IMPRESION ::= "println" "(" EXPRESION ")" ";"
+<IMPRESION> ::= "println" "(" <EXPRESION> ")" <ENDLINE>
 
-DECLARATION ::= "const" ID ":" TYPES "=" EXPRESION ";"
-              | "const" ID ":" TYPES ";"
-              | "var" ID ":" TYPES ";"
-              | "var" ID ":" TYPES "=" EXPRESION ";"
+<DECLARATION> ::= "const" <ID> ":" <TYPES> "=" <EXPRESION> <ENDLINE>
+                | "const" <ID> ":" <TYPES> <ENDLINE>
+                | "var" <ID> ":" <TYPES> <ENDLINE>
+                | "var" <ID> ":" <TYPES> "=" <EXPRESION> <ENDLINE>
 
-ASSIGNATION ::= ID "=" EXPRESION ";"
+<ASSIGNATION> ::= <ID> "=" <EXPRESION> <ENDLINE>
 
-IF_STMT ::= "if" "(" EXPRESION ")" "{" STATEMENTS "}"
-          | "if" "(" EXPRESION ")" "{" STATEMENTS "}" "else" "{" STATEMENTS "}"
+<IF_STMT> ::= "if" "(" <EXPRESION> ")" "{" <STATEMENTS> "}"
+            | "if" "(" <EXPRESION> ")" "{" <STATEMENTS> "}" "else" "{" <STATEMENTS> "}"
 
-WHILE_STMT ::= "while" "(" EXPRESION ")" "{" STATEMENTS "}"
+<WHILE_STMT> ::= "while" "(" <EXPRESION> ")" "{" <STATEMENTS> "}"
 
-INCREMENT ::= ID "++" ";"
+<INCREMENT> ::= <ID> "++" <ENDLINE>
 
-DECREMENT ::= ID "--" ";"
+<DECREMENT> ::= <ID> "--" <ENDLINE>
 
-TYPES ::= "int"
-        | "double"
-        | "string"
-        | "bool"
-        | "char"
+<TYPES> ::= "int"
+          | "double"
+          | "string"
+          | "bool"
+          | "char"
 
-EXPRESION ::= "-" EXPRESION
-            | EXPRESION "*" EXPRESION
-            | EXPRESION "/" EXPRESION
-            | EXPRESION "**" EXPRESION
-            | EXPRESION "%" EXPRESION
-            | EXPRESION "-" EXPRESION
-            | EXPRESION "+" EXPRESION
-            | EXPRESION "==" EXPRESION
-            | EXPRESION "!=" EXPRESION
-            | EXPRESION "<" EXPRESION
-            | EXPRESION "<=" EXPRESION
-            | EXPRESION ">" EXPRESION
-            | EXPRESION ">=" EXPRESION
-            | "!" EXPRESION
-            | EXPRESION "||" EXPRESION
-            | EXPRESION "&&" EXPRESION
-            | EXPRESION "^" EXPRESION
-            | INTEGER
-            | DECIMAL
-            | STRING
-            | CHAR
-            | "true"
-            | "false"
-            | ID
-            | "(" EXPRESION ")"
+<EXPRESION> ::= "-" <EXPRESION>
+              | <EXPRESION> "*" <EXPRESION>
+              | <EXPRESION> "/" <EXPRESION>
+              | <EXPRESION> "**" <EXPRESION>
+              | <EXPRESION> "%" <EXPRESION>
+              | <EXPRESION> "-" <EXPRESION>
+              | <EXPRESION> "+" <EXPRESION>
+              | <EXPRESION> "==" <EXPRESION>
+              | <EXPRESION> "!=" <EXPRESION>
+              | <EXPRESION> "<" <EXPRESION>
+              | <EXPRESION> "<=" <EXPRESION>
+              | <EXPRESION> ">" <EXPRESION>
+              | <EXPRESION> ">=" <EXPRESION>
+              | "!" <EXPRESION>
+              | <EXPRESION> "||" <EXPRESION>
+              | <EXPRESION> "&&" <EXPRESION>
+              | <EXPRESION> "^" <EXPRESION>
+              | <INTEGER>
+              | <DECIMAL>
+              | <STRING>
+              | <CHAR>
+              | "true"
+              | "false"
+              | <ID>
+              | "(" <EXPRESION> ")"
