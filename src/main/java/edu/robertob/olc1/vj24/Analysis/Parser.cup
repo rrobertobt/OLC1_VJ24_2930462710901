@@ -132,6 +132,8 @@ EXPRESION ::= MINUS EXPRESION:a             {:   RESULT = new Arithmetic(a, Arit
             | DECIMAL:a     {:   RESULT = new Primitive(Types.DOUBLE,new Double(a),  aleft, aright );   :}
             | STRING:a      {:   RESULT = new Primitive( Types.STRING,a, aleft, aright );   :}
             | CHAR:a        {:   RESULT = new Primitive(Types.CHARACTER, a.charAt(0), aleft, aright );   :}
+            | RW_TRUE:a     {:   RESULT = new Primitive(Types.BOOLEAN, true, aleft, aright );   :}
+            | RW_FALSE:a    {:   RESULT = new Primitive(Types.BOOLEAN, false, aleft, aright );   :}
             | OPENPAR EXPRESION:a CLOSEPAR     {:   RESULT = a;   :}
 //            | TRUE:a        {:   RESULT = new Nativo(true,     new Tipo(tipoDato.BOOLEANO), aleft, aright );   :}
 //            | FALSE:a       {:   RESULT = new Nativo(false, new Tipo(tipoDato.BOOLEANO), aleft, aright );    :}

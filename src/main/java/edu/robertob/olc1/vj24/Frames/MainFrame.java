@@ -286,7 +286,7 @@ public class MainFrame extends javax.swing.JFrame {
                     content += line + "\n";
                     line = reader.readLine();
                 }
-                content = content.substring(0, content.length() - 1);
+                if (content.length() > 0) content = content.substring(0, content.length() - 1);
                 sessionFile.setContent(content);
                 reader.close();
             } catch (IOException e) {

@@ -40,10 +40,10 @@ public class JCLexer implements java_cup.runtime.Scanner {
      0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
      1,  0,  4,  0,  0,  5,  0,  6,  7,  8,  9, 10,  0, 11, 12, 13, 
     14, 14, 14, 14, 14, 14, 14, 14, 14, 14,  0, 15,  0, 16,  0,  0, 
-     0, 17, 17, 17, 17, 17, 17, 17, 17, 18, 17, 17, 19, 17, 20, 17, 
-    21, 17, 22, 17, 23, 17, 17, 17, 17, 17, 17, 24, 24, 24, 24, 17, 
-    24, 17, 17, 17, 17, 17, 17, 17, 17, 18, 17, 17, 19, 17, 20, 17, 
-    21, 17, 22, 17, 23, 17, 17, 17, 17, 17, 17, 25,  0, 26,  0,  0, 
+     0, 17, 18, 18, 18, 19, 20, 18, 18, 21, 18, 18, 22, 18, 23, 18, 
+    24, 18, 25, 26, 27, 28, 18, 18, 18, 18, 18, 29, 29, 29, 29, 18, 
+    29, 17, 18, 18, 18, 19, 20, 18, 18, 21, 18, 18, 22, 18, 23, 18, 
+    24, 18, 25, 26, 27, 28, 18, 18, 18, 18, 18, 30,  0, 31,  0,  0, 
      0,  0,  0,  0,  0,  3,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
      0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
      0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
@@ -61,13 +61,13 @@ public class JCLexer implements java_cup.runtime.Scanner {
 
   private static final String ZZ_ACTION_PACKED_0 =
     "\1\0\1\1\1\2\1\1\1\3\1\1\1\4\1\5"+
-    "\1\6\1\7\1\10\1\11\1\12\1\13\1\14\2\15"+
+    "\1\6\1\7\1\10\1\11\1\12\1\13\1\14\4\15"+
     "\1\16\1\17\1\0\1\20\1\0\1\21\1\22\1\0"+
-    "\1\23\1\0\1\15\1\0\1\24\1\15\1\25\3\15"+
-    "\1\26";
+    "\1\2\1\0\3\15\1\0\1\23\3\15\1\2\2\15"+
+    "\1\24\1\25\2\15\1\26";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[36];
+    int [] result = new int[45];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -92,14 +92,15 @@ public class JCLexer implements java_cup.runtime.Scanner {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\33\0\66\0\121\0\33\0\154\0\33\0\33"+
-    "\0\207\0\33\0\33\0\242\0\275\0\33\0\33\0\330"+
-    "\0\363\0\33\0\33\0\121\0\33\0\154\0\33\0\33"+
-    "\0\u010e\0\u0129\0\u0144\0\u015f\0\u017a\0\u0144\0\u0195\0\33"+
-    "\0\u01b0\0\u01cb\0\u01e6\0\330";
+    "\0\0\0\40\0\100\0\140\0\40\0\200\0\40\0\40"+
+    "\0\240\0\40\0\40\0\300\0\340\0\40\0\40\0\u0100"+
+    "\0\u0120\0\u0140\0\u0160\0\40\0\40\0\140\0\40\0\200"+
+    "\0\40\0\40\0\u0180\0\u01a0\0\u01c0\0\u01e0\0\u0200\0\u0220"+
+    "\0\u0240\0\u01c0\0\u0260\0\u0280\0\u02a0\0\40\0\u02c0\0\u02e0"+
+    "\0\u0100\0\u0100\0\u0300\0\u0320\0\u0100";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[36];
+    int [] result = new int[45];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -124,19 +125,25 @@ public class JCLexer implements java_cup.runtime.Scanner {
   private static final String ZZ_TRANS_PACKED_0 =
     "\1\2\2\3\1\0\1\4\1\5\1\6\1\7\1\10"+
     "\1\11\1\12\1\13\1\2\1\14\1\15\1\16\1\17"+
-    "\4\20\1\21\3\20\1\22\1\23\34\0\2\3\30\0"+
-    "\4\24\1\25\26\24\6\26\1\27\24\26\11\0\1\30"+
-    "\32\0\1\31\3\0\1\32\31\0\1\33\1\0\1\15"+
-    "\32\0\1\20\2\0\7\20\21\0\1\20\2\0\5\20"+
-    "\1\34\1\20\3\0\11\31\1\35\21\31\2\32\2\0"+
-    "\27\32\16\0\1\36\32\0\1\20\2\0\1\20\1\37"+
-    "\5\20\3\0\15\31\1\40\15\31\16\0\1\20\2\0"+
-    "\3\20\1\41\3\20\21\0\1\20\2\0\6\20\1\42"+
-    "\21\0\1\20\2\0\2\20\1\43\4\20\21\0\1\20"+
-    "\2\0\3\20\1\44\3\20\3\0";
+    "\3\20\1\21\3\20\1\22\2\20\1\23\2\20\1\24"+
+    "\1\25\41\0\2\3\35\0\4\26\1\27\33\26\6\30"+
+    "\1\31\31\30\11\0\1\32\37\0\1\33\3\0\1\34"+
+    "\36\0\1\35\1\0\1\15\37\0\1\20\2\0\14\20"+
+    "\21\0\1\20\2\0\1\36\13\20\21\0\1\20\2\0"+
+    "\10\20\1\37\3\20\21\0\1\20\2\0\10\20\1\40"+
+    "\3\20\3\0\11\33\1\41\26\33\2\34\2\0\34\34"+
+    "\16\0\1\42\37\0\1\20\2\0\5\20\1\43\6\20"+
+    "\21\0\1\20\2\0\4\20\1\44\7\20\21\0\1\20"+
+    "\2\0\13\20\1\45\3\0\15\33\1\46\22\33\16\0"+
+    "\1\20\2\0\11\20\1\47\2\20\21\0\1\20\2\0"+
+    "\6\20\1\50\5\20\21\0\1\20\2\0\2\20\1\51"+
+    "\11\20\21\0\1\20\2\0\2\20\1\52\11\20\21\0"+
+    "\1\20\2\0\12\20\1\53\1\20\21\0\1\20\2\0"+
+    "\5\20\1\54\6\20\21\0\1\20\2\0\6\20\1\55"+
+    "\5\20\3\0";
 
   private static int [] zzUnpacktrans() {
-    int [] result = new int[513];
+    int [] result = new int[832];
     int offset = 0;
     offset = zzUnpacktrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -180,11 +187,11 @@ public class JCLexer implements java_cup.runtime.Scanner {
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
     "\1\0\1\11\2\1\1\11\1\1\2\11\1\1\2\11"+
-    "\2\1\2\11\2\1\2\11\1\0\1\11\1\0\2\11"+
-    "\1\0\1\1\1\0\1\1\1\0\2\1\1\11\4\1";
+    "\2\1\2\11\4\1\2\11\1\0\1\11\1\0\2\11"+
+    "\1\0\1\1\1\0\3\1\1\0\4\1\1\11\7\1";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[36];
+    int [] result = new int[45];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -698,7 +705,7 @@ System.out.println("El caracter "+yytext()+" NO pertenece al lenguaje");
           // fall through
           case 23: break;
           case 2:
-            { System.out.println("Espacios en blanco");
+            { 
             }
           // fall through
           case 24: break;
@@ -788,17 +795,17 @@ System.out.println("El caracter "+yytext()+" NO pertenece al lenguaje");
           // fall through
           case 40: break;
           case 19:
-            { System.out.println("Comentario de una linea");
+            { return new Symbol(sym.DECIMAL, yyline, yycolumn,yytext());
             }
           // fall through
           case 41: break;
           case 20:
-            { return new Symbol(sym.DECIMAL, yyline, yycolumn,yytext());
+            { return new Symbol(sym.RW_TRUE, yyline, yycolumn,yytext());
             }
           // fall through
           case 42: break;
           case 21:
-            { System.out.println("Comentario de multiples lineas");
+            { return new Symbol(sym.RW_FALSE, yyline, yycolumn,yytext());
             }
           // fall through
           case 43: break;
