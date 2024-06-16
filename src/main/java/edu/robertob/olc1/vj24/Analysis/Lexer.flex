@@ -41,12 +41,15 @@ SLASH="/"
 MODULO="%"
 EQUALS="="
 DOUBLEEQUALS="=="
-EXCLAMATION="!"
+NEGATION="!"
 EXCLAMATIONEQUALS="!="
 LESS="<"
 LESSEQUALS="<="
 GREATER=">"
 GREATEREQUALS=">="
+OR="||"
+AND="&&"
+XOR=\^
 ENDLINE=";"
 COLON=":"
 OPENBRACE="{"
@@ -74,6 +77,9 @@ RW_VAR="var"
 RW_CONST="const"
 
 %%
+<YYINITIAL> {XOR} {
+          System.out.println("XOR");
+          return new Symbol(sym.XOR, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_PRINT} {return new Symbol(sym.RW_PRINT, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_INT} {return new Symbol(sym.RW_INT, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_DOUBLE} {return new Symbol(sym.RW_DOUBLE, yyline, yycolumn,yytext());}
@@ -126,8 +132,10 @@ RW_CONST="const"
 <YYINITIAL> {GREATEREQUALS} {return new Symbol(sym.GREATEREQUAL, yyline, yycolumn,yytext());}
 <YYINITIAL> {LESS} {return new Symbol(sym.LESS, yyline, yycolumn,yytext());}
 <YYINITIAL> {GREATER} {return new Symbol(sym.GREATER, yyline, yycolumn,yytext());}
-      <YYINITIAL> {EXCLAMATIONEQUALS} {return new Symbol(sym.NOT_EQUALS, yyline, yycolumn,yytext());}
-<YYINITIAL> {EXCLAMATION} {return new Symbol(sym.EXCLAMATION, yyline, yycolumn,yytext());}
+<YYINITIAL> {EXCLAMATIONEQUALS} {return new Symbol(sym.NOT_EQUALS, yyline, yycolumn,yytext());}
+<YYINITIAL> {NEGATION} {return new Symbol(sym.NEGATION, yyline, yycolumn,yytext());}
+<YYINITIAL> {OR} {return new Symbol(sym.OR, yyline, yycolumn,yytext());}
+<YYINITIAL> {AND} {return new Symbol(sym.AND, yyline, yycolumn,yytext());}
 
 <YYINITIAL> {BLANKS} {}
 <YYINITIAL> {COMMENT_ONE_LINE} {}

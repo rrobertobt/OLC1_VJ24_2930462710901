@@ -14,6 +14,7 @@ public class sym {
   public static final int EQUALS = 11;
   public static final int SLASH = 15;
   public static final int DOUBLEEQUALS = 20;
+  public static final int XOR = 41;
   public static final int RW_DOUBLE = 30;
   public static final int INTEGER = 5;
   public static final int GREATER = 22;
@@ -21,10 +22,11 @@ public class sym {
   public static final int LESS = 21;
   public static final int MINUS = 10;
   public static final int OPENPAR = 26;
+  public static final int AND = 40;
   public static final int LESSEQUAL = 23;
+  public static final int OR = 39;
   public static final int ENDLINE = 8;
   public static final int PLUS = 9;
-  public static final int EXCLAMATION = 18;
   public static final int ID = 4;
   public static final int CLOSEPAR = 27;
   public static final int RW_VAR = 38;
@@ -32,6 +34,7 @@ public class sym {
   public static final int EOF = 0;
   public static final int DECIMAL = 6;
   public static final int error = 1;
+  public static final int NEGATION = 18;
   public static final int RW_FALSE = 34;
   public static final int MODULO = 16;
   public static final int RW_PRINT = 28;
@@ -66,7 +69,7 @@ public class sym {
   "SLASH",
   "MODULO",
   "DOUBLEASTERISK",
-  "EXCLAMATION",
+  "NEGATION",
   "COLON",
   "DOUBLEEQUALS",
   "LESS",
@@ -86,7 +89,10 @@ public class sym {
   "RW_BOOL",
   "RW_CHAR",
   "RW_CONST",
-  "RW_VAR"
+  "RW_VAR",
+  "OR",
+  "AND",
+  "XOR"
   };
 }
 

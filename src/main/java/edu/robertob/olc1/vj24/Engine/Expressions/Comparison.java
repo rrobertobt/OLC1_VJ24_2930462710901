@@ -154,11 +154,40 @@ public class Comparison extends Instruction {
                         return new JCError("Semántico", "No es posible comparar los tipos: " + leftType + " con " + rightType, line, column);
                 }
             case Types.BOOLEAN:
-                if (rightType == Types.BOOLEAN) {
-                    return left == right;
-                } else {
-                    return new JCError("Semántico", "No es posible comparar los tipos: " + leftType + " con " + rightType, line, column);
-                }
+//                if (rightType == Types.BOOLEAN) {
+//                    return left == right;
+//                } else {
+//                    return new JCError("Semántico", "No es posible comparar los tipos: " + leftType + " con " + rightType, line, column);
+//                }
+                // rewrite this, since we can accept for example, true>false, we need to convert true to 1 and false to 0
+                switch (operand) {
+                    case EQUALS:
+                        return left.equals(right);
+                    case NOT_EQUALS:
+                        return !left.equals(right);
+                    case GREATER_THAN: {
+                        var leftValue = (boolean) left ? 1 : 0;
+                        var rightValue = (boolean) right ? 1 : 0;
+                        return leftValue > rightValue;
+                    }
+                    case LESS_THAN: {
+                        var leftValue = (boolean) left ? 1 : 0;
+                        var rightValue = (boolean) right ? 1 : 0;
+                        return leftValue < rightValue;
+                    }
+                    case GREATER_THAN_OR_EQUALS: {
+                        var leftValue = (boolean) left ? 1 : 0;
+                        var rightValue = (boolean) right ? 1 : 0;
+                        return leftValue >= rightValue;
+                    }
+                    case LESS_THAN_OR_EQUALS: {
+                        var leftValue = (boolean) left ? 1 : 0;
+                        var rightValue = (boolean) right ? 1 : 0;
+                        return leftValue <= rightValue;
+                    }
+                    default:
+                        return new JCError("Semántico", "Operador relacional inválido", line, column);
+                                        }
             case Types.CHARACTER:
                 switch (rightType) {
                     case Types.INTEGER:
