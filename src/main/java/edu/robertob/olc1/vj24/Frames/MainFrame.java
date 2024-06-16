@@ -409,11 +409,8 @@ public class MainFrame extends javax.swing.JFrame {
                     allErrors.add((JCError) insResult);
                 }
             }
-
-
+            currentSession.getActiveFile().setGlobalTable(globalTable);
             jTextPane1.setText(tree.getConsole());
-
-//            System.out.println(tree.getConsole());
         } catch (Exception e) {
             jTextPane1.setText(e.getMessage() + "\n");
             e.printStackTrace();
@@ -438,12 +435,14 @@ public class MainFrame extends javax.swing.JFrame {
         var activeFile = currentSession.getActiveFile();
         if (activeFile != null) {
             errorsReportFrame.setErrorsAndShow(activeFile.getErrors());
-
         }
     }//GEN-LAST:event_errorsMenuItemActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        // TODO add your handling code here:
+        var activeFile = currentSession.getActiveFile();
+        if (activeFile != null) {
+            symbolsReportFrame.setSymbolTableAndShow(activeFile.getGlobalTable());
+        }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
 

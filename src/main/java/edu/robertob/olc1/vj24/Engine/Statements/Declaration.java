@@ -49,7 +49,7 @@ public class Declaration extends Instruction {
         if (this.value.getType() != this.type)
             return new JCError("Semantica", "No se puede asignar el valor de tipo " + this.value.getType() + " a una variable de tipo " + this.type, this.line, this.column);
 
-        var symbol = new SymbolVariable(this.type, this.constant, this.id, result);
+        var symbol = new SymbolVariable(this.type, this.constant, this.id, result, this.line, this.column);
 
 
 

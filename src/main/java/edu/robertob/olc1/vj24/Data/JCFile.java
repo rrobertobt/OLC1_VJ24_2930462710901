@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 import edu.robertob.olc1.vj24.Engine.Structs.JCError;
+import edu.robertob.olc1.vj24.Engine.Structs.SymbolTable;
 import jflex.generator.*;
 
 /**
@@ -26,6 +27,7 @@ public class JCFile {
     private int index;
     private String consoleOutput;
     private LinkedList<JCError> errors = new LinkedList<>();
+    private SymbolTable globalTable;
 
     public JCFile(String name, String systemPath, String content, boolean saved, int index) {
         this.name = name;
@@ -120,5 +122,13 @@ public class JCFile {
 
     public LinkedList<JCError> getErrors() {
         return this.errors;
+    }
+
+    public void setGlobalTable(SymbolTable globalTable) {
+        this.globalTable = globalTable;
+    }
+
+    public SymbolTable getGlobalTable() {
+        return this.globalTable;
     }
 }

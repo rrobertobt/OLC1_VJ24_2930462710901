@@ -5,17 +5,21 @@ public class SymbolVariable {
     private String id;
     private Object value;
     private boolean constant;
+    private int line;
+    private int column;
 
     public SymbolVariable(Types type, String id) {
         this.type = type;
         this.id = id;
     }
 
-    public SymbolVariable(Types type, boolean constant,String id, Object value) {
+    public SymbolVariable(Types type, boolean constant,String id, Object value,int line, int column) {
         this.type = type;
         this.constant = constant;
         this.id = id;
         this.value = value;
+        this.line = line;
+        this.column = column;
     }
 
     public Types getType() {
@@ -44,5 +48,13 @@ public class SymbolVariable {
 
     public boolean isConstant() {
         return constant;
+    }
+
+    public int getLine() {
+        return line;
+    }
+
+    public int getColumn() {
+        return column;
     }
 }
