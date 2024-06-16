@@ -6,6 +6,7 @@ import edu.robertob.olc1.vj24.Data.CurrentSession;
 import edu.robertob.olc1.vj24.Data.JCFile;
 import edu.robertob.olc1.vj24.Engine.Base.Instruction;
 import edu.robertob.olc1.vj24.Engine.Structs.JCError;
+import edu.robertob.olc1.vj24.Engine.Structs.SymbolTable;
 import edu.robertob.olc1.vj24.Engine.Structs.Tree;
 
 import javax.swing.*;
@@ -362,17 +363,19 @@ public class MainFrame extends javax.swing.JFrame {
         try {
             var result = parser.parse();
             var tree = new Tree((LinkedList<Instruction>) result.value);
+            var globalTable = new SymbolTable("Global Table");
+            tree.setGlobalTable(globalTable);
             for (Instruction instruction : tree.getInstructions()) {
                 if (instruction == null) {
                     continue;
                 }
-                var insResult = instruction.execute(tree, null);
+                var insResult = instruction.execute(tree, globalTable);
                 if (insResult instanceof JCError) {
                     System.out.println(((JCError) insResult).getDescription());
                 }
             }
             jTextPane1.setText(tree.getConsole());
-            System.out.println(tree.getConsole());
+//            System.out.println(tree.getConsole());
         } catch (Exception e) {
             jTextPane1.setText(e.getMessage()+ "\n");
             e.printStackTrace();

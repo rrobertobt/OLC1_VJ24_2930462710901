@@ -164,7 +164,7 @@ public class Arithmetic extends Instruction {
             }
             case Types.STRING -> {
                 switch (rightType) {
-                    case Types.STRING -> {
+                    case Types.INTEGER, Types.STRING, Types.DOUBLE, Types.BOOLEAN -> {
                         this.type = Types.STRING;
                         return leftOperand.toString() + rightOperand.toString();
                     }

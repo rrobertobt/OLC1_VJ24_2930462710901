@@ -4,14 +4,30 @@ import java.util.HashMap;
 
 public class SymbolTable {
     private SymbolTable parentTable;
-//    private LinkedList<Symbol> symbols;
     private HashMap<String, Object> symbols;
     private String name;
 
-    public SymbolTable() {
+    public SymbolTable(String name) {
         this.parentTable = null;
         this.symbols = new HashMap<>();
-        this.name = "";
+        this.name = name;
+    }
+
+    public boolean setSymbol(SymbolVariable symbol) {
+        SymbolVariable search = (SymbolVariable) this.symbols.get(symbol.getId().toLowerCase());
+        if (search == null) {
+            this.symbols.put(symbol.getId().toLowerCase(), symbol);
+            return true;
+        }
+        return false;
+    }
+
+    public SymbolVariable getSymbol(String id) {
+        for (SymbolTable table = this; table != null; table = table.getParentTable()) {
+            SymbolVariable symbol = (SymbolVariable) table.symbols.get(id.toLowerCase());
+            if (symbol != null) return symbol;
+        }
+        return null;
     }
 
     public SymbolTable(SymbolTable parentTable) {

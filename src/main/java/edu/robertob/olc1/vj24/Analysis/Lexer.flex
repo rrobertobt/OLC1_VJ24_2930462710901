@@ -47,6 +47,7 @@ LESSEQUALS="<="
 GREATER=">"
 GREATEREQUALS=">="
 ENDLINE=";"
+COLON=":"
 OPENBRACE="{"
 CLOSEBRACE="}"
 BLANKS=[\ \r\t\f\n]+
@@ -67,6 +68,8 @@ RW_IF="if"
 RW_TRUE="true"
 RW_FALSE="false"
 RW_BOOL="bool"
+RW_VAR="var"
+RW_CONST="const"
 
 %%
 <YYINITIAL> {RW_PRINT} {return new Symbol(sym.RW_PRINT, yyline, yycolumn,yytext());}
@@ -79,6 +82,8 @@ RW_BOOL="bool"
 //<YYINITIAL> {TRUE} {return new Symbol(sym.TRUE, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_TRUE} {return new Symbol(sym.RW_TRUE, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_FALSE} {return new Symbol(sym.RW_FALSE, yyline, yycolumn,yytext());}
+<YYINITIAL> {RW_CONST} {return new Symbol(sym.RW_CONST, yyline, yycolumn,yytext());}
+<YYINITIAL> {RW_VAR} {return new Symbol(sym.RW_VAR, yyline, yycolumn,yytext());}
 //<YYINITIAL> {FALSE} {return new Symbol(sym.FALSE, yyline, yycolumn,yytext());}
 //<YYINITIAL> {IF} {return new Symbol(sym.IF, yyline, yycolumn,yytext());}
 //<YYINITIAL> {BOOL} {return new Symbol(sym.BOOL, yyline, yycolumn,yytext());}
@@ -102,6 +107,7 @@ RW_BOOL="bool"
 }
 
 <YYINITIAL> {ENDLINE} {return new Symbol(sym.ENDLINE, yyline, yycolumn,yytext());}
+<YYINITIAL> {COLON} {return new Symbol(sym.COLON, yyline, yycolumn,yytext());}
 <YYINITIAL> {OPENPAR} {return new Symbol(sym.OPENPAR, yyline, yycolumn,yytext());}
 <YYINITIAL> {CLOSEPAR} {return new Symbol(sym.CLOSEPAR, yyline, yycolumn,yytext());}
 <YYINITIAL> {OPENBRACE} {return new Symbol(sym.OPENBRACE, yyline, yycolumn,yytext());}

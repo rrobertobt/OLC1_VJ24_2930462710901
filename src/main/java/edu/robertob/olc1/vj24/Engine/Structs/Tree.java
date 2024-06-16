@@ -13,7 +13,7 @@ public class Tree {
     public Tree(LinkedList<Instruction> instructions) {
         this.instructions = instructions;
         this.console = "";
-        this.globalTable = new SymbolTable();
+        this.globalTable = new SymbolTable("");
         this.errors = new LinkedList<>();
     }
 

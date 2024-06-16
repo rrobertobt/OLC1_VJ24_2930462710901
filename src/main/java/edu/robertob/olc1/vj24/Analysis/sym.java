@@ -13,34 +13,37 @@ public class sym {
   public static final int ASTERISK = 14;
   public static final int EQUALS = 11;
   public static final int SLASH = 15;
-  public static final int DOUBLEEQUALS = 19;
-  public static final int RW_DOUBLE = 29;
+  public static final int DOUBLEEQUALS = 20;
+  public static final int RW_DOUBLE = 30;
   public static final int INTEGER = 5;
-  public static final int GREATER = 21;
-  public static final int RW_CHAR = 35;
-  public static final int LESS = 20;
+  public static final int GREATER = 22;
+  public static final int RW_CHAR = 36;
+  public static final int LESS = 21;
   public static final int MINUS = 10;
-  public static final int OPENPAR = 25;
-  public static final int LESSEQUAL = 22;
+  public static final int OPENPAR = 26;
+  public static final int LESSEQUAL = 23;
   public static final int ENDLINE = 8;
   public static final int PLUS = 9;
   public static final int EXCLAMATION = 18;
   public static final int ID = 4;
-  public static final int CLOSEPAR = 26;
-  public static final int RW_BOOL = 34;
+  public static final int CLOSEPAR = 27;
+  public static final int RW_VAR = 38;
+  public static final int RW_BOOL = 35;
   public static final int EOF = 0;
   public static final int DECIMAL = 6;
   public static final int error = 1;
-  public static final int RW_FALSE = 33;
+  public static final int RW_FALSE = 34;
   public static final int MODULO = 16;
-  public static final int RW_PRINT = 27;
-  public static final int RW_TRUE = 32;
-  public static final int GREATEREQUAL = 23;
-  public static final int RW_IF = 31;
-  public static final int RW_INT = 28;
+  public static final int RW_PRINT = 28;
+  public static final int RW_TRUE = 33;
+  public static final int GREATEREQUAL = 24;
+  public static final int COLON = 19;
+  public static final int RW_IF = 32;
+  public static final int RW_INT = 29;
+  public static final int RW_CONST = 37;
   public static final int CLOSEBRACE = 13;
-  public static final int NOT_EQUALS = 24;
-  public static final int RW_STRING = 30;
+  public static final int NOT_EQUALS = 25;
+  public static final int RW_STRING = 31;
   public static final int OPENBRACE = 12;
   public static final int STRING = 3;
   public static final int DOUBLEASTERISK = 17;
@@ -64,6 +67,7 @@ public class sym {
   "MODULO",
   "DOUBLEASTERISK",
   "EXCLAMATION",
+  "COLON",
   "DOUBLEEQUALS",
   "LESS",
   "GREATER",
@@ -80,7 +84,9 @@ public class sym {
   "RW_TRUE",
   "RW_FALSE",
   "RW_BOOL",
-  "RW_CHAR"
+  "RW_CHAR",
+  "RW_CONST",
+  "RW_VAR"
   };
 }
 
