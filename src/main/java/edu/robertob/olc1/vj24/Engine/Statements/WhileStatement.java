@@ -31,6 +31,7 @@ public class WhileStatement extends Instruction {
         var newTable = new SymbolTable(table);
         table.getChildren().add(newTable);
         this.scopeTable = newTable;
+        newTable.setName("WHILE@"+line+":"+column);
         while((boolean) resultCondition){
             for (var instruction : whileBody) {
                 if (instruction instanceof Declaration) {
