@@ -1,0 +1,66 @@
+<start> ::= <statements>
+
+<statements> ::= <statements> <statement>
+               | <statement>
+
+<statement> ::= <impresion>
+              | <declaration>
+              | <assignation>
+              | <if_stmt>
+              | error <endline>
+
+<impresion> ::= "println" <openpar> <expresion> <closepar> <endline>
+
+<declaration> ::= "const" <id> <colon> <types> <equals> <expresion> <endline>
+                | "const" <id> <colon> <types> <endline>
+                | "var" <id> <colon> <types> <endline>
+                | "var" <id> <colon> <types> <equals> <expresion> <endline>
+
+<assignation> ::= <id> <equals> <expresion> <endline>
+
+<if_stmt> ::= "if" <openpar> <expresion> <closepar> <openbrace> <statements> <closebrace>
+
+<types> ::= "int"
+          | "double"
+          | "string"
+          | "bool"
+          | "char"
+
+<expresion> ::= "-" <expresion>
+              | <expresion> "*" <expresion>
+              | <expresion> "/" <expresion>
+              | <expresion> "**" <expresion>
+              | <expresion> "%" <expresion>
+              | <expresion> "-" <expresion>
+              | <expresion> "+" <expresion>
+              | <expresion> "==" <expresion>
+              | <expresion> "!=" <expresion>
+              | <expresion> "<" <expresion>
+              | <expresion> "<=" <expresion>
+              | <expresion> ">" <expresion>
+              | <expresion> ">=" <expresion>
+              | "!" <expresion>
+              | <expresion> "||" <expresion>
+              | <expresion> "&&" <expresion>
+              | <expresion> "^" <expresion>
+              | <integer>
+              | <decimal>
+              | <string>
+              | <char>
+              | "true"
+              | "false"
+              | <id>
+              | <openpar> <expresion> <closepar>
+
+<openpar> ::= "("
+<closepar> ::= ")"
+<equals> ::= "="
+<endline> ::= ";"
+<colon> ::= ":"
+<openbrace> ::= "{"
+<closebrace> ::= "}"
+<id> ::= [a-zA-Z][a-zA-Z0-9_]*
+<integer> ::= [0-9]+
+<decimal> ::= [0-9]+"."[0-9]+
+<string> ::= <string>
+<char> ::= <char>

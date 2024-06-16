@@ -95,7 +95,6 @@ IMPRESION ::= RW_PRINT OPENPAR EXPRESION:a CLOSEPAR ENDLINE      {:   RESULT = n
 ;
 
 
-// similar to typescript var/const id: type = expression;
 DECLARATION ::= RW_CONST ID:a COLON TYPES:b EQUALS EXPRESION:c ENDLINE    {:   RESULT = new Declaration(a, b, c, true, aleft, aright);   :}
               | RW_CONST ID:a COLON TYPES:b ENDLINE    {:   RESULT = new Declaration(a, b, null, true,aleft, aright);   :}
               | RW_VAR ID:a COLON TYPES:b ENDLINE    {:   RESULT = new Declaration(a, b, null, false, aleft, aright);   :}
