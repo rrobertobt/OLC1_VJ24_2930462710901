@@ -52,6 +52,5 @@ public class Tree {
     // Dedicated print method for the console
     public void print(String value) {
         this.console += value + "\n";
-        System.out.println(value);
     }
 }

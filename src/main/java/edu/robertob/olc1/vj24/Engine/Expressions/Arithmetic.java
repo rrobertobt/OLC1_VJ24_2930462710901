@@ -196,7 +196,8 @@ public class Arithmetic extends Instruction {
                     }
                     case Types.DOUBLE -> {
                         this.type = Types.DOUBLE;
-                        return (int) leftOperand - (double) rightOperand;
+//                        return (int) leftOperand - (double) rightOperand;
+                        return (int) leftOperand - Double.parseDouble(rightOperand.toString());
                     }
                     case Types.CHARACTER -> {
                         this.type = Types.INTEGER;
@@ -326,7 +327,6 @@ public class Arithmetic extends Instruction {
                     }
                     case Types.DOUBLE -> {
                         this.type = Types.DOUBLE;
-                        System.out.println(rightOperand);
                         if (Double.parseDouble(rightOperand.toString()) == 0) {
                             return new JCError("Semantico", "No se puede dividir entre 0", this.line, this.column);
                         }

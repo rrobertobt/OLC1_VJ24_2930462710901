@@ -3,6 +3,7 @@ package edu.robertob.olc1.vj24.Engine.Structs;
 public class SymbolVariable {
     private Types type;
     private String id;
+    private String scopeName;
     private Object value;
     private boolean constant;
     private int line;
@@ -56,5 +57,13 @@ public class SymbolVariable {
 
     public int getColumn() {
         return column;
+    }
+
+    public String getScopeName() {
+        return scopeName;
+    }
+
+    public void setScopeName(String scopeName) {
+        this.scopeName = scopeName;
     }
 }

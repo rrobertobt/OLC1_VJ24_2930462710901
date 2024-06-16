@@ -20,7 +20,6 @@ public class Print extends Instruction {
         if (result instanceof JCError) {
             return result;
         }
-        System.out.println(expression.getType());
         tree.print(result.toString());
         return null;
     }

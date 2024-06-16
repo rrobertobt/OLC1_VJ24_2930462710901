@@ -8,6 +8,7 @@ public abstract class Instruction {
     public Types type;
     public int line;
     public int column;
+    public SymbolTable scopeTable;
 
     public Instruction(Types type, int line, int column) {
         this.type = type;
@@ -19,5 +20,13 @@ public abstract class Instruction {
 
     public Types getType(){
         return this.type;
+    }
+
+    public SymbolTable getScopeTable() {
+        return scopeTable;
+    }
+
+    public void setScopeTable(SymbolTable scopeTable) {
+        this.scopeTable = scopeTable;
     }
 }

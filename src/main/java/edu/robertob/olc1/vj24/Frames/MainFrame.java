@@ -410,6 +410,7 @@ public class MainFrame extends javax.swing.JFrame {
                 }
             }
             currentSession.getActiveFile().setGlobalTable(globalTable);
+            // also, recursively go through the table to get children tables
             jTextPane1.setText(tree.getConsole());
         } catch (Exception e) {
             jTextPane1.setText(e.getMessage() + "\n");
@@ -425,7 +426,6 @@ public class MainFrame extends javax.swing.JFrame {
             jTextPane1.setText(jTextPane1.getText() + "\n !--> Compilación con errores - Ver menu de reportes para detalles\n");
             for (JCError error : allErrors) {
                 jTextPane1.setText(jTextPane1.getText() + error.toString() + "\n");
-                System.out.println(error.getDescription());
             }
         }
         currentSession.getActiveFile().setConsoleOutput(jTextPane1.getText());

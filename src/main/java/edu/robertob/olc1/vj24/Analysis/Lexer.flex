@@ -78,7 +78,6 @@ RW_CONST="const"
 
 %%
 <YYINITIAL> {XOR} {
-          System.out.println("XOR");
           return new Symbol(sym.XOR, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_PRINT} {return new Symbol(sym.RW_PRINT, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_INT} {return new Symbol(sym.RW_INT, yyline, yycolumn,yytext());}
@@ -86,6 +85,7 @@ RW_CONST="const"
 <YYINITIAL> {RW_STRING} {return new Symbol(sym.RW_STRING, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_CHAR} {return new Symbol(sym.RW_CHAR, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_BOOL} {return new Symbol(sym.RW_BOOL, yyline, yycolumn,yytext());}
+<YYINITIAL> {RW_IF} {return new Symbol(sym.RW_IF, yyline, yycolumn,yytext());}
 
 <YYINITIAL> {RW_TRUE} {return new Symbol(sym.RW_TRUE, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_FALSE} {return new Symbol(sym.RW_FALSE, yyline, yycolumn,yytext());}

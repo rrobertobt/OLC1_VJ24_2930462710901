@@ -7,6 +7,7 @@ package edu.robertob.olc1.vj24.Frames;
 import edu.robertob.olc1.vj24.Engine.Structs.SymbolTable;
 import edu.robertob.olc1.vj24.Engine.Structs.SymbolVariable;
 
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -139,13 +140,13 @@ public class SymbolsReportFrame extends javax.swing.JFrame {
 
     public void setSymbolTableAndShow(SymbolTable globalTable) {
         AtomicInteger index = new AtomicInteger();
-        globalTable.getSymbols().forEach((key, value) -> {
+        globalTable.collectAllSymbols().forEach((key, value) -> {
             SymbolVariable var = (SymbolVariable) value;
             this.jTable1.setValueAt(index.get()+1, index.get(), 0);
             this.jTable1.setValueAt(var.getId(), index.get(), 1);
             this.jTable1.setValueAt("Variable", index.get(), 2);
             this.jTable1.setValueAt(var.getType().toString(), index.get(), 3);
-            this.jTable1.setValueAt(globalTable.getName(), index.get(), 4);
+            this.jTable1.setValueAt(var.getScopeName(), index.get(), 4);
             this.jTable1.setValueAt(var.getValue(), index.get(), 5);
             this.jTable1.setValueAt(var.getLine(), index.get(), 6);
             this.jTable1.setValueAt(var.getColumn(), index.get(), 7);

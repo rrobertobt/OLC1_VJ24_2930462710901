@@ -13,6 +13,7 @@ import edu.robertob.olc1.vj24.Engine.Statements.SymbolAssignation;
 import edu.robertob.olc1.vj24.Engine.Expressions.SymbolAccess;
 
 import edu.robertob.olc1.vj24.Engine.Expressions.Primitive;
+import edu.robertob.olc1.vj24.Engine.Statements.IfStatement;
 
 import edu.robertob.olc1.vj24.Engine.Expressions.Arithmetic;
 import edu.robertob.olc1.vj24.Engine.Expressions.Comparison;
@@ -34,21 +35,11 @@ parser code
     }
 
     public void syntax_error(Symbol s){
-//        listaErrores.add(new Errores("SINTACTICO RECUPERABLE",
-//                        "No se esperaba el componente "+s.value,
-//                        s.left,
-//                        s.right));
         errorList.add(new JCError("Sintaxis", "Error en la instruccion, componente: "+s.value, s.left, s.right));
-System.out.println("Error sintactico recuperable"+ s.value);
     }
 
     public void unrecovered_syntax_error (Symbol s){
-//        listaErrores.add(new Errores("SINTACTICO NO RECUPERABLE",
-//                        "No se esperaba el componente "+s.value,
-//                        s.left,
-//                        s.right));
         errorList.add(new JCError("Sintaxis - FATAL", "Error en la instruccion, componente: "+s.value, s.left, s.right));
-System.out.println("Error sintactico no recuperable"+ s.value);
     }
 
 :}
@@ -67,10 +58,10 @@ terminal RW_CONST, RW_VAR;
 terminal OR, AND, XOR;
 
 //no terminales
-nonterminal LinkedList<Instruction> INICIO, INSTRUCCIONES;
-nonterminal Instruction INSTRUCCION;
+nonterminal LinkedList<Instruction> START, STATEMENTS;
+nonterminal Instruction STATEMENT;
 nonterminal Instruction IMPRESION, DECLARATION, ASSIGNATION;
-//nonterminal Instruccion SIF;
+nonterminal Instruction IF_STMT;
 nonterminal Types TYPES;
 nonterminal Instruction EXPRESION;
 
@@ -84,20 +75,20 @@ precedence left ASTERISK, SLASH, MODULO;
 precedence nonassoc DOUBLEASTERISK;
 precedence right UNIT_MINUS;
 
-start with INICIO;
+start with START;
 
-INICIO ::= INSTRUCCIONES:a      {:   RESULT = a;   :}
+START ::= STATEMENTS:a      {:   RESULT = a;   :}
 ;
 
-INSTRUCCIONES ::= INSTRUCCIONES:a INSTRUCCION:b     {: RESULT = a; RESULT.add(b); :}
-                | INSTRUCCION:a                   {: RESULT = new LinkedList<>(); RESULT.add(a); :}
+STATEMENTS ::= STATEMENTS:a STATEMENT:b     {: RESULT = a; RESULT.add(b); :}
+                | STATEMENT:a                   {: RESULT = new LinkedList<>(); RESULT.add(a); :}
 ;
 
-INSTRUCCION ::= IMPRESION: a        {:   RESULT=a;   :}
+STATEMENT ::= IMPRESION: a        {:   RESULT=a;   :}
                 | DECLARATION:a       {:   RESULT=a;   :}
                 | ASSIGNATION:a        {:   RESULT=a;   :}
-//              | SIF:a               {:   RESULT=a;   :}
-              | error:e ENDLINE       {:   System.out.println(e);   :}
+                | IF_STMT:a               {:   RESULT=a;   :}
+                | error:e ENDLINE       {:   System.out.println(e);   :}
 ;
 
 IMPRESION ::= RW_PRINT OPENPAR EXPRESION:a CLOSEPAR ENDLINE      {:   RESULT = new Print(a, aleft, aright);   :}
@@ -113,6 +104,9 @@ DECLARATION ::= RW_CONST ID:a COLON TYPES:b EQUALS EXPRESION:c ENDLINE    {:   R
 
 ASSIGNATION ::= ID:a EQUALS EXPRESION:b ENDLINE  {:   RESULT=new SymbolAssignation(a, b, aleft, aright);  :}
             ;
+
+IF_STMT ::= RW_IF OPENPAR EXPRESION:a CLOSEPAR OPENBRACE STATEMENTS:b CLOSEBRACE {:   RESULT = new IfStatement(a, b, aleft, aright);   :}
+        ;
 
 TYPES ::= RW_INT       {:   RESULT=Types.INTEGER;   :}
         | RW_DOUBLE    {:   RESULT=Types.DOUBLE;   :}
