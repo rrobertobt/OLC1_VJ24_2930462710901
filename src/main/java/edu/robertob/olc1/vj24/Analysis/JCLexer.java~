@@ -63,11 +63,12 @@ public class JCLexer implements java_cup.runtime.Scanner {
     "\1\6\1\7\1\10\1\11\1\12\1\13\1\14\1\15"+
     "\1\16\1\17\1\20\14\21\1\22\1\23\1\1\1\24"+
     "\1\25\1\0\1\26\1\0\1\27\1\0\1\30\1\31"+
-    "\1\0\1\2\1\0\1\32\1\33\1\34\7\21\1\35"+
-    "\6\21\1\36\1\0\1\37\7\21\1\40\3\21\1\41"+
-    "\1\21\1\2\1\42\1\21\1\43\3\21\1\44\3\21"+
-    "\1\45\1\21\1\46\1\47\2\21\1\50\2\21\1\51"+
-    "\1\21\1\52\1\21\1\53\1\21\1\54\1\55";
+    "\1\0\1\2\1\0\1\32\1\33\1\34\4\21\1\35"+
+    "\2\21\1\36\6\21\1\37\1\0\1\40\7\21\1\41"+
+    "\3\21\1\42\1\21\1\2\1\43\1\21\1\44\3\21"+
+    "\1\45\3\21\1\46\1\21\1\47\1\50\2\21\1\51"+
+    "\2\21\1\52\1\21\1\53\1\21\1\54\1\21\1\55"+
+    "\1\56";
 
   private static int [] zzUnpackAction() {
     int [] result = new int[108];
@@ -748,119 +749,119 @@ public class JCLexer implements java_cup.runtime.Scanner {
             { errorList.add(new JCError("Lexico", "El caracter " + yytext() + " no pertenece al lenguaje, en: "+yyline+":"+yycolumn, yyline, yycolumn));
             }
           // fall through
-          case 46: break;
+          case 47: break;
           case 2:
             { 
             }
           // fall through
-          case 47: break;
+          case 48: break;
           case 3:
             { return new Symbol(sym.NEGATION, yyline, yycolumn,yytext());
             }
           // fall through
-          case 48: break;
+          case 49: break;
           case 4:
             { return new Symbol(sym.MODULO, yyline, yycolumn,yytext());
             }
           // fall through
-          case 49: break;
+          case 50: break;
           case 5:
             { return new Symbol(sym.OPENPAR, yyline, yycolumn,yytext());
             }
           // fall through
-          case 50: break;
+          case 51: break;
           case 6:
             { return new Symbol(sym.CLOSEPAR, yyline, yycolumn,yytext());
             }
           // fall through
-          case 51: break;
+          case 52: break;
           case 7:
             { return new Symbol(sym.ASTERISK, yyline, yycolumn,yytext());
             }
           // fall through
-          case 52: break;
+          case 53: break;
           case 8:
             { return new Symbol(sym.PLUS, yyline, yycolumn,yytext());
             }
           // fall through
-          case 53: break;
+          case 54: break;
           case 9:
             { return new Symbol(sym.MINUS, yyline, yycolumn,yytext());
             }
           // fall through
-          case 54: break;
+          case 55: break;
           case 10:
             { return new Symbol(sym.SLASH, yyline, yycolumn,yytext());
             }
           // fall through
-          case 55: break;
+          case 56: break;
           case 11:
             { return new Symbol(sym.INTEGER, yyline, yycolumn,yytext());
             }
           // fall through
-          case 56: break;
+          case 57: break;
           case 12:
             { return new Symbol(sym.COLON, yyline, yycolumn,yytext());
             }
           // fall through
-          case 57: break;
+          case 58: break;
           case 13:
             { return new Symbol(sym.ENDLINE, yyline, yycolumn,yytext());
             }
           // fall through
-          case 58: break;
+          case 59: break;
           case 14:
             { return new Symbol(sym.LESS, yyline, yycolumn,yytext());
             }
           // fall through
-          case 59: break;
+          case 60: break;
           case 15:
             { return new Symbol(sym.EQUALS, yyline, yycolumn,yytext());
             }
           // fall through
-          case 60: break;
+          case 61: break;
           case 16:
             { return new Symbol(sym.GREATER, yyline, yycolumn,yytext());
             }
           // fall through
-          case 61: break;
+          case 62: break;
           case 17:
             { return new Symbol(sym.ID, yyline, yycolumn,yytext());
             }
           // fall through
-          case 62: break;
+          case 63: break;
           case 18:
             { return new Symbol(sym.XOR, yyline, yycolumn,yytext());
             }
           // fall through
-          case 63: break;
+          case 64: break;
           case 19:
             { return new Symbol(sym.OPENBRACE, yyline, yycolumn,yytext());
             }
           // fall through
-          case 64: break;
+          case 65: break;
           case 20:
             { return new Symbol(sym.CLOSEBRACE, yyline, yycolumn,yytext());
             }
           // fall through
-          case 65: break;
+          case 66: break;
           case 21:
             { return new Symbol(sym.NOT_EQUALS, yyline, yycolumn,yytext());
             }
           // fall through
-          case 66: break;
+          case 67: break;
           case 22:
             { String foundString = yytext();
     String stringObj = foundString.substring(1, foundString.length()-1);
     return new Symbol(sym.STRING, yyline, yycolumn, stringObj);
             }
           // fall through
-          case 67: break;
+          case 68: break;
           case 23:
             { return new Symbol(sym.AND, yyline, yycolumn,yytext());
             }
           // fall through
-          case 68: break;
+          case 69: break;
           case 24:
             { String foundString = yytext();
     String stringObj = foundString.substring(1, foundString.length()-1);
@@ -868,112 +869,117 @@ public class JCLexer implements java_cup.runtime.Scanner {
     return new Symbol(sym.CHAR, yyline, yycolumn, stringObj);
             }
           // fall through
-          case 69: break;
+          case 70: break;
           case 25:
             { return new Symbol(sym.DOUBLEASTERISK, yyline, yycolumn,yytext());
             }
           // fall through
-          case 70: break;
+          case 71: break;
           case 26:
             { return new Symbol(sym.LESSEQUAL, yyline, yycolumn,yytext());
             }
           // fall through
-          case 71: break;
+          case 72: break;
           case 27:
             { return new Symbol(sym.DOUBLEEQUALS, yyline, yycolumn,yytext());
             }
           // fall through
-          case 72: break;
+          case 73: break;
           case 28:
             { return new Symbol(sym.GREATEREQUAL, yyline, yycolumn,yytext());
             }
           // fall through
-          case 73: break;
-          case 29:
-            { return new Symbol(sym.RW_IF, yyline, yycolumn,yytext());
-            }
-          // fall through
           case 74: break;
-          case 30:
-            { return new Symbol(sym.OR, yyline, yycolumn,yytext());
+          case 29:
+            { return new Symbol(sym.RW_DO, yyline, yycolumn,yytext());
             }
           // fall through
           case 75: break;
-          case 31:
-            { return new Symbol(sym.DECIMAL, yyline, yycolumn,yytext());
+          case 30:
+            { return new Symbol(sym.RW_IF, yyline, yycolumn,yytext());
             }
           // fall through
           case 76: break;
-          case 32:
-            { return new Symbol(sym.RW_INT, yyline, yycolumn,yytext());
+          case 31:
+            { return new Symbol(sym.OR, yyline, yycolumn,yytext());
             }
           // fall through
           case 77: break;
-          case 33:
-            { return new Symbol(sym.RW_VAR, yyline, yycolumn,yytext());
+          case 32:
+            { return new Symbol(sym.DECIMAL, yyline, yycolumn,yytext());
             }
           // fall through
           case 78: break;
-          case 34:
-            { return new Symbol(sym.RW_BOOL, yyline, yycolumn,yytext());
+          case 33:
+            { return new Symbol(sym.RW_INT, yyline, yycolumn,yytext());
             }
           // fall through
           case 79: break;
-          case 35:
-            { return new Symbol(sym.RW_CHAR, yyline, yycolumn,yytext());
+          case 34:
+            { return new Symbol(sym.RW_VAR, yyline, yycolumn,yytext());
             }
           // fall through
           case 80: break;
-          case 36:
-            { return new Symbol(sym.RW_ELSE, yyline, yycolumn,yytext());
+          case 35:
+            { return new Symbol(sym.RW_BOOL, yyline, yycolumn,yytext());
             }
           // fall through
           case 81: break;
-          case 37:
-            { return new Symbol(sym.RW_TRUE, yyline, yycolumn,yytext());
+          case 36:
+            { return new Symbol(sym.RW_CHAR, yyline, yycolumn,yytext());
             }
           // fall through
           case 82: break;
-          case 38:
-            { return new Symbol(sym.RW_BREAK, yyline, yycolumn,yytext());
+          case 37:
+            { return new Symbol(sym.RW_ELSE, yyline, yycolumn,yytext());
             }
           // fall through
           case 83: break;
-          case 39:
-            { return new Symbol(sym.RW_CONST, yyline, yycolumn,yytext());
+          case 38:
+            { return new Symbol(sym.RW_TRUE, yyline, yycolumn,yytext());
             }
           // fall through
           case 84: break;
-          case 40:
-            { return new Symbol(sym.RW_FALSE, yyline, yycolumn,yytext());
+          case 39:
+            { return new Symbol(sym.RW_BREAK, yyline, yycolumn,yytext());
             }
           // fall through
           case 85: break;
-          case 41:
-            { return new Symbol(sym.RW_WHILE, yyline, yycolumn,yytext());
+          case 40:
+            { return new Symbol(sym.RW_CONST, yyline, yycolumn,yytext());
             }
           // fall through
           case 86: break;
-          case 42:
-            { return new Symbol(sym.RW_DOUBLE, yyline, yycolumn,yytext());
+          case 41:
+            { return new Symbol(sym.RW_FALSE, yyline, yycolumn,yytext());
             }
           // fall through
           case 87: break;
-          case 43:
-            { return new Symbol(sym.RW_STRING, yyline, yycolumn,yytext());
+          case 42:
+            { return new Symbol(sym.RW_WHILE, yyline, yycolumn,yytext());
             }
           // fall through
           case 88: break;
-          case 44:
-            { return new Symbol(sym.RW_PRINT, yyline, yycolumn,yytext());
+          case 43:
+            { return new Symbol(sym.RW_DOUBLE, yyline, yycolumn,yytext());
             }
           // fall through
           case 89: break;
-          case 45:
-            { return new Symbol(sym.RW_CONTINUE, yyline, yycolumn,yytext());
+          case 44:
+            { return new Symbol(sym.RW_STRING, yyline, yycolumn,yytext());
             }
           // fall through
           case 90: break;
+          case 45:
+            { return new Symbol(sym.RW_PRINT, yyline, yycolumn,yytext());
+            }
+          // fall through
+          case 91: break;
+          case 46:
+            { return new Symbol(sym.RW_CONTINUE, yyline, yycolumn,yytext());
+            }
+          // fall through
+          case 92: break;
           default:
             zzScanError(ZZ_NO_MATCH);
         }
