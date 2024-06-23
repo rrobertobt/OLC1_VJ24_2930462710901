@@ -70,7 +70,7 @@ nonterminal Instruction IMPRESION, DECLARATION, ASSIGNATION;
 nonterminal Instruction IF_STMT, WHILE_STMT, DO_WHILE_STMT, FOR_STMT, FOR_UPDATE;
 nonterminal Types TYPES;
 nonterminal Instruction EXPRESION;
-nonterminal Instruction INCREMENT, DECREMENT, BREAK, CONTINUE;
+nonterminal Instruction INCREMENT, DECREMENT, BREAK, CONTINUE, INCREMENT_NO_ENDLINE, DECREMENT_NO_ENDLINE;
 nonterminal TYPE_CAST_OPERATOR;
 
 precedence left OR;
@@ -136,15 +136,21 @@ WHILE_STMT ::= RW_WHILE OPENPAR EXPRESION:a CLOSEPAR OPENBRACE STATEMENTS:b CLOS
         ;
 
 DO_WHILE_STMT ::= RW_DO OPENBRACE STATEMENTS:a CLOSEBRACE RW_WHILE OPENPAR EXPRESION:b CLOSEPAR {:   RESULT = new DoWhileStatement(b, a, aleft, aright);   :}
+        | RW_DO OPENBRACE STATEMENTS:a CLOSEBRACE RW_WHILE OPENPAR EXPRESION:b CLOSEPAR ENDLINE {:   RESULT = new DoWhileStatement(b, a, aleft, aright);   :}
         ;
 
 FOR_STMT ::= RW_FOR OPENPAR ASSIGNATION:a EXPRESION:b ENDLINE FOR_UPDATE:c CLOSEPAR OPENBRACE STATEMENTS:d CLOSEBRACE {:   RESULT = new ForStatement(a, b, c, d, aleft, aright);   :}
         ;
 
 FOR_UPDATE ::= ID:a EQUALS EXPRESION:b {: RESULT = new SymbolAssignation(a, b, aleft, aright); :}
-        | INCREMENT:a {: RESULT = a; :}
-        | DECREMENT:a {: RESULT = a; :}
+        | INCREMENT_NO_ENDLINE:a {: RESULT = a; :}
+        | DECREMENT_NO_ENDLINE:a {: RESULT = a; :}
         ;
+
+INCREMENT_NO_ENDLINE ::= ID:a PLUS PLUS {:   RESULT = new SymbolAssignation(a, new Arithmetic(new SymbolAccess(a, aleft, aright),new Primitive(Types.INTEGER, 1, aleft, aright),ArithmeticOperands.SUM, aleft, aright), aleft, aright);   :}
+;
+DECREMENT_NO_ENDLINE ::= ID:a MINUS MINUS {:   RESULT = new SymbolAssignation(a, new Arithmetic(new SymbolAccess(a, aleft, aright), new Primitive(Types.INTEGER, 1, aleft, aright), ArithmeticOperands.SUB, aleft, aright), aleft, aright);   :}
+;
 
 INCREMENT ::= ID:a PLUS PLUS ENDLINE {:   RESULT = new SymbolAssignation(a, new Arithmetic(new SymbolAccess(a, aleft, aright),new Primitive(Types.INTEGER, 1, aleft, aright),ArithmeticOperands.SUM, aleft, aright), aleft, aright);   :};
 DECREMENT ::= ID:a MINUS MINUS ENDLINE {:   RESULT = new SymbolAssignation(a, new Arithmetic(new SymbolAccess(a, aleft, aright), new Primitive(Types.INTEGER, 1, aleft, aright), ArithmeticOperands.SUB, aleft, aright), aleft, aright);   :};
