@@ -29,6 +29,13 @@ public class SymbolTable {
 
     public SymbolVariable getSymbol(String id) {
         for (SymbolTable table = this; table != null; table = table.getParentTable()) {
+            // debug: print all symbols in the current table
+            System.out.println("Table: " + table.name);
+            for (Map.Entry<String, Object> entry : table.symbols.entrySet()) {
+                System.out.println("Symbol: " + entry.getKey());
+            }
+            if (table.parentTable != null) System.out.println("Next table is: " + table.parentTable.getName());
+
             SymbolVariable symbol = (SymbolVariable) table.symbols.get(id.toLowerCase());
             if (symbol != null) return symbol;
         }

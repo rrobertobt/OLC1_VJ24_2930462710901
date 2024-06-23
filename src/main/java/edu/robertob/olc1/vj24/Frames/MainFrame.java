@@ -1,7 +1,7 @@
 package edu.robertob.olc1.vj24.Frames;
 
 import edu.robertob.olc1.vj24.Analysis.JCLexer;
-import edu.robertob.olc1.vj24.Analysis.Parser;
+import edu.robertob.olc1.vj24.Analysis.JCParser;
 import edu.robertob.olc1.vj24.Data.CurrentSession;
 import edu.robertob.olc1.vj24.Data.JCFile;
 import edu.robertob.olc1.vj24.Engine.Base.Instruction;
@@ -38,6 +38,9 @@ public class MainFrame extends javax.swing.JFrame {
         jToolBar2.setLayout(new FlowLayout(FlowLayout.LEADING, 10, 5));
 
         consoleOutputLabel.setFont(consoleOutputLabel.getFont().deriveFont(Font.BOLD));
+
+        // set monospaced font for the console output, and also set the font size
+        jTextPane1.setFont(new Font("Monospaced", Font.PLAIN, 14));
     }
 
     /**
@@ -56,6 +59,7 @@ public class MainFrame extends javax.swing.JFrame {
         jSeparator2 = new javax.swing.JToolBar.Separator();
         runCodeBtn = new javax.swing.JButton();
         fileStatusLabel = new javax.swing.JLabel();
+        jSplitPane2 = new javax.swing.JSplitPane();
         jPanel1 = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
@@ -131,6 +135,8 @@ public class MainFrame extends javax.swing.JFrame {
         jToolBar2.add(runCodeBtn);
         jToolBar2.add(fileStatusLabel);
 
+        jSplitPane2.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+
         jTabbedPane1.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 jTabbedPane1StateChanged(evt);
@@ -141,12 +147,14 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 871, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 705, Short.MAX_VALUE)
         );
+
+        jSplitPane2.setLeftComponent(jPanel1);
 
         consoleOutputLabel.setText("Salida de la consola");
 
@@ -161,15 +169,18 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(consoleOutputLabel)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(382, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(consoleOutputLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 670, Short.MAX_VALUE))
         );
+
+        jSplitPane2.setRightComponent(jPanel2);
 
         jMenuBar1.setBackground(new java.awt.Color(252, 252, 252));
         jMenuBar1.setBorder(null);
@@ -203,13 +214,11 @@ public class MainFrame extends javax.swing.JFrame {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBar2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 883, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(jToolBar2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jSplitPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -217,9 +226,7 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jSplitPane2)
                 .addContainerGap())
         );
 
@@ -235,14 +242,20 @@ public class MainFrame extends javax.swing.JFrame {
         var sessionFile = new JCFile(name, "", content, false, true, jTabbedPane1.getTabCount());
         currentSession.addFile(sessionFile);
 
-        var textArea = new JTextArea(content);
-        var scrollPane = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        var textPane = new JTextPane();
+        textPane.setText(content);
+        var scrollPane = new JScrollPane(textPane, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        var tln = new TextLineNumber(textPane, 3);
+        scrollPane.setRowHeaderView( tln );
+
+        textPane.setFont(new Font("Monospaced", Font.PLAIN, 15));
 
         jTabbedPane1.add(name, scrollPane);
         jTabbedPane1.setTabComponentAt(jTabbedPane1.getTabCount() - 1, new ButtonTabComponent(jTabbedPane1, currentSession));
         fileStatusLabel.setText("Modificado");
         fileStatusLabel.setFont(fileStatusLabel.getFont().deriveFont(Font.BOLD));
-        switchTabAndSetDocumentListener(sessionFile, textArea);
+        switchTabAndSetDocumentListener(sessionFile, textPane);
+//        switchTabAndSetDocumentListener(sessionFile, textPane);
     }//GEN-LAST:event_newFileBtnActionPerformed
 
     private void switchTabAndSetDocumentListener(JCFile sessionFile, JTextArea textArea) {
@@ -287,6 +300,44 @@ public class MainFrame extends javax.swing.JFrame {
         });
     }
 
+    private void switchTabAndSetDocumentListener(JCFile sessionFile, JTextPane textArea) {
+        jTabbedPane1.setSelectedIndex(jTabbedPane1.getTabCount() - 1);
+        System.out.println("Switching to tab " + jTabbedPane1.getSelectedIndex());
+        System.out.println(sessionFile.isSaved());
+
+        textArea.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                sessionFile.setContent(textArea.getText());
+
+                if (sessionFile.isSaved()) {
+                    sessionFile.setSaved(false);
+                    System.out.println("Setting to unsaved - insert update");
+                    MainFrame.this.jTabbedPane1.setTitleAt(sessionFile.getIndex(), "*" + sessionFile.getName());
+                    MainFrame.this.fileStatusLabel.setText("Modificado");
+                    MainFrame.this.fileStatusLabel.setFont(MainFrame.this.fileStatusLabel.getFont().deriveFont(Font.BOLD));
+                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                sessionFile.setContent(textArea.getText());
+
+                if (sessionFile.isSaved()) {
+                    sessionFile.setSaved(false);
+                    System.out.println("Setting to unsaved - remove update");
+                    MainFrame.this.jTabbedPane1.setTitleAt(sessionFile.getIndex(), "*" + sessionFile.getName());
+                    MainFrame.this.fileStatusLabel.setText("Modificado");
+                    MainFrame.this.fileStatusLabel.setFont(MainFrame.this.fileStatusLabel.getFont().deriveFont(Font.BOLD));
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+            }
+        });
+    }
+
     private void openFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openFileBtnActionPerformed
         var fileChooser = new JFileChooser();
         var result = fileChooser.showOpenDialog(this);
@@ -319,12 +370,18 @@ public class MainFrame extends javax.swing.JFrame {
                 e.printStackTrace();
             }
             var textArea = new JTextArea(content);
-            var scrollPane = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            var textPane = new JTextPane();
+            textPane.setText(content);
+            var scrollPane = new JScrollPane(textPane, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            var tln = new TextLineNumber(textPane, 3);
+            scrollPane.setRowHeaderView( tln );
+
+            textPane.setFont(new Font("Monospaced", Font.PLAIN, 15));
 
             jTabbedPane1.add(name, scrollPane);
             jTabbedPane1.setTabComponentAt(jTabbedPane1.getTabCount() - 1, new ButtonTabComponent(jTabbedPane1, currentSession));
             currentSession.setActiveFile(jTabbedPane1.getTabCount() - 1);
-            switchTabAndSetDocumentListener(sessionFile, textArea);
+            switchTabAndSetDocumentListener(sessionFile, textPane);
         }
 
 
@@ -344,10 +401,12 @@ public class MainFrame extends javax.swing.JFrame {
         currentSession.setActiveFile(jTabbedPane1.getSelectedIndex());
         jTextPane1.setText(currentSession.getActiveFile().getConsoleOutput());
         if (currentSession.getActiveFile().isSaved()) {
+            System.out.println("Changing to saved file");
             fileStatusLabel.setText("Guardado");
             fileStatusLabel.setFont(fileStatusLabel.getFont().deriveFont(Font.PLAIN));
             jTabbedPane1.setTitleAt(currentSession.getActiveFileIndex(), currentSession.getActiveFile().getName());
         } else {
+            System.out.println("Changing to unsaved file");
             fileStatusLabel.setText("Modificado");
             fileStatusLabel.setFont(fileStatusLabel.getFont().deriveFont(Font.BOLD));
             jTabbedPane1.setTitleAt(currentSession.getActiveFileIndex(), "*" + currentSession.getActiveFile().getName());
@@ -391,7 +450,7 @@ public class MainFrame extends javax.swing.JFrame {
         var code = currentSession.getActiveFile().getContent();
         code = code.trim();
         JCLexer lexer = new JCLexer(new StringReader(code));
-        Parser parser = new Parser(lexer);
+        JCParser parser = new JCParser(lexer);
         currentSession.getActiveFile().getErrors().clear();
         LinkedList<JCError> allErrors = new LinkedList<>();
         try {
@@ -409,6 +468,10 @@ public class MainFrame extends javax.swing.JFrame {
                     allErrors.add((JCError) insResult);
                 }
             }
+            //todo: 3 passes through the tree (when methods are implemented):
+            // 1. get all the functions and their parameters, also structs
+            // 2. get all the variables and their types
+            // 3. execute the instructions with the START_WITH instruction
             currentSession.getActiveFile().setGlobalTable(globalTable);
             // also, recursively go through the table to get children tables
             jTextPane1.setText(tree.getConsole());
@@ -456,6 +519,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar.Separator jSeparator2;
+    private javax.swing.JSplitPane jSplitPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JToolBar jToolBar2;

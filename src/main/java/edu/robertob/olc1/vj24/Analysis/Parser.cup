@@ -16,8 +16,10 @@ import edu.robertob.olc1.vj24.Engine.Expressions.Primitive;
 import edu.robertob.olc1.vj24.Engine.Statements.IfStatement;
 import edu.robertob.olc1.vj24.Engine.Statements.WhileStatement;
 import edu.robertob.olc1.vj24.Engine.Statements.DoWhileStatement;
+import edu.robertob.olc1.vj24.Engine.Statements.ForStatement;
 import edu.robertob.olc1.vj24.Engine.Statements.Break;
 import edu.robertob.olc1.vj24.Engine.Statements.Continue;
+import edu.robertob.olc1.vj24.Engine.Expressions.TypeCast;
 
 import edu.robertob.olc1.vj24.Engine.Expressions.Arithmetic;
 import edu.robertob.olc1.vj24.Engine.Expressions.Comparison;
@@ -30,7 +32,7 @@ import edu.robertob.olc1.vj24.Engine.Structs.ArithmeticOperands;
 parser code
 {:
     JCLexer s;
-    Parser(JCLexer s){this.s = s;}
+    JCParser(JCLexer s){this.s = s;}
 
 //    public LinkedList<Errores> listaErrores = new LinkedList<>();
     private LinkedList<JCError> errorList = new LinkedList<>();
@@ -58,14 +60,14 @@ terminal ENDLINE, PLUS, MINUS, EQUALS, OPENBRACE, CLOSEBRACE, ASTERISK, SLASH, M
 terminal DOUBLEEQUALS, LESS, GREATER, LESSEQUAL, GREATEREQUAL, NOT_EQUALS;
 terminal OPENPAR, CLOSEPAR;
 terminal RW_PRINT, RW_INT, RW_DOUBLE, RW_STRING, RW_IF, RW_TRUE, RW_FALSE, RW_BOOL, RW_CHAR, RW_ELSE;
-terminal RW_CONST, RW_VAR, RW_WHILE, RW_BREAK, RW_CONTINUE, RW_DO;
+terminal RW_CONST, RW_VAR, RW_WHILE, RW_BREAK, RW_CONTINUE, RW_DO, RW_FOR;
 terminal OR, AND, XOR;
 
 //no terminales
 nonterminal LinkedList<Instruction> START, STATEMENTS;
 nonterminal Instruction STATEMENT;
 nonterminal Instruction IMPRESION, DECLARATION, ASSIGNATION;
-nonterminal Instruction IF_STMT, WHILE_STMT, DO_WHILE_STMT;
+nonterminal Instruction IF_STMT, WHILE_STMT, DO_WHILE_STMT, FOR_STMT, FOR_UPDATE;
 nonterminal Types TYPES;
 nonterminal Instruction EXPRESION;
 nonterminal Instruction INCREMENT, DECREMENT, BREAK, CONTINUE;
@@ -97,10 +99,11 @@ STATEMENT ::= IMPRESION: a        {:   RESULT=a;   :}
                 | INCREMENT:a           {:   RESULT=a;   :}
                 | DECREMENT:a           {:   RESULT=a;   :}
                 | WHILE_STMT:a       {:   RESULT=a;   :}
+                | FOR_STMT:a             {:   RESULT=a;   :}
                 | DO_WHILE_STMT:a   {:   RESULT=a;   :}
                 | BREAK:a                   {:   RESULT=a;   :}
                 | CONTINUE:a               {:   RESULT=a;   :}
-                | error:e ENDLINE       {:   System.out.println(e);   :}
+                | error:e ENDLINE       {: :}
 ;
 
 BREAK ::= RW_BREAK:a ENDLINE {:   RESULT = new Break(aleft, aright);   :}
@@ -119,7 +122,7 @@ DECLARATION ::= RW_CONST ID:a COLON TYPES:b EQUALS EXPRESION:c ENDLINE    {:   R
               | RW_VAR ID:a COLON TYPES:b EQUALS EXPRESION:c ENDLINE    {:   RESULT = new Declaration(a, b, c, false, aleft, aright);   :}
               ;
 
-TYPE_CAST_OPERATOR ::= OPENPAR TYPES:type CLOSEPAR {:   RESULT = type;  System.out.println("Type cast operator: "+type); :}
+TYPE_CAST_OPERATOR ::= OPENPAR TYPES:type CLOSEPAR {:   RESULT = type; :}
 ;
 
 ASSIGNATION ::= ID:a EQUALS EXPRESION:b ENDLINE  {:   RESULT=new SymbolAssignation(a, b, aleft, aright);  :}
@@ -133,6 +136,14 @@ WHILE_STMT ::= RW_WHILE OPENPAR EXPRESION:a CLOSEPAR OPENBRACE STATEMENTS:b CLOS
         ;
 
 DO_WHILE_STMT ::= RW_DO OPENBRACE STATEMENTS:a CLOSEBRACE RW_WHILE OPENPAR EXPRESION:b CLOSEPAR {:   RESULT = new DoWhileStatement(b, a, aleft, aright);   :}
+        ;
+
+FOR_STMT ::= RW_FOR OPENPAR ASSIGNATION:a EXPRESION:b ENDLINE FOR_UPDATE:c CLOSEPAR OPENBRACE STATEMENTS:d CLOSEBRACE {:   RESULT = new ForStatement(a, b, c, d, aleft, aright);   :}
+        ;
+
+FOR_UPDATE ::= ID:a EQUALS EXPRESION:b {: RESULT = new SymbolAssignation(a, b, aleft, aright); :}
+        | INCREMENT:a {: RESULT = a; :}
+        | DECREMENT:a {: RESULT = a; :}
         ;
 
 INCREMENT ::= ID:a PLUS PLUS ENDLINE {:   RESULT = new SymbolAssignation(a, new Arithmetic(new SymbolAccess(a, aleft, aright),new Primitive(Types.INTEGER, 1, aleft, aright),ArithmeticOperands.SUM, aleft, aright), aleft, aright);   :};

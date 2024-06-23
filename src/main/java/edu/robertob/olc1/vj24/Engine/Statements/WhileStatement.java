@@ -39,7 +39,6 @@ public class WhileStatement extends Instruction {
                 }
 
                 var result = instruction.execute(tree, newTable);
-                System.out.println(result);
                 if (result instanceof JCError) return result;
                 if (result instanceof Break) {
                     return null; // Exit the loop

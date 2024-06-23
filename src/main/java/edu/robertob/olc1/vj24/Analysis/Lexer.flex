@@ -77,6 +77,7 @@ RW_BOOL="bool"
 RW_VAR="var"
 RW_CONST="const"
 RW_WHILE="while"
+RW_FOR="for"
 RW_DO="do"
 RW_BREAK="break"
 RW_CONTINUE="continue"
@@ -93,6 +94,7 @@ RW_CONTINUE="continue"
 <YYINITIAL> {RW_IF} {return new Symbol(sym.RW_IF, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_ELSE} {return new Symbol(sym.RW_ELSE, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_WHILE} {return new Symbol(sym.RW_WHILE, yyline, yycolumn,yytext());}
+<YYINITIAL> {RW_FOR} {return new Symbol(sym.RW_FOR, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_DO} {return new Symbol(sym.RW_DO, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_BREAK} {return new Symbol(sym.RW_BREAK, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_CONTINUE} {return new Symbol(sym.RW_CONTINUE, yyline, yycolumn,yytext());}

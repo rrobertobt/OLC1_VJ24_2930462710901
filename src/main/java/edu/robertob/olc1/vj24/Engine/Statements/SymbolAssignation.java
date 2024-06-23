@@ -19,6 +19,7 @@ public class SymbolAssignation extends Instruction {
 
     @Override
     public Object execute(Tree tree, SymbolTable table) {
+        System.out.println("Executing SymbolAssignation"+id);
         var symbol = table.getSymbol(id);
         if (symbol == null) {
             return new JCError("Semantica", "Variable " + id + " no existe", this.line, this.column);
