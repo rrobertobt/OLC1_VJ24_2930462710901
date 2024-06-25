@@ -80,6 +80,7 @@ RW_WHILE="while"
 RW_FOR="for"
 RW_DO="do"
 RW_BREAK="break"
+RW_MATCH="match"
 RW_CONTINUE="continue"
 
 %%

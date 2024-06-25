@@ -27,7 +27,6 @@ public class TypeCast extends Instruction {
 
         switch (typeToCast) {
             case Types.DOUBLE -> {
-                System.out.println("Casting to double");
                 switch (expression.getType()){
                     case Types.INTEGER -> {
                         value = (double) (int) value;
@@ -43,7 +42,6 @@ public class TypeCast extends Instruction {
                 }
             }
             case Types.INTEGER -> {
-                System.out.println("Casting to integer");
                 switch (expression.getType()){
                     case Types.DOUBLE -> {
                         value = (int) (double) value;
@@ -60,7 +58,6 @@ public class TypeCast extends Instruction {
 
             }
             case Types.CHARACTER -> {
-                System.out.println("Casting to character");
                 switch (expression.getType()) {
                     case Types.INTEGER -> {
                         value = (char) (int) value;

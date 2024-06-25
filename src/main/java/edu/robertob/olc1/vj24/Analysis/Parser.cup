@@ -63,7 +63,6 @@ terminal RW_PRINT, RW_INT, RW_DOUBLE, RW_STRING, RW_IF, RW_TRUE, RW_FALSE, RW_BO
 terminal RW_CONST, RW_VAR, RW_WHILE, RW_BREAK, RW_CONTINUE, RW_DO, RW_FOR;
 terminal OR, AND, XOR;
 
-//no terminales
 nonterminal LinkedList<Instruction> START, STATEMENTS;
 nonterminal Instruction STATEMENT;
 nonterminal Instruction IMPRESION, DECLARATION, ASSIGNATION;
@@ -72,6 +71,8 @@ nonterminal Types TYPES;
 nonterminal Instruction EXPRESION;
 nonterminal Instruction INCREMENT, DECREMENT, BREAK, CONTINUE, INCREMENT_NO_ENDLINE, DECREMENT_NO_ENDLINE;
 nonterminal TYPE_CAST_OPERATOR;
+nonterminal IfStatement.ConditionBlock ELSE_IF_BLOCK;
+nonterminal LinkedList<IfStatement.ConditionBlock> ELSE_IF_BLOCKS;
 
 precedence left OR;
 precedence left AND;
@@ -128,8 +129,26 @@ TYPE_CAST_OPERATOR ::= OPENPAR TYPES:type CLOSEPAR {:   RESULT = type; :}
 ASSIGNATION ::= ID:a EQUALS EXPRESION:b ENDLINE  {:   RESULT=new SymbolAssignation(a, b, aleft, aright);  :}
             ;
 
-IF_STMT ::= RW_IF OPENPAR EXPRESION:a CLOSEPAR OPENBRACE STATEMENTS:b CLOSEBRACE {:   RESULT = new IfStatement(a, b, aleft, aright);   :}
-        | RW_IF OPENPAR EXPRESION:a CLOSEPAR OPENBRACE STATEMENTS:b CLOSEBRACE RW_ELSE OPENBRACE STATEMENTS:c CLOSEBRACE {:   RESULT = new IfStatement(a, b, c, aleft, aright);   :}
+IF_STMT ::= RW_IF OPENPAR EXPRESION:a CLOSEPAR OPENBRACE STATEMENTS:b CLOSEBRACE {:
+               RESULT = new IfStatement(IfStatement.buildConditionBlockList(a, b, new LinkedList<IfStatement.ConditionBlock>()), aleft, aright);
+           :}
+
+| RW_IF OPENPAR EXPRESION:a CLOSEPAR OPENBRACE STATEMENTS:b CLOSEBRACE ELSE_IF_BLOCKS:c {: RESULT = new IfStatement(IfStatement.buildConditionBlockList(a, b, c), aleft, aright); :}
+//        | RW_IF OPENPAR EXPRESION:a CLOSEPAR OPENBRACE STATEMENTS:b CLOSEBRACE RW_ELSE OPENBRACE STATEMENTS:c CLOSEBRACE {:   RESULT = new IfStatement(a, b, c, aleft, aright);   :}
+| RW_IF OPENPAR EXPRESION:a CLOSEPAR OPENBRACE STATEMENTS:b CLOSEBRACE ELSE_IF_BLOCKS:c RW_ELSE OPENBRACE STATEMENTS:d CLOSEBRACE {:
+    RESULT = new IfStatement(IfStatement.buildConditionBlockList(a, b, c), d, aleft, aright);
+:}
+        ;
+
+ELSE_IF_BLOCK ::= RW_ELSE RW_IF OPENPAR EXPRESION:a CLOSEPAR OPENBRACE STATEMENTS:b CLOSEBRACE {: RESULT = new IfStatement.ConditionBlock(a, b); :}
+        ;
+
+//ELSE_IF_BLOCKS ::= {: RESULT = new LinkedList<IfStatement.ConditionBlock>(); :}
+//        | ELSE_IF_BLOCKS ELSE_IF_BLOCK:e {: ((LinkedList<IfStatement.ConditionBlock>) RESULT).add(e); :}
+//        ;
+
+ELSE_IF_BLOCKS ::= ELSE_IF_BLOCKS:a ELSE_IF_BLOCK:e {: RESULT = a; a.add(e); :}
+        | ELSE_IF_BLOCK:e {: RESULT = new LinkedList<>(); RESULT.add(e); :}
         ;
 
 WHILE_STMT ::= RW_WHILE OPENPAR EXPRESION:a CLOSEPAR OPENBRACE STATEMENTS:b CLOSEBRACE {:   RESULT = new WhileStatement(a, b, aleft, aright);   :}
