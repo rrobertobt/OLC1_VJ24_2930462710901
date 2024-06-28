@@ -66,6 +66,7 @@ COMMENT_MULTIPLE_LINES = [\/][*]([^\*]|[\*][^\/])*[\*][\/]
 
 RW_PRINT="println"
 RW_INT="int"
+RW_VOID="void"
 RW_DOUBLE="double"
 RW_STRING="string"
 RW_CHAR="char"
@@ -82,6 +83,7 @@ RW_DO="do"
 RW_BREAK="break"
 RW_MATCH="match"
 RW_CONTINUE="continue"
+RW_START_WITH="start_with"
 
 %%
 <YYINITIAL> {XOR} {
@@ -92,6 +94,7 @@ RW_CONTINUE="continue"
 <YYINITIAL> {RW_STRING} {return new Symbol(sym.RW_STRING, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_CHAR} {return new Symbol(sym.RW_CHAR, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_BOOL} {return new Symbol(sym.RW_BOOL, yyline, yycolumn,yytext());}
+<YYINITIAL> {RW_VOID} {return new Symbol(sym.RW_VOID, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_IF} {return new Symbol(sym.RW_IF, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_ELSE} {return new Symbol(sym.RW_ELSE, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_WHILE} {return new Symbol(sym.RW_WHILE, yyline, yycolumn,yytext());}
@@ -99,6 +102,8 @@ RW_CONTINUE="continue"
 <YYINITIAL> {RW_DO} {return new Symbol(sym.RW_DO, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_BREAK} {return new Symbol(sym.RW_BREAK, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_CONTINUE} {return new Symbol(sym.RW_CONTINUE, yyline, yycolumn,yytext());}
+//<YYINITIAL> {RW_MATCH} {return new Symbol(sym.RW_MATCH, yyline, yycolumn,yytext());}
+<YYINITIAL> {RW_START_WITH} {return new Symbol(sym.RW_START_WITH, yyline, yycolumn,yytext());}
 
 <YYINITIAL> {RW_TRUE} {return new Symbol(sym.RW_TRUE, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_FALSE} {return new Symbol(sym.RW_FALSE, yyline, yycolumn,yytext());}

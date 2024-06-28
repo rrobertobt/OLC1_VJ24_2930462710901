@@ -11,6 +11,8 @@ import edu.robertob.olc1.vj24.Engine.Statements.Print;
 import edu.robertob.olc1.vj24.Engine.Statements.Declaration;
 import edu.robertob.olc1.vj24.Engine.Statements.SymbolAssignation;
 import edu.robertob.olc1.vj24.Engine.Expressions.SymbolAccess;
+import edu.robertob.olc1.vj24.Engine.Statements.StartWithInvoke;
+import edu.robertob.olc1.vj24.Engine.Statements.MethodDeclaration;
 
 import edu.robertob.olc1.vj24.Engine.Expressions.Primitive;
 import edu.robertob.olc1.vj24.Engine.Statements.IfStatement;
@@ -59,8 +61,8 @@ terminal String STRING, ID, INTEGER, DECIMAL, CHAR;
 terminal ENDLINE, PLUS, MINUS, EQUALS, OPENBRACE, CLOSEBRACE, ASTERISK, SLASH, MODULO, DOUBLEASTERISK, NEGATION, COLON;
 terminal DOUBLEEQUALS, LESS, GREATER, LESSEQUAL, GREATEREQUAL, NOT_EQUALS;
 terminal OPENPAR, CLOSEPAR;
-terminal RW_PRINT, RW_INT, RW_DOUBLE, RW_STRING, RW_IF, RW_TRUE, RW_FALSE, RW_BOOL, RW_CHAR, RW_ELSE;
-terminal RW_CONST, RW_VAR, RW_WHILE, RW_BREAK, RW_CONTINUE, RW_DO, RW_FOR;
+terminal RW_PRINT, RW_INT, RW_DOUBLE, RW_STRING, RW_IF, RW_TRUE, RW_FALSE, RW_BOOL, RW_CHAR, RW_ELSE, RW_VOID;
+terminal RW_CONST, RW_VAR, RW_WHILE, RW_BREAK, RW_CONTINUE, RW_DO, RW_FOR, RW_START_WITH;
 terminal OR, AND, XOR;
 
 nonterminal LinkedList<Instruction> START, STATEMENTS;
@@ -73,6 +75,8 @@ nonterminal Instruction INCREMENT, DECREMENT, BREAK, CONTINUE, INCREMENT_NO_ENDL
 nonterminal TYPE_CAST_OPERATOR;
 nonterminal IfStatement.ConditionBlock ELSE_IF_BLOCK;
 nonterminal LinkedList<IfStatement.ConditionBlock> ELSE_IF_BLOCKS;
+nonterminal Instruction START_WITH_INVOKE;
+nonterminal Instruction METHOD_DECLARATION;
 
 precedence left OR;
 precedence left AND;
@@ -104,7 +108,12 @@ STATEMENT ::= IMPRESION: a        {:   RESULT=a;   :}
                 | DO_WHILE_STMT:a   {:   RESULT=a;   :}
                 | BREAK:a                   {:   RESULT=a;   :}
                 | CONTINUE:a               {:   RESULT=a;   :}
+                | START_WITH_INVOKE:a {:   RESULT=a;   :}
+                | METHOD_DECLARATION:a {:   RESULT=a;   :}
                 | error:e ENDLINE       {: :}
+;
+
+START_WITH_INVOKE ::= RW_START_WITH ID:a OPENPAR CLOSEPAR ENDLINE {:   RESULT = new StartWithInvoke(a, aleft, aright);   :}
 ;
 
 BREAK ::= RW_BREAK:a ENDLINE {:   RESULT = new Break(aleft, aright);   :}
@@ -121,6 +130,9 @@ DECLARATION ::= RW_CONST ID:a COLON TYPES:b EQUALS EXPRESION:c ENDLINE    {:   R
               | RW_CONST ID:a COLON TYPES:b ENDLINE    {:   RESULT = new Declaration(a, b, null, true,aleft, aright);   :}
               | RW_VAR ID:a COLON TYPES:b ENDLINE    {:   RESULT = new Declaration(a, b, null, false, aleft, aright);   :}
               | RW_VAR ID:a COLON TYPES:b EQUALS EXPRESION:c ENDLINE    {:   RESULT = new Declaration(a, b, c, false, aleft, aright);   :}
+              ;
+
+METHOD_DECLARATION ::= TYPES:a ID:b OPENPAR CLOSEPAR OPENBRACE STATEMENTS:c CLOSEBRACE {:   RESULT = new MethodDeclaration(a, b, c, aleft, aright);   :}
               ;
 
 TYPE_CAST_OPERATOR ::= OPENPAR TYPES:type CLOSEPAR {:   RESULT = type; :}
@@ -142,10 +154,6 @@ IF_STMT ::= RW_IF OPENPAR EXPRESION:a CLOSEPAR OPENBRACE STATEMENTS:b CLOSEBRACE
 
 ELSE_IF_BLOCK ::= RW_ELSE RW_IF OPENPAR EXPRESION:a CLOSEPAR OPENBRACE STATEMENTS:b CLOSEBRACE {: RESULT = new IfStatement.ConditionBlock(a, b); :}
         ;
-
-//ELSE_IF_BLOCKS ::= {: RESULT = new LinkedList<IfStatement.ConditionBlock>(); :}
-//        | ELSE_IF_BLOCKS ELSE_IF_BLOCK:e {: ((LinkedList<IfStatement.ConditionBlock>) RESULT).add(e); :}
-//        ;
 
 ELSE_IF_BLOCKS ::= ELSE_IF_BLOCKS:a ELSE_IF_BLOCK:e {: RESULT = a; a.add(e); :}
         | ELSE_IF_BLOCK:e {: RESULT = new LinkedList<>(); RESULT.add(e); :}
@@ -179,7 +187,9 @@ TYPES ::= RW_INT       {:   RESULT=Types.INTEGER;   :}
         | RW_DOUBLE    {:   RESULT=Types.DOUBLE;   :}
         | RW_STRING    {:   RESULT=Types.STRING;   :}
         | RW_BOOL      {:   RESULT=Types.BOOLEAN;   :}
-        | RW_CHAR      {:   RESULT=Types.CHARACTER;   :};
+        | RW_CHAR      {:   RESULT=Types.CHARACTER;   :}
+        | RW_VOID      {:   RESULT=Types.VOID;   :}
+        ;
 
 EXPRESION ::=
             OPENPAR TYPES:a CLOSEPAR EXPRESION:b {:   RESULT = new TypeCast(b, a, aleft, aright);   :}

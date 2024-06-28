@@ -14,41 +14,43 @@ public class sym {
   public static final int EQUALS = 11;
   public static final int SLASH = 15;
   public static final int DOUBLEEQUALS = 20;
-  public static final int XOR = 47;
+  public static final int XOR = 49;
   public static final int RW_DOUBLE = 30;
   public static final int INTEGER = 5;
   public static final int GREATER = 22;
   public static final int RW_CHAR = 36;
-  public static final int RW_DO = 43;
+  public static final int RW_DO = 44;
   public static final int LESS = 21;
   public static final int MINUS = 10;
-  public static final int RW_BREAK = 41;
+  public static final int RW_BREAK = 42;
   public static final int OPENPAR = 26;
-  public static final int AND = 46;
+  public static final int AND = 48;
   public static final int LESSEQUAL = 23;
-  public static final int OR = 45;
+  public static final int OR = 47;
   public static final int ENDLINE = 8;
-  public static final int RW_WHILE = 40;
+  public static final int RW_WHILE = 41;
   public static final int PLUS = 9;
   public static final int ID = 4;
   public static final int CLOSEPAR = 27;
-  public static final int RW_VAR = 39;
+  public static final int RW_VAR = 40;
   public static final int RW_BOOL = 35;
   public static final int EOF = 0;
   public static final int DECIMAL = 6;
-  public static final int RW_CONTINUE = 42;
+  public static final int RW_CONTINUE = 43;
   public static final int error = 1;
   public static final int NEGATION = 18;
   public static final int RW_FALSE = 34;
   public static final int MODULO = 16;
+  public static final int RW_START_WITH = 46;
   public static final int RW_PRINT = 28;
   public static final int RW_TRUE = 33;
   public static final int GREATEREQUAL = 24;
   public static final int COLON = 19;
   public static final int RW_IF = 32;
   public static final int RW_INT = 29;
-  public static final int RW_CONST = 38;
-  public static final int RW_FOR = 44;
+  public static final int RW_VOID = 38;
+  public static final int RW_CONST = 39;
+  public static final int RW_FOR = 45;
   public static final int CLOSEBRACE = 13;
   public static final int NOT_EQUALS = 25;
   public static final int RW_STRING = 31;
@@ -95,6 +97,7 @@ public class sym {
   "RW_BOOL",
   "RW_CHAR",
   "RW_ELSE",
+  "RW_VOID",
   "RW_CONST",
   "RW_VAR",
   "RW_WHILE",
@@ -102,6 +105,7 @@ public class sym {
   "RW_CONTINUE",
   "RW_DO",
   "RW_FOR",
+  "RW_START_WITH",
   "OR",
   "AND",
   "XOR"
