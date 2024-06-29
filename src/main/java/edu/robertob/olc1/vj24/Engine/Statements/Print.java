@@ -20,7 +20,8 @@ public class Print extends Instruction {
         if (result instanceof JCError) {
             return result;
         }
-        tree.print(result.toString());
+        if (result != null) tree.print(result.toString());
+        if (result == null) tree.print("print() recibio valor indefinido");
         return null;
     }
 

@@ -417,9 +417,14 @@ public class Arithmetic extends Instruction {
             }
             case Types.DOUBLE -> {
                 switch (rightType) {
-                    case Types.INTEGER, Types.DOUBLE -> {
+                    case Types.INTEGER -> {
                         this.type = Types.DOUBLE;
                         return (double) leftOperand % (int) rightOperand;
+//                        return (double) leftOperand % new Integer(rightOperand.toString());
+                    }
+                    case Types.DOUBLE -> {
+                        this.type = Types.DOUBLE;
+                        return (double) leftOperand % (double) rightOperand;
                     }
                     default -> {
                         return new JCError("Semantico", "No se puede modular " + leftType + " con " + rightType, this.line, this.column);
