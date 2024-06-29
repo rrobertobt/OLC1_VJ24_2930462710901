@@ -52,6 +52,9 @@ AND="&&"
 XOR=\^
 ENDLINE=";"
 COLON=":"
+OPENBRACKET="\["
+CLOSEBRACKET="\]"
+COMMA=","
 OPENBRACE="{"
 CLOSEBRACE="}"
 BLANKS=[\ \r\t\f\n]+
@@ -84,6 +87,7 @@ RW_BREAK="break"
 RW_MATCH="match"
 RW_CONTINUE="continue"
 RW_START_WITH="start_with"
+RW_RETURN="return"
 
 %%
 <YYINITIAL> {XOR} {
@@ -104,6 +108,7 @@ RW_START_WITH="start_with"
 <YYINITIAL> {RW_CONTINUE} {return new Symbol(sym.RW_CONTINUE, yyline, yycolumn,yytext());}
 //<YYINITIAL> {RW_MATCH} {return new Symbol(sym.RW_MATCH, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_START_WITH} {return new Symbol(sym.RW_START_WITH, yyline, yycolumn,yytext());}
+<YYINITIAL> {RW_RETURN} {return new Symbol(sym.RW_RETURN, yyline, yycolumn,yytext());}
 
 <YYINITIAL> {RW_TRUE} {return new Symbol(sym.RW_TRUE, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_FALSE} {return new Symbol(sym.RW_FALSE, yyline, yycolumn,yytext());}
@@ -134,6 +139,7 @@ RW_START_WITH="start_with"
 <YYINITIAL> {CLOSEPAR} {return new Symbol(sym.CLOSEPAR, yyline, yycolumn,yytext());}
 <YYINITIAL> {OPENBRACE} {return new Symbol(sym.OPENBRACE, yyline, yycolumn,yytext());}
 <YYINITIAL> {CLOSEBRACE} {return new Symbol(sym.CLOSEBRACE, yyline, yycolumn,yytext());}
+<YYINITIAL> {COMMA} {return new Symbol(sym.COMMA, yyline, yycolumn,yytext());}
 
 
 <YYINITIAL> {PLUS} {return new Symbol(sym.PLUS, yyline, yycolumn,yytext());}
@@ -154,6 +160,9 @@ RW_START_WITH="start_with"
 <YYINITIAL> {NEGATION} {return new Symbol(sym.NEGATION, yyline, yycolumn,yytext());}
 <YYINITIAL> {OR} {return new Symbol(sym.OR, yyline, yycolumn,yytext());}
 <YYINITIAL> {AND} {return new Symbol(sym.AND, yyline, yycolumn,yytext());}
+
+<YYINITIAL> {OPENBRACKET} {return new Symbol(sym.OPENBRACKET, yyline, yycolumn,yytext());}
+<YYINITIAL> {CLOSEBRACKET} {return new Symbol(sym.CLOSEBRACKET, yyline, yycolumn,yytext());}
 
 <YYINITIAL> {BLANKS} {}
 <YYINITIAL> {COMMENT_ONE_LINE} {}

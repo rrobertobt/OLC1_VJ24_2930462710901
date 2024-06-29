@@ -3,6 +3,7 @@ package edu.robertob.olc1.vj24.Analysis;
 
 import java_cup.runtime.Symbol;
 import java.util.LinkedList;
+import java.util.HashMap;
 import edu.robertob.olc1.vj24.Engine.Base.Instruction;
 import edu.robertob.olc1.vj24.Engine.Structs.Types;
 import edu.robertob.olc1.vj24.Engine.Structs.JCError;
@@ -13,6 +14,8 @@ import edu.robertob.olc1.vj24.Engine.Statements.SymbolAssignation;
 import edu.robertob.olc1.vj24.Engine.Expressions.SymbolAccess;
 import edu.robertob.olc1.vj24.Engine.Statements.StartWithInvoke;
 import edu.robertob.olc1.vj24.Engine.Statements.MethodDeclaration;
+import edu.robertob.olc1.vj24.Engine.Statements.ReturnIns;
+import edu.robertob.olc1.vj24.Engine.Expressions.MethodCall;
 
 import edu.robertob.olc1.vj24.Engine.Expressions.Primitive;
 import edu.robertob.olc1.vj24.Engine.Statements.IfStatement;
@@ -62,8 +65,9 @@ terminal ENDLINE, PLUS, MINUS, EQUALS, OPENBRACE, CLOSEBRACE, ASTERISK, SLASH, M
 terminal DOUBLEEQUALS, LESS, GREATER, LESSEQUAL, GREATEREQUAL, NOT_EQUALS;
 terminal OPENPAR, CLOSEPAR;
 terminal RW_PRINT, RW_INT, RW_DOUBLE, RW_STRING, RW_IF, RW_TRUE, RW_FALSE, RW_BOOL, RW_CHAR, RW_ELSE, RW_VOID;
-terminal RW_CONST, RW_VAR, RW_WHILE, RW_BREAK, RW_CONTINUE, RW_DO, RW_FOR, RW_START_WITH;
+terminal RW_CONST, RW_VAR, RW_WHILE, RW_BREAK, RW_CONTINUE, RW_DO, RW_FOR, RW_START_WITH, RW_RETURN;
 terminal OR, AND, XOR;
+terminal COMMA, OPENBRACKET, CLOSEBRACKET;
 
 nonterminal LinkedList<Instruction> START, STATEMENTS;
 nonterminal Instruction STATEMENT;
@@ -77,6 +81,11 @@ nonterminal IfStatement.ConditionBlock ELSE_IF_BLOCK;
 nonterminal LinkedList<IfStatement.ConditionBlock> ELSE_IF_BLOCKS;
 nonterminal Instruction START_WITH_INVOKE;
 nonterminal Instruction METHOD_DECLARATION;
+nonterminal LinkedList<HashMap> METHOD_PARAMS_DECLARATION;
+nonterminal Instruction METHOD_CALL;
+nonterminal LinkedList<Instruction> CALL_ARGUMENTS;
+nonterminal Instruction ARGUMENT;
+nonterminal Instruction RETURN_STMT;
 
 precedence left OR;
 precedence left AND;
@@ -106,9 +115,11 @@ STATEMENT ::= IMPRESION: a        {:   RESULT=a;   :}
                 | WHILE_STMT:a       {:   RESULT=a;   :}
                 | FOR_STMT:a             {:   RESULT=a;   :}
                 | DO_WHILE_STMT:a   {:   RESULT=a;   :}
+                | RETURN_STMT:a       {:   RESULT=a;   :}
                 | BREAK:a                   {:   RESULT=a;   :}
                 | CONTINUE:a               {:   RESULT=a;   :}
                 | START_WITH_INVOKE:a {:   RESULT=a;   :}
+                | METHOD_CALL:a ENDLINE {:   RESULT=a;   :}
                 | METHOD_DECLARATION:a {:   RESULT=a;   :}
                 | error:e ENDLINE       {: :}
 ;
@@ -130,10 +141,49 @@ DECLARATION ::= RW_CONST ID:a COLON TYPES:b EQUALS EXPRESION:c ENDLINE    {:   R
               | RW_CONST ID:a COLON TYPES:b ENDLINE    {:   RESULT = new Declaration(a, b, null, true,aleft, aright);   :}
               | RW_VAR ID:a COLON TYPES:b ENDLINE    {:   RESULT = new Declaration(a, b, null, false, aleft, aright);   :}
               | RW_VAR ID:a COLON TYPES:b EQUALS EXPRESION:c ENDLINE    {:   RESULT = new Declaration(a, b, c, false, aleft, aright);   :}
+              | RW_CONST ID:a COLON TYPES:b EQUALS METHOD_CALL:c ENDLINE    {:   RESULT = new Declaration(a, b, c, true, aleft, aright);   :}
+              | RW_VAR ID:a COLON TYPES:b EQUALS METHOD_CALL:c ENDLINE    {:   RESULT = new Declaration(a, b, c, false, aleft, aright);   :}
               ;
 
-METHOD_DECLARATION ::= TYPES:a ID:b OPENPAR CLOSEPAR OPENBRACE STATEMENTS:c CLOSEBRACE {:   RESULT = new MethodDeclaration(a, b, c, aleft, aright);   :}
+//public MethodDeclaration(Types type, String id, LinkedList<HashMap> params, LinkedList<Instruction> methodBody, int line, int column)
+METHOD_DECLARATION ::= TYPES:a ID:b OPENPAR CLOSEPAR OPENBRACE STATEMENTS:c CLOSEBRACE {:   RESULT = new MethodDeclaration(a, b, new LinkedList<HashMap>(), c, aleft, aright);   :}
+                    | TYPES:a ID:b OPENPAR METHOD_PARAMS_DECLARATION:c CLOSEPAR OPENBRACE STATEMENTS:d CLOSEBRACE {:   RESULT = new MethodDeclaration(a, b, c, d, aleft, aright);   :}
               ;
+
+METHOD_PARAMS_DECLARATION ::= METHOD_PARAMS_DECLARATION:a COMMA ID:c COLON TYPES:b {:
+    RESULT = a;
+    HashMap<String, Object> singleParam = new HashMap<>();
+    singleParam.put("type", b);
+    singleParam.put("id", c);
+    RESULT.add(singleParam);
+    :}
+
+    |  ID:b COLON TYPES:a {:
+        RESULT = new LinkedList<HashMap>();
+        HashMap<String, Object> singleParam = new HashMap<>();
+        singleParam.put("type", a);
+        singleParam.put("id", b);
+        RESULT.add(singleParam);
+    :}
+    ;
+
+CALL_ARGUMENTS ::= CALL_ARGUMENTS:a COMMA ARGUMENT:b {: RESULT = a; a.add(b); :}
+            | ARGUMENT:a {: RESULT = new LinkedList<>(); RESULT.add(a); :}
+            ;
+
+ARGUMENT ::= EXPRESION:a {: RESULT = a; :}
+            | METHOD_CALL:a {: RESULT = a; :}
+            ;
+
+METHOD_CALL ::= ID:a OPENPAR CLOSEPAR {:  RESULT = new MethodCall(a, new LinkedList<>(), aleft, aright);   :}
+            | ID:a OPENPAR CALL_ARGUMENTS:b CLOSEPAR {:  RESULT = new MethodCall(a, b, aleft, aright);   :}
+            ;
+
+RETURN_STMT ::= RW_RETURN EXPRESION:a ENDLINE {:   RESULT = new ReturnIns(a, aleft, aright);   :}
+            | RW_RETURN:a ENDLINE {:   RESULT = new ReturnIns(null, aleft, aright);   :}
+            | RW_RETURN METHOD_CALL:a ENDLINE {:   RESULT = new ReturnIns(a, aleft, aright);   :}
+;
+
 
 TYPE_CAST_OPERATOR ::= OPENPAR TYPES:type CLOSEPAR {:   RESULT = type; :}
 ;
@@ -141,14 +191,24 @@ TYPE_CAST_OPERATOR ::= OPENPAR TYPES:type CLOSEPAR {:   RESULT = type; :}
 ASSIGNATION ::= ID:a EQUALS EXPRESION:b ENDLINE  {:   RESULT=new SymbolAssignation(a, b, aleft, aright);  :}
             ;
 
-IF_STMT ::= RW_IF OPENPAR EXPRESION:a CLOSEPAR OPENBRACE STATEMENTS:b CLOSEBRACE {:
+
+
+
+IF_STMT ::=
+ // if (){...}
+ RW_IF OPENPAR EXPRESION:a CLOSEPAR OPENBRACE STATEMENTS:b CLOSEBRACE {:
                RESULT = new IfStatement(IfStatement.buildConditionBlockList(a, b, new LinkedList<IfStatement.ConditionBlock>()), aleft, aright);
            :}
-
+// if (){...} else if (){...} else if (){...}
 | RW_IF OPENPAR EXPRESION:a CLOSEPAR OPENBRACE STATEMENTS:b CLOSEBRACE ELSE_IF_BLOCKS:c {: RESULT = new IfStatement(IfStatement.buildConditionBlockList(a, b, c), aleft, aright); :}
 //        | RW_IF OPENPAR EXPRESION:a CLOSEPAR OPENBRACE STATEMENTS:b CLOSEBRACE RW_ELSE OPENBRACE STATEMENTS:c CLOSEBRACE {:   RESULT = new IfStatement(a, b, c, aleft, aright);   :}
+// if (){...} else if (){...} else if (){...} else {...}
 | RW_IF OPENPAR EXPRESION:a CLOSEPAR OPENBRACE STATEMENTS:b CLOSEBRACE ELSE_IF_BLOCKS:c RW_ELSE OPENBRACE STATEMENTS:d CLOSEBRACE {:
     RESULT = new IfStatement(IfStatement.buildConditionBlockList(a, b, c), d, aleft, aright);
+:}
+// only if (){...} else {...}
+| RW_IF OPENPAR EXPRESION:a CLOSEPAR OPENBRACE STATEMENTS:b CLOSEBRACE RW_ELSE OPENBRACE STATEMENTS:c CLOSEBRACE {:
+    RESULT = new IfStatement(IfStatement.buildConditionBlockList(a, b, new LinkedList<IfStatement.ConditionBlock>()), c, aleft, aright);
 :}
         ;
 

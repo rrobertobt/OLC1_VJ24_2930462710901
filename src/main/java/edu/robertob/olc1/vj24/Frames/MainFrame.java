@@ -536,7 +536,7 @@ public class MainFrame extends JFrame {
         currentSession.getActiveFile().getErrors().addAll(lexer.getLexicalErrorList());
         allErrors.addAll(parser.getSyntaxErrorList());
         currentSession.getActiveFile().getErrors().addAll(parser.getSyntaxErrorList());
-        if (allErrors.size() == 0) {
+        if (allErrors.isEmpty()) {
             jTextPane1.setText(jTextPane1.getText() + "\n --> Compilación exitosa\n");
         } else {
             jTextPane1.setText(jTextPane1.getText() + "\n !--> Compilación con errores - Ver menu de reportes para detalles\n");

@@ -56,8 +56,6 @@ public class Declaration extends Instruction {
         if (!created) {
             return new JCError("Semantica", "Variable " + this.id + " ya existe", this.line, this.column);
         }
-//        if (!table.setSymbol(symbol))
-//            return new JCError("Semantica", "La variable " + this.id + " ya esta definida", this.line, this.column);
 
         return null;
     }

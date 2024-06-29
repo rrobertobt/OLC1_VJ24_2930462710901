@@ -58,8 +58,9 @@ public class IfStatement extends Instruction {
                     var result = instruction.execute(tree, newTable);
                     if (result instanceof JCError || result instanceof Break || result instanceof Continue)
                         return result;
+                    if (result instanceof ReturnIns) return result;
                 }
-                return null; // If one block is executed, no further blocks or else should be executed
+                return null;
             }
         }
 
@@ -71,6 +72,7 @@ public class IfStatement extends Instruction {
             for (var instruction : elseBody) {
                 var result = instruction.execute(tree, elseTable);
                 if (result instanceof JCError || result instanceof Break || result instanceof Continue) return result;
+                if (result instanceof ReturnIns) return result;
             }
         }
 

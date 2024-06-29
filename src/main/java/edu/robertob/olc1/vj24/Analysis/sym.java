@@ -14,7 +14,7 @@ public class sym {
   public static final int EQUALS = 11;
   public static final int SLASH = 15;
   public static final int DOUBLEEQUALS = 20;
-  public static final int XOR = 49;
+  public static final int XOR = 50;
   public static final int RW_DOUBLE = 30;
   public static final int INTEGER = 5;
   public static final int GREATER = 22;
@@ -24,12 +24,14 @@ public class sym {
   public static final int MINUS = 10;
   public static final int RW_BREAK = 42;
   public static final int OPENPAR = 26;
-  public static final int AND = 48;
+  public static final int AND = 49;
   public static final int LESSEQUAL = 23;
-  public static final int OR = 47;
+  public static final int OR = 48;
+  public static final int COMMA = 51;
   public static final int ENDLINE = 8;
   public static final int RW_WHILE = 41;
   public static final int PLUS = 9;
+  public static final int RW_RETURN = 47;
   public static final int ID = 4;
   public static final int CLOSEPAR = 27;
   public static final int RW_VAR = 40;
@@ -106,9 +108,11 @@ public class sym {
   "RW_DO",
   "RW_FOR",
   "RW_START_WITH",
+  "RW_RETURN",
   "OR",
   "AND",
-  "XOR"
+  "XOR",
+  "COMMA"
   };
 }
 
