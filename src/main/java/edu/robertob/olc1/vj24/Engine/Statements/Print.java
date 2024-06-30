@@ -25,4 +25,33 @@ public class Print extends Instruction {
         return null;
     }
 
+    @Override
+    public String generateAstDotFormat(Tree tree, String previousContent) {
+        String nodePP = "n" + tree.getGraphNodeCounter();
+        String nodeP = "n" + tree.getGraphNodeCounter();
+        String nodeOpenPar = "n" + tree.getGraphNodeCounter();
+        String nodeClosePar = "n" + tree.getGraphNodeCounter();
+        String nodeExpression = "n" + tree.getGraphNodeCounter();
+        String nodeSemiColon = "n" + tree.getGraphNodeCounter();
+
+        String result = nodePP + "[label=\"FUNC PRINT\"]\n";
+        result += previousContent + "->" + nodePP + "\n";
+
+        result += nodeP + "[label=\"println\"]\n";
+        result += nodeOpenPar + "[label=\"(\"]\n";
+        result += nodeExpression + "[label=\"EXPRESION\"]\n";
+        result += nodeClosePar + "[label=\")\"]\n";
+        result += nodeSemiColon + "[label=\";\"]\n";
+
+        result += nodePP + "->" + nodeP + "\n";
+        result += nodePP + "->" + nodeOpenPar + "\n";
+        result += nodePP + "->" + nodeExpression + "\n";
+        result += nodePP + "->" + nodeClosePar + "\n";
+        result += nodePP + "->" + nodeSemiColon + "\n";
+
+        result += this.expression.generateAstDotFormat(tree, nodeExpression);
+
+        return result;
+    }
+
 }

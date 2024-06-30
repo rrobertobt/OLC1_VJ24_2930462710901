@@ -130,6 +130,11 @@ public class IfStatement extends Instruction {
 //        }
     }
 
+    @Override
+    public String generateAstDotFormat(Tree tree, String previousContent) {
+        return "";
+    }
+
     public static class ConditionBlock {
         private Instruction condition;
         private LinkedList<Instruction> body;

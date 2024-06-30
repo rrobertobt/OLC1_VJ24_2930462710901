@@ -71,4 +71,20 @@ public class MethodCall extends Instruction {
 
         return null;
     }
+
+    @Override
+    public String generateAstDotFormat(Tree tree, String previousContent) {
+        String nativeNode = "n" + tree.getGraphNodeCounter();
+        String nodeValue = "n" + tree.getGraphNodeCounter();
+
+        String result = previousContent + "->" + nativeNode + "\n";
+
+        result += nativeNode + "[label=\"" + "LLAMADA METODO" + "\"]\n";
+        result += nodeValue + "[label=\"" + this.name + "\"]\n";
+
+        result += nativeNode + "->" + nodeValue + "\n";
+        return result;
+
+//        return "";
+    }
 }

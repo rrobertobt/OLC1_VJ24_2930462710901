@@ -6,43 +6,151 @@
 <STATEMENT> ::= <IMPRESION>
               | <DECLARATION>
               | <ASSIGNATION>
+              | <ARRAY_ASSIGNATION>
               | <IF_STMT>
               | <INCREMENT>
               | <DECREMENT>
               | <WHILE_STMT>
+              | <FOR_STMT>
+              | <DO_WHILE_STMT>
+              | <DYNAMIC_LIST_DECLARATION>
+              | <DYNAMIC_LIST_MUTATOR> "\n"
+              | <STRUCT_DECLARATION>
+              | <RETURN_STMT>
               | <BREAK>
               | <CONTINUE>
-              | "error" <ENDLINE>
+              | <START_WITH_INVOKE>
+              | <MATCH_STMT>
+              | <METHOD_CALL> "\n"
+              | <METHOD_DECLARATION>
+              | error "\n"
 
-<BREAK> ::= "break" <ENDLINE>
+<START_WITH_INVOKE> ::= "start_with" <ID> "(" ")" "\n"
 
-<CONTINUE> ::= "continue" <ENDLINE>
+<BREAK> ::= "break" "\n"
 
-<IMPRESION> ::= "println" "(" <EXPRESION> ")" <ENDLINE>
+<CONTINUE> ::= "continue" "\n"
 
-<DECLARATION> ::= "const" <ID> ":" <TYPES> "=" <EXPRESION> <ENDLINE>
-                | "const" <ID> ":" <TYPES> <ENDLINE>
-                | "var" <ID> ":" <TYPES> <ENDLINE>
-                | "var" <ID> ":" <TYPES> "=" <EXPRESION> <ENDLINE>
+<IMPRESION> ::= "print" "(" <EXPRESION> ")" "\n"
 
-<ASSIGNATION> ::= <ID> "=" <EXPRESION> <ENDLINE>
+<MUTABILITY> ::= "var"
+               | "const"
+
+<DECLARATION> ::= <MUTABILITY> <ID> ":" <TYPES> "\n"
+                | <MUTABILITY> <ID> ":" <TYPES> "=" <EXPRESION> "\n"
+                | <MUTABILITY> <ID> ":" <TYPES> "[" "]" "=" "[" <VALUES_LIST> "]" "\n"
+                | <MUTABILITY> <ID> ":" <TYPES> "[" "]" "[" "]" "=" "[" <VALUES_OF_VALUES_LIST> "]" "\n"
+                | <MUTABILITY> <ID> ":" <TYPES> "=" <DYNAMIC_LIST_MUTATOR> "\n"
+                | <MUTABILITY> <ID> ":" <ID> "=" <OBJECT> "\n"
+
+<VALUES_OF_VALUES_LIST> ::= <VALUES_OF_VALUES_LIST> "," "[" <VALUES_LIST> "]"
+                          | "[" <VALUES_LIST> "]"
+
+<VALUES_LIST> ::= <VALUES_LIST> "," <ARRAY_VALUE>
+                | <ARRAY_VALUE>
+
+<ARRAY_VALUE> ::= <EXPRESION>
+
+<DYNAMIC_LIST_DECLARATION> ::= "list" "<" <TYPES> ">" <ID> "=" "new" "list" "(" ")" "\n"
+
+<DYNAMIC_LIST_MUTATOR> ::= <ID> "." "append" "(" <EXPRESION> ")"
+                         | <ID> "." "remove" "(" <EXPRESION> ")"
+
+<ITERABLE_FIND> ::= <ID> "." "find" "(" <EXPRESION> ")"
+
+<METHOD_DECLARATION> ::= <TYPES> <ID> "(" ")" "{" <STATEMENTS> "}"
+                       | <TYPES> <ID> "(" <METHOD_PARAMS_DECLARATION> ")" "{" <STATEMENTS> "}"
+
+<METHOD_PARAMS_DECLARATION> ::= <METHOD_PARAMS_DECLARATION> "," <TYPES> <ID>
+                              | <TYPES> <ID>
+
+<CALL_ARGUMENTS> ::= <CALL_ARGUMENTS> "," <ARGUMENT>
+                   | <ARGUMENT>
+
+<ARGUMENT> ::= <EXPRESION>
+
+<METHOD_CALL> ::= <ID> "(" ")"
+                | <ID> "(" <CALL_ARGUMENTS> ")"
+
+<RETURN_STMT> ::= "return" <EXPRESION> "\n"
+                | "return" "\n"
+
+<TYPE_CAST_OPERATOR> ::= "(" <TYPES> ")"
+
+<ASSIGNATION> ::= <ID> "=" <EXPRESION> "\n"
+                | <ID> "[" <EXPRESION> "]" "=" <EXPRESION> "\n"
+                | <ID> "[" <EXPRESION> "]" "[" <EXPRESION> "]" "=" <EXPRESION> "\n"
+                | <ID> "=" <DYNAMIC_LIST_MUTATOR> "\n"
+                | <ID> "[" <EXPRESION> "]" "=" <DYNAMIC_LIST_MUTATOR> "\n"
+                | <ID> "[" <EXPRESION> "]" "[" <EXPRESION> "]" "=" <DYNAMIC_LIST_MUTATOR> "\n"
+
+<MATCH_STMT> ::= "match" "(" <EXPRESION> ")" "{" <MATCH_CASES_LIST> <DEFAULT_MATCH_CASE> "}"
+               | "match" "(" <EXPRESION> ")" "{" <MATCH_CASES_LIST> "}"
+               | "match" "(" <EXPRESION> ")" "{" <DEFAULT_MATCH_CASE> "}"
+
+<MATCH_CASES_LIST> ::= <MATCH_CASES_LIST> <CUSTOM_MATCH_CASE>
+                     | <CUSTOM_MATCH_CASE>
+
+<CUSTOM_MATCH_CASE> ::= <EXPRESION> "->" "{" <STATEMENTS> "}"
+
+<DEFAULT_MATCH_CASE> ::= "_" "->" "{" <STATEMENTS> "}"
+
+<STRUCT_DECLARATION> ::= "struct" "{" <ATTRS_LIST> "}" <ID> "\n"
+
+<ATTRS_LIST> ::= <ATTRS_LIST> <ATTR_DECLARATION>
+               | <ATTR_DECLARATION>
+
+<ATTR_DECLARATION> ::= <ID> ":" <TYPES> "\n"
+                     | <ID> ":" <ID> "\n"
+
+<OBJECT> ::= "{" <MEMBER_LIST> "}"
+
+<MEMBER_LIST> ::= <MEMBER_LIST> "," <MEMBER>
+                | <MEMBER>
+
+<MEMBER> ::= <ID> ":" <MEMBER_VALUE>
+
+<MEMBER_VALUE> ::= <EXPRESION>
+                 | <OBJECT>
 
 <IF_STMT> ::= "if" "(" <EXPRESION> ")" "{" <STATEMENTS> "}"
+            | "if" "(" <EXPRESION> ")" "{" <STATEMENTS> "}" <ELSE_IF_BLOCKS>
+            | "if" "(" <EXPRESION> ")" "{" <STATEMENTS> "}" <ELSE_IF_BLOCKS> "else" "{" <STATEMENTS> "}"
             | "if" "(" <EXPRESION> ")" "{" <STATEMENTS> "}" "else" "{" <STATEMENTS> "}"
+
+<ELSE_IF_BLOCK> ::= "else" "if" "(" <EXPRESION> ")" "{" <STATEMENTS> "}"
+
+<ELSE_IF_BLOCKS> ::= <ELSE_IF_BLOCKS> <ELSE_IF_BLOCK>
+                   | <ELSE_IF_BLOCK>
 
 <WHILE_STMT> ::= "while" "(" <EXPRESION> ")" "{" <STATEMENTS> "}"
 
-<INCREMENT> ::= <ID> "++" <ENDLINE>
+<DO_WHILE_STMT> ::= "do" "{" <STATEMENTS> "}" "while" "(" <EXPRESION> ")"
+                  | "do" "{" <STATEMENTS> "}" "while" "(" <EXPRESION> ")" "\n"
 
-<DECREMENT> ::= <ID> "--" <ENDLINE>
+<FOR_STMT> ::= "for" "(" <ASSIGNATION> <EXPRESION> "\n" <FOR_UPDATE> ")" "{" <STATEMENTS> "}"
+
+<FOR_UPDATE> ::= <ID> "=" <EXPRESION>
+               | <INCREMENT_NO_ENDLINE>
+               | <DECREMENT_NO_ENDLINE>
+
+<INCREMENT_NO_ENDLINE> ::= <ID> "++"
+
+<DECREMENT_NO_ENDLINE> ::= <ID> "--"
+
+<INCREMENT> ::= <ID> "++" "\n"
+
+<DECREMENT> ::= <ID> "--" "\n"
 
 <TYPES> ::= "int"
           | "double"
           | "string"
           | "bool"
           | "char"
+          | "void"
 
-<EXPRESION> ::= "-" <EXPRESION>
+<EXPRESION> ::= "(" <TYPES> ")" <EXPRESION>
+              | "-" <EXPRESION> %prec UNIT_MINUS
               | <EXPRESION> "*" <EXPRESION>
               | <EXPRESION> "/" <EXPRESION>
               | <EXPRESION> "**" <EXPRESION>
@@ -51,19 +159,27 @@
               | <EXPRESION> "+" <EXPRESION>
               | <EXPRESION> "==" <EXPRESION>
               | <EXPRESION> "!=" <EXPRESION>
-              | <EXPRESION> "<" <EXPRESION>
               | <EXPRESION> "<=" <EXPRESION>
-              | <EXPRESION> ">" <EXPRESION>
               | <EXPRESION> ">=" <EXPRESION>
-              | "!" <EXPRESION>
-              | <EXPRESION> "||" <EXPRESION>
+              | <EXPRESION> "<" <EXPRESION>
+              | <EXPRESION> ">" <EXPRESION>
               | <EXPRESION> "&&" <EXPRESION>
+              | <EXPRESION> "||" <EXPRESION>
               | <EXPRESION> "^" <EXPRESION>
+              | "!" <EXPRESION>
+              | <EXPRESION> "." <ID>
+              | <EXPRESION> "." <METHOD_CALL>
+              | <ID>
               | <INTEGER>
               | <DECIMAL>
               | <STRING>
               | <CHAR>
               | "true"
               | "false"
-              | <ID>
               | "(" <EXPRESION> ")"
+              | <ID> "[" <EXPRESION> "]"
+              | <ID> "[" <EXPRESION> "]" "[" <EXPRESION> "]"
+              | <ID> "." <ITERABLE_FIND>
+              | <ID> "." "length"
+              | <ID> "." "round"
+              | <ID> "." "toString"

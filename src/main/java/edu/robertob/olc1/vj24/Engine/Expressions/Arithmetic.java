@@ -74,6 +74,26 @@ public class Arithmetic extends Instruction {
         }
     }
 
+    @Override
+    public String generateAstDotFormat(Tree tree, String previousContent) {
+
+        String nodeLeft = "n" + tree.getGraphNodeCounter();
+        String nodeOperation = "n" + tree.getGraphNodeCounter();
+        String nodeRight = "n" + tree.getGraphNodeCounter();
+
+        String result = previousContent + "->" + nodeLeft + "\n";
+        result += previousContent + "->" + nodeOperation + "\n";
+        result += previousContent + "->" + nodeRight + "\n";
+
+        result += nodeLeft + "[label=\"EXP\"];\n";
+        result += nodeOperation + "[label=\"" + this.operation + "\"];\n";
+        result += nodeRight + "[label=\"EXP\"];\n";
+        result += this.firstOperand.generateAstDotFormat(tree, nodeLeft);
+        result += this.secondOperand.generateAstDotFormat(tree, nodeRight);
+
+        return result;
+    }
+
     public Object add(Object leftOperand, Object rightOperand) {
         var leftType = this.firstOperand.getType();
         var rightType = this.secondOperand.getType();

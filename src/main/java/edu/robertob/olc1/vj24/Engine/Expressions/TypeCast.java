@@ -72,4 +72,9 @@ public class TypeCast extends Instruction {
 
         return value;
     }
+
+    @Override
+    public String generateAstDotFormat(Tree tree, String previousContent) {
+        return "";
+    }
 }

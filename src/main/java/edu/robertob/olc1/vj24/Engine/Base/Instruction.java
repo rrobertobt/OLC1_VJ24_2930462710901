@@ -18,6 +18,8 @@ public abstract class Instruction {
 
     public abstract Object execute(Tree tree, SymbolTable table);
 
+    public abstract String generateAstDotFormat(Tree tree, String previousContent);
+
     public Types getType(){
         return this.type;
     }

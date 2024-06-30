@@ -23,4 +23,9 @@ public class ToString extends Instruction {
         }
         return new JCError("Semantica", "No se puede convertir el valor a string", this.line, this.column);
     }
+
+    @Override
+    public String generateAstDotFormat(Tree tree, String previousContent) {
+        return "";
+    }
 }

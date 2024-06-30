@@ -14,6 +14,7 @@ public class Tree {
     public LinkedList<JCError> errors;
     private HashMap<String, StructDefinition> structs;
     private LinkedList<Instruction> methods;
+    private int graphNodeCounter = 0;
 
     public Tree(LinkedList<Instruction> instructions) {
         this.instructions = instructions;
@@ -85,6 +86,11 @@ public class Tree {
 
     public void setErrors(LinkedList<JCError> errors) {
         this.errors = errors;
+    }
+
+    public int getGraphNodeCounter() {
+        this.graphNodeCounter++;
+        return graphNodeCounter;
     }
 
     // Dedicated print method for the console

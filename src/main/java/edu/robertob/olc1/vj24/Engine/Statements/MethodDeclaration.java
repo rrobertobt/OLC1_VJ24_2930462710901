@@ -58,6 +58,24 @@ public class MethodDeclaration extends Instruction {
         return null;
     }
 
+    @Override
+    public String generateAstDotFormat(Tree tree, String previousContent) {
+        String nativeNode = "n" + tree.getGraphNodeCounter();
+        String nodeValue = "n" + tree.getGraphNodeCounter();
+
+        String result = previousContent + "->" + nativeNode + "\n";
+
+        result += nativeNode + "[label=\"" + "METODO" + "\"]\n";
+        result += nodeValue + "[label=\"" + this.id + "\"]\n";
+
+        result += nativeNode + "->" + nodeValue + "\n";
+
+        for (Instruction i : methodBody) {
+            result += i.generateAstDotFormat(tree, nodeValue);
+        }
+        return result;
+    }
+
     public String getId() {
         return id;
     }

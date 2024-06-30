@@ -22,8 +22,12 @@ public class ReturnIns extends Instruction {
         if (expressionToReturn == null){
             return new Break(line, column);
         }
-//        return expressionToReturn.execute(tree, table);
         return this;
+    }
+
+    @Override
+    public String generateAstDotFormat(Tree tree, String previousContent) {
+        return "";
     }
 
     public Instruction getExpressionToReturn() {

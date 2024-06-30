@@ -23,4 +23,9 @@ public class SymbolAccess extends Instruction {
         this.type = value.getType();
         return value.getValue();
     }
+
+    @Override
+    public String generateAstDotFormat(Tree tree, String previousContent) {
+        return "";
+    }
 }

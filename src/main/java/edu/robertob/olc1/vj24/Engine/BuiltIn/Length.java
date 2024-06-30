@@ -48,4 +48,9 @@ public class Length extends Instruction {
         }
         return new JCError("Semantica", "No se puede obtener la longitud de un valor no iterable", this.line, this.column);
     }
+
+    @Override
+    public String generateAstDotFormat(Tree tree, String previousContent) {
+        return "";
+    }
 }

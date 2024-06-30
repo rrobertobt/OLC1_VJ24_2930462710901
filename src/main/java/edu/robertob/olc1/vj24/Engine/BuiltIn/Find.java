@@ -44,4 +44,9 @@ public class Find extends Instruction {
             return new JCError("Semantica", "La variable " + id + " no es una lista", line, column);
         }
     }
+
+    @Override
+    public String generateAstDotFormat(Tree tree, String previousContent) {
+        return "";
+    }
 }

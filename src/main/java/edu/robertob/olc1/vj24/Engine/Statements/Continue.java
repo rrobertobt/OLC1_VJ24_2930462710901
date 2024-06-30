@@ -15,4 +15,9 @@ public class Continue extends Instruction {
     public Object execute(Tree tree, SymbolTable table) {
         return this;
     }
+
+    @Override
+    public String generateAstDotFormat(Tree tree, String previousContent) {
+        return "";
+    }
 }

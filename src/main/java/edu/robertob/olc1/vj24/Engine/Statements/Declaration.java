@@ -157,6 +157,11 @@ public class Declaration extends Instruction {
         return null;
     }
 
+    @Override
+    public String generateAstDotFormat(Tree tree, String previousContent) {
+        return "";
+    }
+
     public String getId() {
         return id;
     }

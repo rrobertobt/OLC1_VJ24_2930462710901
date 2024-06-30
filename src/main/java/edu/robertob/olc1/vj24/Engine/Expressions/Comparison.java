@@ -261,6 +261,26 @@ public class Comparison extends Instruction {
         }
     }
 
+    @Override
+    public String generateAstDotFormat(Tree tree, String previousContent) {
+
+        String nodeLeft = "n" + tree.getGraphNodeCounter();
+        String nodeOperation = "n" + tree.getGraphNodeCounter();
+        String nodeRight = "n" + tree.getGraphNodeCounter();
+
+        String result = previousContent + "->" + nodeLeft + "\n";
+        result += previousContent + "->" + nodeOperation + "\n";
+        result += previousContent + "->" + nodeRight + "\n";
+
+        result += nodeLeft + "[label=\"EXP\"];\n";
+        result += nodeOperation + "[label=\"" + this.operand + "\"];\n";
+        result += nodeRight + "[label=\"EXP\"];\n";
+        result += this.leftCondition.generateAstDotFormat(tree, nodeLeft);
+        result += this.rightCondition.generateAstDotFormat(tree, nodeRight);
+
+        return result;
+    }
+
     private Object equals(Object left, Object right) {
         Types leftType = leftCondition.getType();
         Types rightType = rightCondition.getType();

@@ -65,4 +65,9 @@ public class Logical extends Instruction {
                 return new JCError("Semantico", "Operador lógico no válido", this.line, this.column);
         }
     }
+
+    @Override
+    public String generateAstDotFormat(Tree tree, String previousContent) {
+        return "";
+    }
 }

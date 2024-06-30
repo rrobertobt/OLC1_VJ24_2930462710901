@@ -32,6 +32,12 @@ public class ErrorsReportFrame extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        // before filling the table, clear it
+        for (int i = 0; i < this.jTable1.getRowCount(); i++) {
+            for (int j = 0; j < this.jTable1.getColumnCount(); j++) {
+                this.jTable1.setValueAt("", i, j);
+            }
+        }
         // Fill the table
         for (int i = 0; i < errors.size(); i++) {
             JCError error = errors.get(i);

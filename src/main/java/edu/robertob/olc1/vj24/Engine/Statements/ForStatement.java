@@ -61,4 +61,9 @@ public class ForStatement extends Instruction {
         }
         return null;
     }
+
+    @Override
+    public String generateAstDotFormat(Tree tree, String previousContent) {
+        return "";
+    }
 }

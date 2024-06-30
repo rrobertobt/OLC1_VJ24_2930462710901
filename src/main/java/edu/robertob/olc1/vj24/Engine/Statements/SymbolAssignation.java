@@ -36,4 +36,9 @@ public class SymbolAssignation extends Instruction {
         symbol.setValue(result);
         return null;
     }
+
+    @Override
+    public String generateAstDotFormat(Tree tree, String previousContent) {
+        return "";
+    }
 }

@@ -141,6 +141,13 @@ public class SymbolsReportFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     public void setSymbolTableAndShow(SymbolTable globalTable) {
+        // before, clean the table
+        for (int i = 0; i < this.jTable1.getRowCount(); i++) {
+            for (int j = 0; j < this.jTable1.getColumnCount(); j++) {
+                this.jTable1.setValueAt("", i, j);
+            }
+        }
+
         AtomicInteger index = new AtomicInteger();
         globalTable.collectAllSymbols().forEach((key, value) -> {
             SymbolVariable var = (SymbolVariable) value;

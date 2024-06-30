@@ -407,12 +407,10 @@ public class MainFrame extends JFrame {
         currentSession.setActiveFile(jTabbedPane1.getSelectedIndex());
         jTextPane1.setText(currentSession.getActiveFile().getConsoleOutput());
         if (currentSession.getActiveFile().isSaved()) {
-            System.out.println("Changing to saved file");
             fileStatusLabel.setText("Guardado");
             fileStatusLabel.setFont(fileStatusLabel.getFont().deriveFont(Font.PLAIN));
             jTabbedPane1.setTitleAt(currentSession.getActiveFileIndex(), currentSession.getActiveFile().getName());
         } else {
-            System.out.println("Changing to unsaved file");
             fileStatusLabel.setText("Modificado");
             fileStatusLabel.setFont(fileStatusLabel.getFont().deriveFont(Font.BOLD));
             jTabbedPane1.setTitleAt(currentSession.getActiveFileIndex(), "*" + currentSession.getActiveFile().getName());
@@ -542,6 +540,26 @@ public class MainFrame extends JFrame {
 
             currentSession.getActiveFile().setGlobalTable(globalTable);
             // also, recursively go through the table to get children tables
+
+            // finally, generate the AS Tree in DOT (Graphviz) format
+            String graph = "digraph ast{\n";
+            graph += "nINICIO[label=\"INICIO\"];\n";
+            graph += "nINSTRUCCIONES[label=\"INSTRUCCIONES\"];\n";
+            graph += "nINICIO -> nINSTRUCCIONES;\n";
+
+            for (Instruction instruction : tree.getInstructions()) {
+                if (instruction == null) {
+                    continue;
+                }
+                String nodoAux = "n" + tree.getGraphNodeCounter();
+                graph += nodoAux + "[label=\"INSTRUCCION\"];\n";
+                graph += "nINSTRUCCIONES -> " + nodoAux + ";\n";
+                graph += instruction.generateAstDotFormat(tree, nodoAux);
+            }
+
+            graph += "}\n";
+            System.out.println(graph);
+
             jTextPane1.setText(tree.getConsole());
         } catch (Exception e) {
             jTextPane1.setText(e.getMessage() + "\n");

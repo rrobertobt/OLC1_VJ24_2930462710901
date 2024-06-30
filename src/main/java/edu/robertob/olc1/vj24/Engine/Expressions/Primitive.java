@@ -33,4 +33,20 @@ public class Primitive extends Instruction {
     public Object execute(Tree tree, SymbolTable table) {
         return this.value;
     }
+
+    @Override
+    public String generateAstDotFormat(Tree tree, String previousContent) {
+        String nativeNode = "n" + tree.getGraphNodeCounter();
+        String nodeValue = "n" + tree.getGraphNodeCounter();
+
+        String result = previousContent + "->" + nativeNode + "\n";
+
+        result += nativeNode + "[label=\"" + "PRIMITIVO" + "\"]\n";
+        result += nodeValue + "[label=\"" + this.value.toString() + "\"]\n";
+
+        result += nativeNode + "->" + nodeValue + "\n";
+        return result;
+    }
+
+
 }
