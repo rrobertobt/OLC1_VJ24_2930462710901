@@ -99,6 +99,7 @@ RW_LENGTH="length"
 RW_TOSTRING="tostring"
 RW_ROUND="round"
 RW_FIND="find"
+RW_STRUCT="struct"
 
 
 %%
@@ -121,7 +122,7 @@ RW_FIND="find"
 <YYINITIAL> {RW_BREAK} {return new Symbol(sym.RW_BREAK, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_CONTINUE} {return new Symbol(sym.RW_CONTINUE, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_MATCH} {return new Symbol(sym.RW_MATCH, yyline, yycolumn,yytext());}
-//<YYINITIAL> {RW_MATCH} {return new Symbol(sym.RW_MATCH, yyline, yycolumn,yytext());}
+<YYINITIAL> {RW_STRUCT} {return new Symbol(sym.RW_STRUCT, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_START_WITH} {return new Symbol(sym.RW_START_WITH, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_RETURN} {return new Symbol(sym.RW_RETURN, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_LIST} {return new Symbol(sym.RW_LIST, yyline, yycolumn,yytext());}

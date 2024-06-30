@@ -2,7 +2,9 @@ package edu.robertob.olc1.vj24.Engine.Structs;
 
 import edu.robertob.olc1.vj24.Engine.Base.Instruction;
 import edu.robertob.olc1.vj24.Engine.Statements.MethodDeclaration;
+import edu.robertob.olc1.vj24.Engine.Statements.Struct.StructDefinition;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Tree {
@@ -10,6 +12,7 @@ public class Tree {
     private String console;
     private SymbolTable globalTable;
     public LinkedList<JCError> errors;
+    private HashMap<String, StructDefinition> structs;
     private LinkedList<Instruction> methods;
 
     public Tree(LinkedList<Instruction> instructions) {
@@ -17,11 +20,24 @@ public class Tree {
         this.console = "";
         this.globalTable = new SymbolTable("");
         this.errors = new LinkedList<>();
+        this.structs = new HashMap<>();
         this.methods = new LinkedList<>();
     }
 
     public void addMethod(Instruction method) {
         this.methods.add((MethodDeclaration) method);
+    }
+
+    public boolean setStruct(StructDefinition struct) {
+        if (structs.containsKey(struct.getStructName())) {
+            return false;
+        }
+        structs.put(struct.getStructName(), struct);
+        return true;
+    }
+
+    public StructDefinition getStruct(String id) {
+        return structs.get(id);
     }
 
     public Instruction getMethod(String id) {

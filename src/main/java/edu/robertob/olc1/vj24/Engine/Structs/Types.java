@@ -8,4 +8,5 @@ public enum Types {
     STRING,
     VOID,
     METHOD,
+    STRUCT,
 }

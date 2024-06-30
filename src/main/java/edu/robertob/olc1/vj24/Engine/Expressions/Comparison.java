@@ -248,10 +248,13 @@ public class Comparison extends Instruction {
                         return new JCError("Semántico", "No es posible comparar los tipos: " + leftType + " con " + rightType, line, column);
                 }
             case STRING:
-                if (rightType == Types.STRING) {
-                    return left.equals(right);
-                } else {
-                    return new JCError("Semántico", "No es posible comparar los tipos: " + leftType + " con " + rightType, line, column);
+                switch (operand) {
+                    case EQUALS:
+                        return left.equals(right);
+                    case NOT_EQUALS:
+                        return !left.equals(right);
+                    default:
+                        return new JCError("Semántico", "Operador relacional inválido", line, column);
                 }
             default:
                 return new JCError("Semántico", "No es posible comparar los tipos: " + leftType + " con " + rightType, line, column);

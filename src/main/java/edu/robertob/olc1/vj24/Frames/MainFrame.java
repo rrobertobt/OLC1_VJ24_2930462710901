@@ -8,6 +8,7 @@ import edu.robertob.olc1.vj24.Engine.Base.Instruction;
 import edu.robertob.olc1.vj24.Engine.Statements.Declaration;
 import edu.robertob.olc1.vj24.Engine.Statements.MethodDeclaration;
 import edu.robertob.olc1.vj24.Engine.Statements.StartWithInvoke;
+import edu.robertob.olc1.vj24.Engine.Statements.Struct.StructDeclaration;
 import edu.robertob.olc1.vj24.Engine.Statements.SymbolAssignation;
 import edu.robertob.olc1.vj24.Engine.Structs.JCError;
 import edu.robertob.olc1.vj24.Engine.Structs.SymbolTable;
@@ -491,6 +492,14 @@ public class MainFrame extends JFrame {
                         continue;
                     }
                     tree.addMethod(method);
+                }
+                if (instruction instanceof StructDeclaration struct) {
+                    var def = struct.execute(tree, globalTable);
+                    if (def instanceof JCError) {
+                        currentSession.getActiveFile().getErrors().add((JCError) def);
+                        allErrors.add((JCError) def);
+                    }
+                    tree.setStruct(((StructDeclaration)struct).getDefinition());
                 }
             }
 

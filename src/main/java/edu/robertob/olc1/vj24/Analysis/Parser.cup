@@ -8,6 +8,7 @@ import java.util.HashMap;
 import edu.robertob.olc1.vj24.Engine.Base.*;
 import edu.robertob.olc1.vj24.Engine.Structs.*;
 import edu.robertob.olc1.vj24.Engine.Statements.*;
+import edu.robertob.olc1.vj24.Engine.Statements.Struct.*;
 import edu.robertob.olc1.vj24.Engine.Expressions.*;
 import edu.robertob.olc1.vj24.Engine.BuiltIn.*;
 
@@ -44,7 +45,7 @@ terminal RW_CONST, RW_VAR, RW_WHILE, RW_BREAK, RW_CONTINUE, RW_DO, RW_FOR, RW_ST
 terminal OR, AND, XOR;
 terminal COMMA, OPENBRACKET, CLOSEBRACKET, DOT, UNDERSCORE, ARROW;
 terminal RW_LIST, RW_NEW, RW_APPEND, RW_REMOVE;
-terminal RW_LENGTH, RW_FIND, RW_ROUND, RW_TOSTRING;
+terminal RW_LENGTH, RW_FIND, RW_ROUND, RW_TOSTRING, RW_STRUCT;
 
 nonterminal LinkedList<Instruction> START, STATEMENTS;
 nonterminal Instruction STATEMENT;
@@ -84,6 +85,20 @@ nonterminal Instruction ARRAY_ACCESS;
 nonterminal Instruction DYNAMIC_LIST_DECLARATION;
 nonterminal Instruction DYNAMIC_LIST_MUTATOR;
 
+// structs related
+nonterminal Instruction STRUCT_DECLARATION;
+nonterminal LinkedList<StructField> ATTRS_LIST;
+nonterminal StructField ATTR_DECLARATION;
+
+nonterminal LinkedList<HashMap> ATTRIBUTES;
+nonterminal HashMap<String, Object> ATTR;
+
+nonterminal Instruction OBJECT;
+nonterminal LinkedList<HashMap> MEMBER_LIST;
+nonterminal HashMap<String, Object> MEMBER;
+nonterminal HashMap<String, Object> MEMBER_VALUE;
+
+
 precedence left OR;
 precedence left AND;
 precedence left XOR;
@@ -115,6 +130,7 @@ STATEMENT ::= IMPRESION: a        {:   RESULT=a;   :}
                 | DO_WHILE_STMT:a   {:   RESULT=a;   :}
                 | DYNAMIC_LIST_DECLARATION:a {:   RESULT=a;   :}
                 | DYNAMIC_LIST_MUTATOR:a ENDLINE {:   RESULT=a;   :}
+                | STRUCT_DECLARATION:a {:   RESULT=a;   :}
                 | RETURN_STMT:a       {:   RESULT=a;   :}
                 | BREAK:a                   {:   RESULT=a;   :}
                 | CONTINUE:a               {:   RESULT=a;   :}
@@ -135,7 +151,7 @@ CONTINUE ::= RW_CONTINUE:a ENDLINE {:   RESULT = new Continue(aleft, aright);   
 ;
 
 IMPRESION ::= RW_PRINT OPENPAR EXPRESION:a CLOSEPAR ENDLINE      {:   RESULT = new Print(a, aleft, aright);   :}
-            | RW_PRINT OPENPAR METHOD_CALL:a CLOSEPAR ENDLINE      {:   RESULT = new Print(a, aleft, aright);   :}
+//            | RW_PRINT OPENPAR METHOD_CALL:a CLOSEPAR ENDLINE      {:   RESULT = new Print(a, aleft, aright);   :}
 ;
 
 MUTABILITY ::= RW_VAR {: RESULT = false; :}
@@ -143,7 +159,7 @@ MUTABILITY ::= RW_VAR {: RESULT = false; :}
             ;
 DECLARATION ::= MUTABILITY:a ID:b COLON TYPES:c ENDLINE {: RESULT = new Declaration(b, c, null, a, aleft, aright); :}
             | MUTABILITY:a ID:b COLON TYPES:c EQUALS EXPRESION:d ENDLINE {: RESULT = new Declaration(b, c, d, a, aleft, aright); :}
-            | MUTABILITY:a ID:b COLON TYPES:c EQUALS METHOD_CALL:d ENDLINE {: RESULT = new Declaration(b, c, d, a, aleft, aright); :}
+//            | MUTABILITY:a ID:b COLON TYPES:c EQUALS METHOD_CALL:d ENDLINE {: RESULT = new Declaration(b, c, d, a, aleft, aright); :}
                | MUTABILITY:a ID:b COLON TYPES:c OPENBRACKET CLOSEBRACKET EQUALS OPENBRACKET VALUES_LIST:d CLOSEBRACKET ENDLINE {:
                 RESULT = new Declaration(b, c, 1, d, a, aleft, aright);
             :}
@@ -153,6 +169,15 @@ DECLARATION ::= MUTABILITY:a ID:b COLON TYPES:c ENDLINE {: RESULT = new Declarat
             // for example: var rmtest: int = miLista.remove(0);
             | MUTABILITY:a ID:b COLON TYPES:c EQUALS DYNAMIC_LIST_MUTATOR:d ENDLINE {:
                 RESULT = new Declaration(b, c, d, a, aleft, aright);
+            :}
+            // with struct. ex: var persona: persona = {nombre: "Roberto", edad: 24};
+            | MUTABILITY:a ID:b COLON ID:c EQUALS OBJECT:d ENDLINE {:
+                System.out.println("[debug] found struct declaration");
+                // print the attributes recursively for testing
+//                for (HashMap<String, Object> attr : attrs) {
+//                    System.out.println("[debug] attr: " + attr.get("id") + " = " + attr.get("value"));
+//                }
+//                RESULT = new Declaration(b, new StructType(c, aleft, aright), d, a, aleft, aright);
             :}
             ;
 // ex: [ [1, 2], [3, 4] ]
@@ -167,7 +192,7 @@ VALUES_LIST ::= VALUES_LIST:a COMMA ARRAY_VALUE:b {: RESULT = a; a.add(b); :}
             ;
 
 ARRAY_VALUE ::= EXPRESION:a {: RESULT = a; :}
-            | METHOD_CALL:a {: RESULT = a; :}
+//            | METHOD_CALL:a {: RESULT = a; :}
             ;
 
 // dynamic lists
@@ -228,7 +253,7 @@ CALL_ARGUMENTS ::= CALL_ARGUMENTS:a COMMA ARGUMENT:b {: RESULT = a; a.add(b); :}
             ;
 
 ARGUMENT ::= EXPRESION:a {: RESULT = a; :}
-            | METHOD_CALL:a {: RESULT = a; :}
+//            | METHOD_CALL:a {: RESULT = a; :}
             ;
 
 METHOD_CALL ::= ID:a OPENPAR CLOSEPAR {:  RESULT = new MethodCall(a, new LinkedList<>(), aleft, aright);   :}
@@ -237,7 +262,7 @@ METHOD_CALL ::= ID:a OPENPAR CLOSEPAR {:  RESULT = new MethodCall(a, new LinkedL
 
 RETURN_STMT ::= RW_RETURN EXPRESION:a ENDLINE {:   RESULT = new ReturnIns(a, aleft, aright);   :}
             | RW_RETURN:a ENDLINE {:   RESULT = new ReturnIns(null, aleft, aright);   :}
-            | RW_RETURN METHOD_CALL:a ENDLINE {:   RESULT = new ReturnIns(a, aleft, aright);   :}
+//            | RW_RETURN METHOD_CALL:a ENDLINE {:   RESULT = new ReturnIns(a, aleft, aright);   :}
 ;
 
 
@@ -245,7 +270,7 @@ TYPE_CAST_OPERATOR ::= OPENPAR TYPES:type CLOSEPAR {:   RESULT = type; :}
 ;
 
 ASSIGNATION ::= ID:a EQUALS EXPRESION:b ENDLINE  {:   RESULT=new SymbolAssignation(a, b, aleft, aright);  :}
-            | ID:a EQUALS METHOD_CALL:b ENDLINE {:   RESULT=new SymbolAssignation(a, b, aleft, aright);  :}
+//            | ID:a EQUALS METHOD_CALL:b ENDLINE {:   RESULT=new SymbolAssignation(a, b, aleft, aright);  :}
             | ID:a OPENBRACKET EXPRESION:b CLOSEBRACKET EQUALS EXPRESION:c ENDLINE {:
                 RESULT = new ArrayAssignation(a, b, null, c, aleft, aright);
             :}
@@ -297,6 +322,73 @@ DEFAULT_MATCH_CASE ::= UNDERSCORE ARROW OPENBRACE STATEMENTS:a CLOSEBRACE {:
     RESULT = new MatchCase(a, aleft, aright);
 :}
 ;
+
+// structs related
+
+// ex: struct { nombre: string; edad: int; } Persona;
+STRUCT_DECLARATION ::= RW_STRUCT OPENBRACE ATTRS_LIST:a CLOSEBRACE ID:b ENDLINE {:
+    RESULT = new StructDeclaration(b, a, aleft, aright);
+:}
+;
+
+ATTRS_LIST ::= ATTRS_LIST:a ATTR_DECLARATION:b {: RESULT = a; a.add(b); :}
+            | ATTR_DECLARATION:a {: RESULT = new LinkedList<>(); RESULT.add(a); :}
+            ;
+
+ATTR_DECLARATION ::=
+    ID:b COLON TYPES:c ENDLINE {:
+//        RESULT = new StructField(b, new StructType(c, bleft, bright), bleft, bright);
+    :}
+    // the type could be another struct
+    | ID:b COLON ID:c ENDLINE {:
+//        RESULT = new StructField(b, new StructType(c, bleft, bright), bleft, bright);
+    :}
+    ;
+
+//STRUCT_VALUES ::= STRUCT_VALUES:a COMMA ID:b COLON EXPRESION:c {: RESULT = a; a.put(b, c); :}
+//            | ID:b COLON EXPRESION:c {: RESULT = new HashMap<>(); RESULT.put(b, c); :}
+//            ;
+
+OBJECT ::= OPENBRACE MEMBER_LIST CLOSEBRACE;
+
+MEMBER_LIST ::= MEMBER_LIST COMMA MEMBER
+            | MEMBER
+            ;
+
+MEMBER ::= ID COLON MEMBER_VALUE;
+
+MEMBER_VALUE ::= EXPRESION
+            | OBJECT
+            ;
+
+//ATTRIBUTES ::= ATTRIBUTES:a COMMA ATTR:b {:
+//System.out.println("[debug] found struct attribute");
+//RESULT = a;
+//RESULT.add(b);
+//:}
+//            | ATTR:a {:
+//System.out.println("[debug] found struct attribute");
+//RESULT = new LinkedList<>();
+//RESULT.add(a);
+//:}
+//            ;
+//
+//ATTR ::= ID:a COLON EXPRESION:b {:
+//        System.out.println("[debug] found struct attribute value");
+//        HashMap<String, Object> attr = new HashMap<>();
+//        attr.put("id", a);
+//        attr.put("value", b);
+//        RESULT = attr;
+//        :}
+//
+//        | ID:a COLON OPENBRACE ATTRIBUTES:b CLOSEBRACE {:
+//            System.out.println("[debug] found struct attribute nested struct value");
+//            HashMap<String, Object> attr = new HashMap<>();
+//            attr.put("id", a);
+//            attr.put("value", b);
+//            RESULT = attr;
+//            :}
+//        ;
 
 IF_STMT ::=
  // if (){...}
@@ -381,6 +473,7 @@ EXPRESION ::=
             | RW_TRUE:a     {:   RESULT = new Primitive(Types.BOOLEAN, true, aleft, aright );   :}
             | RW_FALSE:a    {:   RESULT = new Primitive(Types.BOOLEAN, false, aleft, aright );   :}
             | ID:a          {:   RESULT = new SymbolAccess(a, aleft, aright);   :}
+            | METHOD_CALL:a {:   RESULT = a;   :}
 //            | ARRAY_ACCESS:a {:   RESULT = a;   :}
             | ID:a OPENBRACKET EXPRESION:b CLOSEBRACKET {: RESULT = new ArrayAccess(a, b, null, aleft, aright); :}
             | ID:a OPENBRACKET EXPRESION:b CLOSEBRACKET OPENBRACKET EXPRESION:c CLOSEBRACKET {: RESULT = new ArrayAccess(a, b, c, aleft, aright); :}

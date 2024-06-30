@@ -70,6 +70,7 @@ public class sym {
   public static final int UNDERSCORE = 56;
   public static final int STRING = 3;
   public static final int DOUBLEASTERISK = 17;
+  public static final int RW_STRUCT = 66;
   public static final int RW_LIST = 58;
   public static final int RW_MATCH = 48;
   public static final int RW_LENGTH = 62;
@@ -140,7 +141,8 @@ public class sym {
   "RW_LENGTH",
   "RW_FIND",
   "RW_ROUND",
-  "RW_TOSTRING"
+  "RW_TOSTRING",
+  "RW_STRUCT"
   };
 }
 

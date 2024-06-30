@@ -2,6 +2,9 @@ package edu.robertob.olc1.vj24.Engine.Structs;
 
 import edu.robertob.olc1.vj24.Engine.Base.Instruction;
 import edu.robertob.olc1.vj24.Engine.Statements.MethodDeclaration;
+import edu.robertob.olc1.vj24.Engine.Statements.Struct.StructDeclaration;
+import edu.robertob.olc1.vj24.Engine.Statements.Struct.StructDefinition;
+import edu.robertob.olc1.vj24.Engine.Statements.Struct.StructType;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -51,6 +54,8 @@ public class SymbolTable {
         this.symbols = new HashMap<>();
         this.name = "";
     }
+
+
 
     public SymbolTable getParentTable() {
         return parentTable;
