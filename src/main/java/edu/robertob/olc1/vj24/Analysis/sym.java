@@ -21,6 +21,7 @@ public class sym {
   public static final int INTEGER = 5;
   public static final int GREATER = 22;
   public static final int RW_CHAR = 36;
+  public static final int RW_FIND = 60;
   public static final int RW_DO = 44;
   public static final int LESS = 21;
   public static final int MINUS = 10;
@@ -49,6 +50,7 @@ public class sym {
   public static final int RW_FALSE = 34;
   public static final int MODULO = 16;
   public static final int RW_START_WITH = 46;
+  public static final int RW_ROUND = 61;
   public static final int RW_PRINT = 28;
   public static final int RW_TRUE = 33;
   public static final int GREATEREQUAL = 24;
@@ -67,6 +69,8 @@ public class sym {
   public static final int STRING = 3;
   public static final int DOUBLEASTERISK = 17;
   public static final int RW_LIST = 55;
+  public static final int RW_LENGTH = 59;
+  public static final int RW_TOSTRING = 62;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
@@ -126,7 +130,11 @@ public class sym {
   "RW_LIST",
   "RW_NEW",
   "RW_APPEND",
-  "RW_REMOVE"
+  "RW_REMOVE",
+  "RW_LENGTH",
+  "RW_FIND",
+  "RW_ROUND",
+  "RW_TOSTRING"
   };
 }
 

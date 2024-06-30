@@ -28,7 +28,7 @@ import java.util.LinkedList;
 %char
 %column
 %full
-%debug
+//%debug
 %ignorecase
 
 OPENPAR="("
@@ -93,6 +93,11 @@ RW_LIST="list"
 RW_APPEND="append"
 RW_REMOVE="remove"
 RW_NEW="new"
+RW_LENGTH="length"
+RW_TOSTRING="tostring"
+RW_ROUND="round"
+RW_FIND="find"
+
 
 %%
 
@@ -120,6 +125,10 @@ RW_NEW="new"
 <YYINITIAL> {RW_NEW} {return new Symbol(sym.RW_NEW, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_APPEND} {return new Symbol(sym.RW_APPEND, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_REMOVE} {return new Symbol(sym.RW_REMOVE, yyline, yycolumn,yytext());}
+<YYINITIAL> {RW_LENGTH} {return new Symbol(sym.RW_LENGTH, yyline, yycolumn,yytext());}
+<YYINITIAL> {RW_TOSTRING} {return new Symbol(sym.RW_TOSTRING, yyline, yycolumn,yytext());}
+<YYINITIAL> {RW_ROUND} {return new Symbol(sym.RW_ROUND, yyline, yycolumn,yytext());}
+<YYINITIAL> {RW_FIND} {return new Symbol(sym.RW_FIND, yyline, yycolumn,yytext());}
 
 <YYINITIAL> {RW_TRUE} {return new Symbol(sym.RW_TRUE, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_FALSE} {return new Symbol(sym.RW_FALSE, yyline, yycolumn,yytext());}

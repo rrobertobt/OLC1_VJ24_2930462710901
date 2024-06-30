@@ -35,7 +35,6 @@ public class ArrayAccess extends Instruction {
 
         // this means we are accessing an array and not a list
         if (symbol.getValue() instanceof ArrayValue && !symbol.isDynamicList()) {
-            System.out.println("Static array access");
             ArrayValue vector = (ArrayValue) symbol.getValue();
             int dimension = vector.getDimension();
             if (this.index1 == null) {
@@ -88,7 +87,6 @@ public class ArrayAccess extends Instruction {
                 }
             }
         } else if (symbol.isDynamicList()) {
-            System.out.println("Dynamic list access");
             DynamicList list = (DynamicList) symbol.getValue();
             if (this.index1 == null) {
                 return new JCError("Semantica", "Indice de la lista no puede ser nulo", this.line, this.column);

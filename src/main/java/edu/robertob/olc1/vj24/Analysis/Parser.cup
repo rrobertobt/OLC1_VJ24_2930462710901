@@ -9,6 +9,7 @@ import edu.robertob.olc1.vj24.Engine.Base.*;
 import edu.robertob.olc1.vj24.Engine.Structs.*;
 import edu.robertob.olc1.vj24.Engine.Statements.*;
 import edu.robertob.olc1.vj24.Engine.Expressions.*;
+import edu.robertob.olc1.vj24.Engine.BuiltIn.*;
 
 parser code
 {:
@@ -43,6 +44,7 @@ terminal RW_CONST, RW_VAR, RW_WHILE, RW_BREAK, RW_CONTINUE, RW_DO, RW_FOR, RW_ST
 terminal OR, AND, XOR;
 terminal COMMA, OPENBRACKET, CLOSEBRACKET, DOT;
 terminal RW_LIST, RW_NEW, RW_APPEND, RW_REMOVE;
+terminal RW_LENGTH, RW_FIND, RW_ROUND, RW_TOSTRING;
 
 nonterminal LinkedList<Instruction> START, STATEMENTS;
 nonterminal Instruction STATEMENT;
@@ -63,6 +65,7 @@ nonterminal LinkedList<Instruction> CALL_ARGUMENTS;
 nonterminal Instruction ARGUMENT;
 nonterminal Instruction RETURN_STMT;
 nonterminal Boolean MUTABILITY;
+nonterminal Instruction ITERABLE_FIND;
 
 // array related
 nonterminal LinkedList<Instruction> VALUES_LIST;
@@ -125,6 +128,7 @@ CONTINUE ::= RW_CONTINUE:a ENDLINE {:   RESULT = new Continue(aleft, aright);   
 ;
 
 IMPRESION ::= RW_PRINT OPENPAR EXPRESION:a CLOSEPAR ENDLINE      {:   RESULT = new Print(a, aleft, aright);   :}
+            | RW_PRINT OPENPAR METHOD_CALL:a CLOSEPAR ENDLINE      {:   RESULT = new Print(a, aleft, aright);   :}
 ;
 
 MUTABILITY ::= RW_VAR {: RESULT = false; :}
@@ -177,6 +181,17 @@ DYNAMIC_LIST_MUTATOR ::= ID:a DOT RW_APPEND OPENPAR EXPRESION:b CLOSEPAR {:
     System.out.println("[debug] found dynamic list mutator");
     RESULT = new DynamicListMutation(a, b, null, DynamicListMutation.MutationType.REMOVE, aleft, aright);
 :}
+;
+
+// find built-in function
+// ex: miLista.find(1);
+
+ITERABLE_FIND ::=
+    ID:a DOT RW_FIND OPENPAR EXPRESION:b CLOSEPAR
+    {:
+        System.out.println("[debug] found iterable find");
+        RESULT = new Find(a, b, aleft, aright);
+    :}
 ;
 
 //public MethodDeclaration(Types type, String id, LinkedList<HashMap> params, LinkedList<Instruction> methodBody, int line, int column)
@@ -328,5 +343,12 @@ EXPRESION ::=
 //            | ARRAY_ACCESS:a {:   RESULT = a;   :}
             | ID:a OPENBRACKET EXPRESION:b CLOSEBRACKET {: RESULT = new ArrayAccess(a, b, null, aleft, aright); :}
             | ID:a OPENBRACKET EXPRESION:b CLOSEBRACKET OPENBRACKET EXPRESION:c CLOSEBRACKET {: RESULT = new ArrayAccess(a, b, c, aleft, aright); :}
+            // builtin functions
+            | RW_LENGTH OPENPAR EXPRESION:a CLOSEPAR {: RESULT = new Length(a, aleft, aright); :}
+//            | RW_LENGTH OPENPAR ID:a CLOSEPAR {: RESULT = new Length(a, aleft, aright); :}
+//            | RW_LENGTH OPENPAR STRING:a CLOSEPAR {: RESULT = new Length(new Primitive(Types.STRING, a, aleft, aright), aleft, aright); :}
+            | RW_ROUND OPENPAR EXPRESION:a CLOSEPAR {: RESULT = new Round(a, aleft, aright); :}
+            | RW_TOSTRING OPENPAR EXPRESION:a CLOSEPAR {: RESULT = new ToString(a, aleft, aright); :}
+            | ITERABLE_FIND:a {: RESULT = a; :}
             | OPENPAR EXPRESION:a CLOSEPAR     {:   RESULT = a;   :}
 ;
