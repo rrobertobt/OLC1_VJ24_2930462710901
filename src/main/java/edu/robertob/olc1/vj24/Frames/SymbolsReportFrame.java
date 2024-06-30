@@ -4,6 +4,8 @@
  */
 package edu.robertob.olc1.vj24.Frames;
 
+import edu.robertob.olc1.vj24.Engine.Statements.MethodDeclaration;
+import edu.robertob.olc1.vj24.Engine.Structs.ArrayValue;
 import edu.robertob.olc1.vj24.Engine.Structs.SymbolTable;
 import edu.robertob.olc1.vj24.Engine.Structs.SymbolVariable;
 
@@ -148,7 +150,16 @@ public class SymbolsReportFrame extends javax.swing.JFrame {
             this.jTable1.setValueAt("Variable", index.get(), 3);
             this.jTable1.setValueAt(var.getType().toString(), index.get(), 4);
             this.jTable1.setValueAt(var.getScopeName(), index.get(), 5);
-            this.jTable1.setValueAt(var.getValue(), index.get(), 6);
+            if (var.getValue() instanceof ArrayValue) {
+                this.jTable1.setValueAt("Vector", index.get(), 3);
+                this.jTable1.setValueAt(((ArrayValue) var.getValue()).getValues().toString(), index.get(), 6);
+            } else if (var.getValue() instanceof MethodDeclaration) {
+                this.jTable1.setValueAt("Metodo", index.get(), 3);
+                this.jTable1.setValueAt(((MethodDeclaration) var.getValue()).getMethodBody().size() + " instrucs.", index.get(), 6);
+            }
+            else {
+                this.jTable1.setValueAt(var.getValue(), index.get(), 6);
+            }
             this.jTable1.setValueAt(var.getLine(), index.get(), 7);
             this.jTable1.setValueAt(var.getColumn(), index.get(), 8);
             index.getAndIncrement();

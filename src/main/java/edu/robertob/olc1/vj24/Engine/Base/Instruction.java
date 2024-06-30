@@ -29,4 +29,12 @@ public abstract class Instruction {
     public void setScopeTable(SymbolTable scopeTable) {
         this.scopeTable = scopeTable;
     }
+
+    public int getLine() {
+        return line;
+    }
+
+    public int getColumn() {
+        return column;
+    }
 }

@@ -11,6 +11,7 @@ import java.util.LinkedList;
 
 import edu.robertob.olc1.vj24.Engine.Structs.JCError;
 import edu.robertob.olc1.vj24.Engine.Structs.SymbolTable;
+import edu.robertob.olc1.vj24.Engine.Structs.Tree;
 import jflex.generator.*;
 
 /**
@@ -28,6 +29,7 @@ public class JCFile {
     private String consoleOutput;
     private LinkedList<JCError> errors = new LinkedList<>();
     private SymbolTable globalTable;
+    private Tree currentTree;
 
     public JCFile(String name, String systemPath, String content, boolean saved, int index) {
         this.name = name;
@@ -130,5 +132,13 @@ public class JCFile {
 
     public SymbolTable getGlobalTable() {
         return this.globalTable;
+    }
+
+    public void setCurrentTree(Tree tree) {
+        this.currentTree = tree;
+    }
+
+    public Tree getCurrentTree() {
+        return this.currentTree;
     }
 }

@@ -1,5 +1,8 @@
 package edu.robertob.olc1.vj24.Engine.Structs;
 
+import edu.robertob.olc1.vj24.Engine.Base.Instruction;
+import edu.robertob.olc1.vj24.Engine.Statements.MethodDeclaration;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -94,6 +97,14 @@ public class SymbolTable {
         Map<String, Object> allSymbols = new HashMap<>();
         collectSymbolsRecursively(this, allSymbols);
         return allSymbols;
+    }
+
+    public void addMethods(Tree tree){
+        for (Instruction i : tree.getMethods()) {
+            if (i instanceof MethodDeclaration method) {
+                this.setSymbol(new SymbolVariable(Types.METHOD, true, method.getId(), method, method.line, method.column));
+            }
+        }
     }
 
     private void collectSymbolsRecursively(SymbolTable table, Map<String, Object> allSymbols) {

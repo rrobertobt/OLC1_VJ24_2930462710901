@@ -6,5 +6,6 @@ public enum Types {
     BOOLEAN,
     CHARACTER,
     STRING,
-    VOID
+    VOID,
+    METHOD,
 }

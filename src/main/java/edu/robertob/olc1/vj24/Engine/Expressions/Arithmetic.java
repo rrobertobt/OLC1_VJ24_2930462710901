@@ -420,7 +420,6 @@ public class Arithmetic extends Instruction {
                     case Types.INTEGER -> {
                         this.type = Types.DOUBLE;
                         return (double) leftOperand % (int) rightOperand;
-//                        return (double) leftOperand % new Integer(rightOperand.toString());
                     }
                     case Types.DOUBLE -> {
                         this.type = Types.DOUBLE;

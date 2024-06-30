@@ -47,16 +47,15 @@ public class MethodCall extends Instruction {
                 var paramResult = paramDeclaration.execute(tree, callTable);
 
                 // execute parameter to get its value with the current scope, not the method scope
+                // since we can't set the value of the parameter in the declaration, because it could be a method call and we need to execute it first
                 if (paramResult instanceof JCError) return paramResult;
                 var paramValueResult = passedValue.execute(tree, table);
 
                 if (paramValueResult instanceof JCError) return paramValueResult;
                 // error checks
                 var createdVar = callTable.getSymbol(mParamId);
-                if (createdVar == null)
-                    return new JCError("Semantica", "Error al declarar parametro " + mParamId, this.line, this.column);
 
-                if (createdVar.getType() != passedValue.getType())
+                if ((createdVar != null) && createdVar.getType() != passedValue.getType())
                     return new JCError("Semantica", "Tipo de argumento: " + passedValue.getType() + " no coincide con el tipo de parametro esperado: " + createdVar.getType(), this.line, this.column);
 
                 createdVar.setValue(paramValueResult);
@@ -64,7 +63,6 @@ public class MethodCall extends Instruction {
             // execute method
             var mResult = method.execute(tree, callTable);
             if (mResult instanceof JCError) return mResult;
-            // return result if method is not of void type
             if (method.getType() != Types.VOID) {
                 this.type = method.getType();
                 return mResult;

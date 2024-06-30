@@ -17,6 +17,9 @@ import edu.robertob.olc1.vj24.Engine.Statements.MethodDeclaration;
 import edu.robertob.olc1.vj24.Engine.Statements.ReturnIns;
 import edu.robertob.olc1.vj24.Engine.Expressions.MethodCall;
 
+import edu.robertob.olc1.vj24.Engine.Statements.ArrayAssignation;
+import edu.robertob.olc1.vj24.Engine.Expressions.ArrayAccess;
+
 import edu.robertob.olc1.vj24.Engine.Expressions.Primitive;
 import edu.robertob.olc1.vj24.Engine.Statements.IfStatement;
 import edu.robertob.olc1.vj24.Engine.Statements.WhileStatement;
@@ -38,8 +41,6 @@ parser code
 {:
     JCLexer s;
     JCParser(JCLexer s){this.s = s;}
-
-//    public LinkedList<Errores> listaErrores = new LinkedList<>();
     private LinkedList<JCError> errorList = new LinkedList<>();
     public LinkedList<JCError> getSyntaxErrorList(){
         return errorList;
@@ -72,6 +73,7 @@ terminal COMMA, OPENBRACKET, CLOSEBRACKET;
 nonterminal LinkedList<Instruction> START, STATEMENTS;
 nonterminal Instruction STATEMENT;
 nonterminal Instruction IMPRESION, DECLARATION, ASSIGNATION;
+nonterminal Instruction CONST_DECLARATION, VAR_DECLARATION;
 nonterminal Instruction IF_STMT, WHILE_STMT, DO_WHILE_STMT, FOR_STMT, FOR_UPDATE;
 nonterminal Types TYPES;
 nonterminal Instruction EXPRESION;
@@ -86,6 +88,14 @@ nonterminal Instruction METHOD_CALL;
 nonterminal LinkedList<Instruction> CALL_ARGUMENTS;
 nonterminal Instruction ARGUMENT;
 nonterminal Instruction RETURN_STMT;
+nonterminal Boolean MUTABILITY;
+
+// array related
+nonterminal LinkedList<Instruction> VALUES_LIST;
+nonterminal LinkedList<LinkedList<Instruction>> VALUES_OF_VALUES_LIST;
+nonterminal Instruction ARRAY_VALUE;
+nonterminal Instruction ARRAY_ASSIGNATION;
+nonterminal Instruction ARRAY_ACCESS;
 
 precedence left OR;
 precedence left AND;
@@ -109,6 +119,7 @@ STATEMENTS ::= STATEMENTS:a STATEMENT:b     {: RESULT = a; RESULT.add(b); :}
 STATEMENT ::= IMPRESION: a        {:   RESULT=a;   :}
                 | DECLARATION:a       {:   RESULT=a;   :}
                 | ASSIGNATION:a        {:   RESULT=a;   :}
+                | ARRAY_ASSIGNATION:a {:   RESULT=a;   :}
                 | IF_STMT:a               {:   RESULT=a;   :}
                 | INCREMENT:a           {:   RESULT=a;   :}
                 | DECREMENT:a           {:   RESULT=a;   :}
@@ -136,21 +147,40 @@ CONTINUE ::= RW_CONTINUE:a ENDLINE {:   RESULT = new Continue(aleft, aright);   
 IMPRESION ::= RW_PRINT OPENPAR EXPRESION:a CLOSEPAR ENDLINE      {:   RESULT = new Print(a, aleft, aright);   :}
 ;
 
+MUTABILITY ::= RW_VAR {: RESULT = false; :}
+            | RW_CONST {: RESULT = true; :}
+            ;
+DECLARATION ::= MUTABILITY:a ID:b COLON TYPES:c ENDLINE {: RESULT = new Declaration(b, c, null, a, aleft, aright); :}
+            | MUTABILITY:a ID:b COLON TYPES:c EQUALS EXPRESION:d ENDLINE {: RESULT = new Declaration(b, c, d, a, aleft, aright); :}
+            | MUTABILITY:a ID:b COLON TYPES:c EQUALS METHOD_CALL:d ENDLINE {: RESULT = new Declaration(b, c, d, a, aleft, aright); :}
+               | MUTABILITY:a ID:b COLON TYPES:c OPENBRACKET CLOSEBRACKET EQUALS OPENBRACKET VALUES_LIST:d CLOSEBRACKET ENDLINE {:
+                RESULT = new Declaration(b, c, 1, d, a, aleft, aright);
+            :}
+            | MUTABILITY:a ID:b COLON TYPES:c OPENBRACKET CLOSEBRACKET OPENBRACKET CLOSEBRACKET EQUALS OPENBRACKET VALUES_OF_VALUES_LIST:d CLOSEBRACKET ENDLINE {:
+                RESULT = new Declaration(b, c, d, 2, a, aleft, aright);
+            :}
+            ;
+// ex: [ [1, 2], [3, 4] ]
+VALUES_OF_VALUES_LIST ::= VALUES_OF_VALUES_LIST:a COMMA OPENBRACKET VALUES_LIST:b CLOSEBRACKET {: RESULT = a; a.add(b); :}
+            | OPENBRACKET VALUES_LIST:a CLOSEBRACKET {: RESULT = new LinkedList<>(); RESULT.add(a); :}
+            ;
 
-DECLARATION ::= RW_CONST ID:a COLON TYPES:b EQUALS EXPRESION:c ENDLINE    {:   RESULT = new Declaration(a, b, c, true, aleft, aright);   :}
-              | RW_CONST ID:a COLON TYPES:b ENDLINE    {:   RESULT = new Declaration(a, b, null, true,aleft, aright);   :}
-              | RW_VAR ID:a COLON TYPES:b ENDLINE    {:   RESULT = new Declaration(a, b, null, false, aleft, aright);   :}
-              | RW_VAR ID:a COLON TYPES:b EQUALS EXPRESION:c ENDLINE    {:   RESULT = new Declaration(a, b, c, false, aleft, aright);   :}
-              | RW_CONST ID:a COLON TYPES:b EQUALS METHOD_CALL:c ENDLINE    {:   RESULT = new Declaration(a, b, c, true, aleft, aright);   :}
-              | RW_VAR ID:a COLON TYPES:b EQUALS METHOD_CALL:c ENDLINE    {:   RESULT = new Declaration(a, b, c, false, aleft, aright);   :}
-              ;
+
+// ex: [1, 2, 3]
+VALUES_LIST ::= VALUES_LIST:a COMMA ARRAY_VALUE:b {: RESULT = a; a.add(b); :}
+            | ARRAY_VALUE:a {: RESULT = new LinkedList<>(); RESULT.add(a); :}
+            ;
+
+ARRAY_VALUE ::= EXPRESION:a {: RESULT = a; :}
+            | METHOD_CALL:a {: RESULT = a; :}
+            ;
 
 //public MethodDeclaration(Types type, String id, LinkedList<HashMap> params, LinkedList<Instruction> methodBody, int line, int column)
 METHOD_DECLARATION ::= TYPES:a ID:b OPENPAR CLOSEPAR OPENBRACE STATEMENTS:c CLOSEBRACE {:   RESULT = new MethodDeclaration(a, b, new LinkedList<HashMap>(), c, aleft, aright);   :}
                     | TYPES:a ID:b OPENPAR METHOD_PARAMS_DECLARATION:c CLOSEPAR OPENBRACE STATEMENTS:d CLOSEBRACE {:   RESULT = new MethodDeclaration(a, b, c, d, aleft, aright);   :}
               ;
 
-METHOD_PARAMS_DECLARATION ::= METHOD_PARAMS_DECLARATION:a COMMA ID:c COLON TYPES:b {:
+METHOD_PARAMS_DECLARATION ::= METHOD_PARAMS_DECLARATION:a COMMA TYPES:b ID:c {:
     RESULT = a;
     HashMap<String, Object> singleParam = new HashMap<>();
     singleParam.put("type", b);
@@ -158,7 +188,7 @@ METHOD_PARAMS_DECLARATION ::= METHOD_PARAMS_DECLARATION:a COMMA ID:c COLON TYPES
     RESULT.add(singleParam);
     :}
 
-    |  ID:b COLON TYPES:a {:
+    |  TYPES:a ID:b {:
         RESULT = new LinkedList<HashMap>();
         HashMap<String, Object> singleParam = new HashMap<>();
         singleParam.put("type", a);
@@ -189,9 +219,14 @@ TYPE_CAST_OPERATOR ::= OPENPAR TYPES:type CLOSEPAR {:   RESULT = type; :}
 ;
 
 ASSIGNATION ::= ID:a EQUALS EXPRESION:b ENDLINE  {:   RESULT=new SymbolAssignation(a, b, aleft, aright);  :}
+            | ID:a EQUALS METHOD_CALL:b ENDLINE {:   RESULT=new SymbolAssignation(a, b, aleft, aright);  :}
+            | ID:a OPENBRACKET EXPRESION:b CLOSEBRACKET EQUALS EXPRESION:c ENDLINE {:
+                RESULT = new ArrayAssignation(a, b, null, c, aleft, aright);
+            :}
+            | ID:a OPENBRACKET EXPRESION:b CLOSEBRACKET OPENBRACKET EXPRESION:c CLOSEBRACKET EQUALS EXPRESION:d ENDLINE {:
+                RESULT = new ArrayAssignation(a, b, c, d, aleft, aright);
+            :}
             ;
-
-
 
 
 IF_STMT ::=
@@ -277,5 +312,8 @@ EXPRESION ::=
             | RW_TRUE:a     {:   RESULT = new Primitive(Types.BOOLEAN, true, aleft, aright );   :}
             | RW_FALSE:a    {:   RESULT = new Primitive(Types.BOOLEAN, false, aleft, aright );   :}
             | ID:a          {:   RESULT = new SymbolAccess(a, aleft, aright);   :}
+//            | ARRAY_ACCESS:a {:   RESULT = a;   :}
+            | ID:a OPENBRACKET EXPRESION:b CLOSEBRACKET {: RESULT = new ArrayAccess(a, b, null, aleft, aright); :}
+            | ID:a OPENBRACKET EXPRESION:b CLOSEBRACKET OPENBRACKET EXPRESION:c CLOSEBRACKET {: RESULT = new ArrayAccess(a, b, c, aleft, aright); :}
             | OPENPAR EXPRESION:a CLOSEPAR     {:   RESULT = a;   :}
 ;

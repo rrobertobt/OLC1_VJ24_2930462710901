@@ -52,15 +52,15 @@ AND="&&"
 XOR=\^
 ENDLINE=";"
 COLON=":"
-OPENBRACKET="\["
-CLOSEBRACKET="\]"
 COMMA=","
 OPENBRACE="{"
 CLOSEBRACE="}"
+OPENBRACKET=[\[]
+CLOSEBRACKET=[\]]
 BLANKS=[\ \r\t\f\n]+
 INTEGER=[0-9]+
 DECIMAL=[0-9]+"."[0-9]+
-ID=[a-zA-z][a-zA-Z0-9_]*
+ID=[a-zA-Z0-9_]+
 //STRING = [\"]([^\"])*[\"]
 STRING = [\"]([^\"\\]|\\.)*[\"]
 CHAR = [']([^\'])*[']
@@ -90,6 +90,8 @@ RW_START_WITH="start_with"
 RW_RETURN="return"
 
 %%
+
+
 <YYINITIAL> {XOR} {
           return new Symbol(sym.XOR, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_PRINT} {return new Symbol(sym.RW_PRINT, yyline, yycolumn,yytext());}
@@ -115,10 +117,12 @@ RW_RETURN="return"
 <YYINITIAL> {RW_CONST} {return new Symbol(sym.RW_CONST, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_VAR} {return new Symbol(sym.RW_VAR, yyline, yycolumn,yytext());}
 
-<YYINITIAL> {ID} {return new Symbol(sym.ID, yyline, yycolumn,yytext());}
+<YYINITIAL> {OPENBRACKET} {return new Symbol(sym.OPENBRACKET, yyline, yycolumn,yytext());}
+<YYINITIAL> {CLOSEBRACKET} {return new Symbol(sym.CLOSEBRACKET, yyline, yycolumn,yytext());}
 
 <YYINITIAL> {DECIMAL} {return new Symbol(sym.DECIMAL, yyline, yycolumn,yytext());}
 <YYINITIAL> {INTEGER} {return new Symbol(sym.INTEGER, yyline, yycolumn,yytext());}
+<YYINITIAL> {ID} {return new Symbol(sym.ID, yyline, yycolumn,yytext());}
 
 <YYINITIAL> {STRING} {
     String foundString = yytext();
@@ -160,9 +164,6 @@ RW_RETURN="return"
 <YYINITIAL> {NEGATION} {return new Symbol(sym.NEGATION, yyline, yycolumn,yytext());}
 <YYINITIAL> {OR} {return new Symbol(sym.OR, yyline, yycolumn,yytext());}
 <YYINITIAL> {AND} {return new Symbol(sym.AND, yyline, yycolumn,yytext());}
-
-<YYINITIAL> {OPENBRACKET} {return new Symbol(sym.OPENBRACKET, yyline, yycolumn,yytext());}
-<YYINITIAL> {CLOSEBRACKET} {return new Symbol(sym.CLOSEBRACKET, yyline, yycolumn,yytext());}
 
 <YYINITIAL> {BLANKS} {}
 <YYINITIAL> {COMMENT_ONE_LINE} {}

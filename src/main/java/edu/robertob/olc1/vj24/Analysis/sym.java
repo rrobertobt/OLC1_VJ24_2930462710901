@@ -41,6 +41,7 @@ public class sym {
   public static final int RW_CONTINUE = 43;
   public static final int error = 1;
   public static final int NEGATION = 18;
+  public static final int CLOSEBRACKET = 53;
   public static final int RW_FALSE = 34;
   public static final int MODULO = 16;
   public static final int RW_START_WITH = 46;
@@ -50,6 +51,7 @@ public class sym {
   public static final int COLON = 19;
   public static final int RW_IF = 32;
   public static final int RW_INT = 29;
+  public static final int OPENBRACKET = 52;
   public static final int RW_VOID = 38;
   public static final int RW_CONST = 39;
   public static final int RW_FOR = 45;
@@ -112,7 +114,9 @@ public class sym {
   "OR",
   "AND",
   "XOR",
-  "COMMA"
+  "COMMA",
+  "OPENBRACKET",
+  "CLOSEBRACKET"
   };
 }
 

@@ -63,6 +63,10 @@ public class Tree {
         return errors;
     }
 
+    public LinkedList<Instruction> getMethods() {
+        return methods;
+    }
+
     public void setErrors(LinkedList<JCError> errors) {
         this.errors = errors;
     }

@@ -463,6 +463,7 @@ public class MainFrame extends JFrame {
             var tree = new Tree((LinkedList<Instruction>) parserResult.value);
             var globalTable = new SymbolTable("Global Table");
             tree.setGlobalTable(globalTable);
+            currentSession.getActiveFile().setCurrentTree(tree);
 //            for (Instruction instruction : tree.getInstructions()) {
 //                if (instruction == null) {
 //                    continue;
@@ -484,6 +485,11 @@ public class MainFrame extends JFrame {
                     continue;
                 }
                 if (instruction instanceof MethodDeclaration method) {
+                    if (method.isReservedMethod()) {
+                        currentSession.getActiveFile().getErrors().add(new JCError("Semantica", "No se puede declarar un método con el nombre de una función reservada: " + method.getId(), method.getLine(), method.getColumn()));
+                        allErrors.add(new JCError("Semantica", "No se puede declarar un método con el nombre de una función reservada: " + method.getId(), method.getLine(), method.getColumn()));
+                        continue;
+                    }
                     tree.addMethod(method);
                 }
             }
@@ -537,9 +543,9 @@ public class MainFrame extends JFrame {
         allErrors.addAll(parser.getSyntaxErrorList());
         currentSession.getActiveFile().getErrors().addAll(parser.getSyntaxErrorList());
         if (allErrors.isEmpty()) {
-            jTextPane1.setText(jTextPane1.getText() + "\n --> Compilación exitosa\n");
+            jTextPane1.setText(jTextPane1.getText() + "\n✅ --> Compilación exitosa\n");
         } else {
-            jTextPane1.setText(jTextPane1.getText() + "\n !--> Compilación con errores - Ver menu de reportes para detalles\n");
+            jTextPane1.setText(jTextPane1.getText() + "\n❌--> Compilación con errores - Ver menu de reportes para detalles\n");
             for (JCError error : allErrors) {
                 jTextPane1.setText(jTextPane1.getText() + error.toString() + "\n");
             }
@@ -557,6 +563,7 @@ public class MainFrame extends JFrame {
     private void jMenuItem2ActionPerformed(ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         var activeFile = currentSession.getActiveFile();
         if (activeFile != null) {
+            activeFile.getGlobalTable().addMethods(currentSession.getActiveFile().getCurrentTree());
             symbolsReportFrame.setSymbolTableAndShow(activeFile.getGlobalTable());
         }
     }//GEN-LAST:event_jMenuItem2ActionPerformed

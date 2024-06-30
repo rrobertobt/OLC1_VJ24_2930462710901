@@ -23,6 +23,15 @@ public class SymbolVariable {
         this.column = column;
     }
 
+    public SymbolVariable(Types type, boolean constant,String id, ArrayValue value,int line, int column) {
+        this.type = type;
+        this.constant = constant;
+        this.id = id;
+        this.value = value;
+        this.line = line;
+        this.column = column;
+    }
+
     public Types getType() {
         return type;
     }
