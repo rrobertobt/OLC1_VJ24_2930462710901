@@ -4,38 +4,45 @@ package edu.robertob.olc1.vj24.Analysis;
 import java_cup.runtime.Symbol;
 import java.util.LinkedList;
 import java.util.HashMap;
-import edu.robertob.olc1.vj24.Engine.Base.Instruction;
-import edu.robertob.olc1.vj24.Engine.Structs.Types;
-import edu.robertob.olc1.vj24.Engine.Structs.JCError;
 
-import edu.robertob.olc1.vj24.Engine.Statements.Print;
-import edu.robertob.olc1.vj24.Engine.Statements.Declaration;
-import edu.robertob.olc1.vj24.Engine.Statements.SymbolAssignation;
-import edu.robertob.olc1.vj24.Engine.Expressions.SymbolAccess;
-import edu.robertob.olc1.vj24.Engine.Statements.StartWithInvoke;
-import edu.robertob.olc1.vj24.Engine.Statements.MethodDeclaration;
-import edu.robertob.olc1.vj24.Engine.Statements.ReturnIns;
-import edu.robertob.olc1.vj24.Engine.Expressions.MethodCall;
+import edu.robertob.olc1.vj24.Engine.Base.*;
+import edu.robertob.olc1.vj24.Engine.Structs.*;
+import edu.robertob.olc1.vj24.Engine.Statements.*;
+import edu.robertob.olc1.vj24.Engine.Expressions.*;
 
-import edu.robertob.olc1.vj24.Engine.Statements.ArrayAssignation;
-import edu.robertob.olc1.vj24.Engine.Expressions.ArrayAccess;
 
-import edu.robertob.olc1.vj24.Engine.Expressions.Primitive;
-import edu.robertob.olc1.vj24.Engine.Statements.IfStatement;
-import edu.robertob.olc1.vj24.Engine.Statements.WhileStatement;
-import edu.robertob.olc1.vj24.Engine.Statements.DoWhileStatement;
-import edu.robertob.olc1.vj24.Engine.Statements.ForStatement;
-import edu.robertob.olc1.vj24.Engine.Statements.Break;
-import edu.robertob.olc1.vj24.Engine.Statements.Continue;
-import edu.robertob.olc1.vj24.Engine.Expressions.TypeCast;
-
-import edu.robertob.olc1.vj24.Engine.Expressions.Arithmetic;
-import edu.robertob.olc1.vj24.Engine.Expressions.Comparison;
-import edu.robertob.olc1.vj24.Engine.Structs.ComparisonOperands;
-import edu.robertob.olc1.vj24.Engine.Expressions.Logical;
-import edu.robertob.olc1.vj24.Engine.Structs.LogicalOperands;
-
-import edu.robertob.olc1.vj24.Engine.Structs.ArithmeticOperands;
+//import edu.robertob.olc1.vj24.Engine.Base.Instruction;
+//import edu.robertob.olc1.vj24.Engine.Structs.Types;
+//import edu.robertob.olc1.vj24.Engine.Structs.JCError;
+//
+//import edu.robertob.olc1.vj24.Engine.Statements.Print;
+//import edu.robertob.olc1.vj24.Engine.Statements.Declaration;
+//import edu.robertob.olc1.vj24.Engine.Statements.SymbolAssignation;
+//import edu.robertob.olc1.vj24.Engine.Expressions.SymbolAccess;
+//import edu.robertob.olc1.vj24.Engine.Statements.StartWithInvoke;
+//import edu.robertob.olc1.vj24.Engine.Statements.MethodDeclaration;
+//import edu.robertob.olc1.vj24.Engine.Statements.ReturnIns;
+//import edu.robertob.olc1.vj24.Engine.Expressions.MethodCall;
+//
+//import edu.robertob.olc1.vj24.Engine.Statements.ArrayAssignation;
+//import edu.robertob.olc1.vj24.Engine.Expressions.ArrayAccess;
+//
+//import edu.robertob.olc1.vj24.Engine.Expressions.Primitive;
+//import edu.robertob.olc1.vj24.Engine.Statements.IfStatement;
+//import edu.robertob.olc1.vj24.Engine.Statements.WhileStatement;
+//import edu.robertob.olc1.vj24.Engine.Statements.DoWhileStatement;
+//import edu.robertob.olc1.vj24.Engine.Statements.ForStatement;
+//import edu.robertob.olc1.vj24.Engine.Statements.Break;
+//import edu.robertob.olc1.vj24.Engine.Statements.Continue;
+//import edu.robertob.olc1.vj24.Engine.Expressions.TypeCast;
+//
+//import edu.robertob.olc1.vj24.Engine.Expressions.Arithmetic;
+//import edu.robertob.olc1.vj24.Engine.Expressions.Comparison;
+//import edu.robertob.olc1.vj24.Engine.Structs.ComparisonOperands;
+//import edu.robertob.olc1.vj24.Engine.Expressions.Logical;
+//import edu.robertob.olc1.vj24.Engine.Structs.LogicalOperands;
+//
+//import edu.robertob.olc1.vj24.Engine.Structs.ArithmeticOperands;
 
 parser code
 {:
@@ -68,7 +75,8 @@ terminal OPENPAR, CLOSEPAR;
 terminal RW_PRINT, RW_INT, RW_DOUBLE, RW_STRING, RW_IF, RW_TRUE, RW_FALSE, RW_BOOL, RW_CHAR, RW_ELSE, RW_VOID;
 terminal RW_CONST, RW_VAR, RW_WHILE, RW_BREAK, RW_CONTINUE, RW_DO, RW_FOR, RW_START_WITH, RW_RETURN;
 terminal OR, AND, XOR;
-terminal COMMA, OPENBRACKET, CLOSEBRACKET;
+terminal COMMA, OPENBRACKET, CLOSEBRACKET, DOT;
+terminal RW_LIST, RW_NEW, RW_APPEND, RW_REMOVE;
 
 nonterminal LinkedList<Instruction> START, STATEMENTS;
 nonterminal Instruction STATEMENT;
@@ -96,6 +104,10 @@ nonterminal LinkedList<LinkedList<Instruction>> VALUES_OF_VALUES_LIST;
 nonterminal Instruction ARRAY_VALUE;
 nonterminal Instruction ARRAY_ASSIGNATION;
 nonterminal Instruction ARRAY_ACCESS;
+
+// dynamic lists
+nonterminal Instruction DYNAMIC_LIST_DECLARATION;
+nonterminal Instruction DYNAMIC_LIST_MUTATOR;
 
 precedence left OR;
 precedence left AND;
@@ -126,6 +138,8 @@ STATEMENT ::= IMPRESION: a        {:   RESULT=a;   :}
                 | WHILE_STMT:a       {:   RESULT=a;   :}
                 | FOR_STMT:a             {:   RESULT=a;   :}
                 | DO_WHILE_STMT:a   {:   RESULT=a;   :}
+                | DYNAMIC_LIST_DECLARATION:a {:   RESULT=a;   :}
+                | DYNAMIC_LIST_MUTATOR:a ENDLINE {:   RESULT=a;   :}
                 | RETURN_STMT:a       {:   RESULT=a;   :}
                 | BREAK:a                   {:   RESULT=a;   :}
                 | CONTINUE:a               {:   RESULT=a;   :}
@@ -159,6 +173,10 @@ DECLARATION ::= MUTABILITY:a ID:b COLON TYPES:c ENDLINE {: RESULT = new Declarat
             | MUTABILITY:a ID:b COLON TYPES:c OPENBRACKET CLOSEBRACKET OPENBRACKET CLOSEBRACKET EQUALS OPENBRACKET VALUES_OF_VALUES_LIST:d CLOSEBRACKET ENDLINE {:
                 RESULT = new Declaration(b, c, d, 2, a, aleft, aright);
             :}
+            // for example: var rmtest: int = miLista.remove(0);
+            | MUTABILITY:a ID:b COLON TYPES:c EQUALS DYNAMIC_LIST_MUTATOR:d ENDLINE {:
+                RESULT = new Declaration(b, c, d, a, aleft, aright);
+            :}
             ;
 // ex: [ [1, 2], [3, 4] ]
 VALUES_OF_VALUES_LIST ::= VALUES_OF_VALUES_LIST:a COMMA OPENBRACKET VALUES_LIST:b CLOSEBRACKET {: RESULT = a; a.add(b); :}
@@ -174,6 +192,26 @@ VALUES_LIST ::= VALUES_LIST:a COMMA ARRAY_VALUE:b {: RESULT = a; a.add(b); :}
 ARRAY_VALUE ::= EXPRESION:a {: RESULT = a; :}
             | METHOD_CALL:a {: RESULT = a; :}
             ;
+
+// dynamic lists
+// ex: List<int> miLista = new List();
+DYNAMIC_LIST_DECLARATION ::= RW_LIST LESS TYPES:a GREATER ID:b EQUALS RW_NEW RW_LIST OPENPAR CLOSEPAR ENDLINE {:
+    System.out.println("[debug] found dynamic list declaration");
+    RESULT = new Declaration(b, a, null, false, aleft, aright, true);
+:}
+;
+
+// ex: miLista.append(1);
+//DynamicListMutation(String id, Instruction index, Instruction value, MutationType mutationType, int line, int col)
+DYNAMIC_LIST_MUTATOR ::= ID:a DOT RW_APPEND OPENPAR EXPRESION:b CLOSEPAR {:
+    System.out.println("[debug] found dynamic list mutator");
+    RESULT = new DynamicListMutation(a, null, b, DynamicListMutation.MutationType.ADD, aleft, aright);
+:}
+| ID:a DOT RW_REMOVE OPENPAR EXPRESION:b CLOSEPAR {:
+    System.out.println("[debug] found dynamic list mutator");
+    RESULT = new DynamicListMutation(a, b, null, DynamicListMutation.MutationType.REMOVE, aleft, aright);
+:}
+;
 
 //public MethodDeclaration(Types type, String id, LinkedList<HashMap> params, LinkedList<Instruction> methodBody, int line, int column)
 METHOD_DECLARATION ::= TYPES:a ID:b OPENPAR CLOSEPAR OPENBRACE STATEMENTS:c CLOSEBRACE {:   RESULT = new MethodDeclaration(a, b, new LinkedList<HashMap>(), c, aleft, aright);   :}
@@ -224,6 +262,15 @@ ASSIGNATION ::= ID:a EQUALS EXPRESION:b ENDLINE  {:   RESULT=new SymbolAssignati
                 RESULT = new ArrayAssignation(a, b, null, c, aleft, aright);
             :}
             | ID:a OPENBRACKET EXPRESION:b CLOSEBRACKET OPENBRACKET EXPRESION:c CLOSEBRACKET EQUALS EXPRESION:d ENDLINE {:
+                RESULT = new ArrayAssignation(a, b, c, d, aleft, aright);
+            :}
+            | ID:a EQUALS DYNAMIC_LIST_MUTATOR:b ENDLINE {:
+                RESULT = new SymbolAssignation(a, b, aleft, aright);
+            :}
+            | ID:a OPENBRACKET EXPRESION:b CLOSEBRACKET EQUALS DYNAMIC_LIST_MUTATOR:c ENDLINE {:
+                RESULT = new ArrayAssignation(a, b, null, c, aleft, aright);
+            :}
+            | ID:a OPENBRACKET EXPRESION:b CLOSEBRACKET OPENBRACKET EXPRESION:c CLOSEBRACKET EQUALS DYNAMIC_LIST_MUTATOR:d ENDLINE {:
                 RESULT = new ArrayAssignation(a, b, c, d, aleft, aright);
             :}
             ;

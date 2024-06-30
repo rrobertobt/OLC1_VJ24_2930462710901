@@ -20,6 +20,8 @@ public class MethodDeclaration extends Instruction {
             "length",
             "tostring",
             "find",
+            // not really a method name, but it's a reserved word
+            "new"
     };
 
 

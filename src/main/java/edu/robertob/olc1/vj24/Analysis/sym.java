@@ -8,6 +8,8 @@ package edu.robertob.olc1.vj24.Analysis;
 /** CUP generated class containing symbol constants. */
 public class sym {
   /* terminals */
+  public static final int RW_NEW = 56;
+  public static final int RW_REMOVE = 58;
   public static final int UNIT_MINUS = 2;
   public static final int CHAR = 7;
   public static final int ASTERISK = 14;
@@ -24,6 +26,7 @@ public class sym {
   public static final int MINUS = 10;
   public static final int RW_BREAK = 42;
   public static final int OPENPAR = 26;
+  public static final int RW_APPEND = 57;
   public static final int AND = 49;
   public static final int LESSEQUAL = 23;
   public static final int OR = 48;
@@ -31,6 +34,7 @@ public class sym {
   public static final int ENDLINE = 8;
   public static final int RW_WHILE = 41;
   public static final int PLUS = 9;
+  public static final int DOT = 54;
   public static final int RW_RETURN = 47;
   public static final int ID = 4;
   public static final int CLOSEPAR = 27;
@@ -62,6 +66,7 @@ public class sym {
   public static final int OPENBRACE = 12;
   public static final int STRING = 3;
   public static final int DOUBLEASTERISK = 17;
+  public static final int RW_LIST = 55;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
@@ -116,7 +121,12 @@ public class sym {
   "XOR",
   "COMMA",
   "OPENBRACKET",
-  "CLOSEBRACKET"
+  "CLOSEBRACKET",
+  "DOT",
+  "RW_LIST",
+  "RW_NEW",
+  "RW_APPEND",
+  "RW_REMOVE"
   };
 }
 

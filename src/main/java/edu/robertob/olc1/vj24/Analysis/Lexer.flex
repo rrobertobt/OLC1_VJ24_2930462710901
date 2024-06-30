@@ -28,7 +28,7 @@ import java.util.LinkedList;
 %char
 %column
 %full
-//%debug
+%debug
 %ignorecase
 
 OPENPAR="("
@@ -66,6 +66,7 @@ STRING = [\"]([^\"\\]|\\.)*[\"]
 CHAR = [']([^\'])*[']
 COMMENT_ONE_LINE = [\/]{2}.*
 COMMENT_MULTIPLE_LINES = [\/][*]([^\*]|[\*][^\/])*[\*][\/]
+DOT="."
 
 RW_PRINT="println"
 RW_INT="int"
@@ -88,6 +89,10 @@ RW_MATCH="match"
 RW_CONTINUE="continue"
 RW_START_WITH="start_with"
 RW_RETURN="return"
+RW_LIST="list"
+RW_APPEND="append"
+RW_REMOVE="remove"
+RW_NEW="new"
 
 %%
 
@@ -111,11 +116,16 @@ RW_RETURN="return"
 //<YYINITIAL> {RW_MATCH} {return new Symbol(sym.RW_MATCH, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_START_WITH} {return new Symbol(sym.RW_START_WITH, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_RETURN} {return new Symbol(sym.RW_RETURN, yyline, yycolumn,yytext());}
+<YYINITIAL> {RW_LIST} {return new Symbol(sym.RW_LIST, yyline, yycolumn,yytext());}
+<YYINITIAL> {RW_NEW} {return new Symbol(sym.RW_NEW, yyline, yycolumn,yytext());}
+<YYINITIAL> {RW_APPEND} {return new Symbol(sym.RW_APPEND, yyline, yycolumn,yytext());}
+<YYINITIAL> {RW_REMOVE} {return new Symbol(sym.RW_REMOVE, yyline, yycolumn,yytext());}
 
 <YYINITIAL> {RW_TRUE} {return new Symbol(sym.RW_TRUE, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_FALSE} {return new Symbol(sym.RW_FALSE, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_CONST} {return new Symbol(sym.RW_CONST, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_VAR} {return new Symbol(sym.RW_VAR, yyline, yycolumn,yytext());}
+      <YYINITIAL> {DOT} {return new Symbol(sym.DOT, yyline, yycolumn,yytext());}
 
 <YYINITIAL> {OPENBRACKET} {return new Symbol(sym.OPENBRACKET, yyline, yycolumn,yytext());}
 <YYINITIAL> {CLOSEBRACKET} {return new Symbol(sym.CLOSEBRACKET, yyline, yycolumn,yytext());}

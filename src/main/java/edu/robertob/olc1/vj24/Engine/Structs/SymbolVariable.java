@@ -8,6 +8,7 @@ public class SymbolVariable {
     private boolean constant;
     private int line;
     private int column;
+    private boolean isDynamicList;
 
     public SymbolVariable(Types type, String id) {
         this.type = type;
@@ -21,6 +22,16 @@ public class SymbolVariable {
         this.value = value;
         this.line = line;
         this.column = column;
+    }
+
+    public SymbolVariable(Types type, boolean constant,String id, Object value,int line, int column, boolean isDynamicList) {
+        this.type = type;
+        this.constant = constant;
+        this.id = id;
+        this.value = value;
+        this.line = line;
+        this.column = column;
+        this.isDynamicList = isDynamicList;
     }
 
     public SymbolVariable(Types type, boolean constant,String id, ArrayValue value,int line, int column) {
@@ -74,5 +85,9 @@ public class SymbolVariable {
 
     public void setScopeName(String scopeName) {
         this.scopeName = scopeName;
+    }
+
+    public boolean isDynamicList() {
+        return isDynamicList;
     }
 }

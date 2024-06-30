@@ -11,6 +11,7 @@ public class Declaration extends Instruction {
     private String id;
     private Instruction value;
     private boolean constant;
+    private boolean isDynamicList;
 
     private int dimension; // Only for arrays
     private LinkedList<Instruction> values; // Only for arrays
@@ -22,6 +23,15 @@ public class Declaration extends Instruction {
         this.constant = constant;
         this.value = value;
         this.dimension = 0;
+    }
+
+    public Declaration(String id, Types type, Instruction value, boolean constant, int line, int column, boolean isDynamicList) {
+        super(type, line, column);
+        this.id = id;
+        this.constant = constant;
+        this.value = value;
+        this.dimension = 0;
+        this.isDynamicList = isDynamicList;
     }
 
     public Declaration(String id, Types type, int dimension, LinkedList<Instruction> values, boolean constant, int line, int column) {
@@ -49,6 +59,15 @@ public class Declaration extends Instruction {
             if (this.constant && this.value == null)
                 return new JCError("Semantica", "Variable constante " + this.id + " debe tener un valor", this.line, this.column);
 
+            if (isDynamicList) {
+                var symbol = new SymbolVariable(this.type, this.constant, this.id, new DynamicList(this.type, this.id, this.line, this.column), this.line, this.column, true);
+                boolean created = table.setSymbol(symbol);
+                if (!created) {
+                    return new JCError("Semantica", "Variable " + this.id + " ya existe", this.line, this.column);
+                }
+                return null;
+            }
+
             if (this.value == null) {
                 switch (this.type) {
                     case INTEGER:
@@ -75,6 +94,10 @@ public class Declaration extends Instruction {
 
             if (this.value.getType() != this.type)
                 return new JCError("Semantica", "No se puede asignar el valor de tipo " + this.value.getType() + " a una variable de tipo " + this.type, this.line, this.column);
+
+            if (this.id.equals("new")) {
+                return new JCError("Semantica", "No se puede declarar una variable con el nombre 'new'", this.line, this.column);
+            }
 
             var symbol = new SymbolVariable(this.type, this.constant, this.id, result, this.line, this.column);
 
