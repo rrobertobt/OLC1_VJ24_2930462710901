@@ -35,6 +35,7 @@ OPENPAR="("
 CLOSEPAR=")"
 PLUS="+"
 MINUS="-"
+UNDERSCORE="_"
 ASTERISK="*"
 DOUBLEASTERISK="**"
 SLASH="/"
@@ -47,6 +48,7 @@ LESS="<"
 LESSEQUALS="<="
 GREATER=">"
 GREATEREQUALS=">="
+ARROW="=>"
 OR="||"
 AND="&&"
 XOR=\^
@@ -118,6 +120,7 @@ RW_FIND="find"
 <YYINITIAL> {RW_DO} {return new Symbol(sym.RW_DO, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_BREAK} {return new Symbol(sym.RW_BREAK, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_CONTINUE} {return new Symbol(sym.RW_CONTINUE, yyline, yycolumn,yytext());}
+<YYINITIAL> {RW_MATCH} {return new Symbol(sym.RW_MATCH, yyline, yycolumn,yytext());}
 //<YYINITIAL> {RW_MATCH} {return new Symbol(sym.RW_MATCH, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_START_WITH} {return new Symbol(sym.RW_START_WITH, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_RETURN} {return new Symbol(sym.RW_RETURN, yyline, yycolumn,yytext());}
@@ -135,6 +138,8 @@ RW_FIND="find"
 <YYINITIAL> {RW_CONST} {return new Symbol(sym.RW_CONST, yyline, yycolumn,yytext());}
 <YYINITIAL> {RW_VAR} {return new Symbol(sym.RW_VAR, yyline, yycolumn,yytext());}
       <YYINITIAL> {DOT} {return new Symbol(sym.DOT, yyline, yycolumn,yytext());}
+      <YYINITIAL> {UNDERSCORE} {return new Symbol(sym.UNDERSCORE, yyline, yycolumn,yytext());}
+<YYINITIAL> {ARROW} {return new Symbol(sym.ARROW, yyline, yycolumn,yytext());}
 
 <YYINITIAL> {OPENBRACKET} {return new Symbol(sym.OPENBRACKET, yyline, yycolumn,yytext());}
 <YYINITIAL> {CLOSEBRACKET} {return new Symbol(sym.CLOSEBRACKET, yyline, yycolumn,yytext());}

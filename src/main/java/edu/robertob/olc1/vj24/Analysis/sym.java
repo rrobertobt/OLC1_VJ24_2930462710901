@@ -8,34 +8,34 @@ package edu.robertob.olc1.vj24.Analysis;
 /** CUP generated class containing symbol constants. */
 public class sym {
   /* terminals */
-  public static final int RW_NEW = 56;
-  public static final int RW_REMOVE = 58;
+  public static final int RW_NEW = 59;
+  public static final int RW_REMOVE = 61;
   public static final int UNIT_MINUS = 2;
   public static final int CHAR = 7;
   public static final int ASTERISK = 14;
   public static final int EQUALS = 11;
   public static final int SLASH = 15;
   public static final int DOUBLEEQUALS = 20;
-  public static final int XOR = 50;
+  public static final int XOR = 51;
   public static final int RW_DOUBLE = 30;
   public static final int INTEGER = 5;
   public static final int GREATER = 22;
   public static final int RW_CHAR = 36;
-  public static final int RW_FIND = 60;
+  public static final int RW_FIND = 63;
   public static final int RW_DO = 44;
   public static final int LESS = 21;
   public static final int MINUS = 10;
   public static final int RW_BREAK = 42;
   public static final int OPENPAR = 26;
-  public static final int RW_APPEND = 57;
-  public static final int AND = 49;
+  public static final int RW_APPEND = 60;
+  public static final int AND = 50;
   public static final int LESSEQUAL = 23;
-  public static final int OR = 48;
-  public static final int COMMA = 51;
+  public static final int OR = 49;
+  public static final int COMMA = 52;
   public static final int ENDLINE = 8;
   public static final int RW_WHILE = 41;
   public static final int PLUS = 9;
-  public static final int DOT = 54;
+  public static final int DOT = 55;
   public static final int RW_RETURN = 47;
   public static final int ID = 4;
   public static final int CLOSEPAR = 27;
@@ -46,18 +46,19 @@ public class sym {
   public static final int RW_CONTINUE = 43;
   public static final int error = 1;
   public static final int NEGATION = 18;
-  public static final int CLOSEBRACKET = 53;
+  public static final int CLOSEBRACKET = 54;
   public static final int RW_FALSE = 34;
   public static final int MODULO = 16;
   public static final int RW_START_WITH = 46;
-  public static final int RW_ROUND = 61;
+  public static final int RW_ROUND = 64;
   public static final int RW_PRINT = 28;
   public static final int RW_TRUE = 33;
   public static final int GREATEREQUAL = 24;
+  public static final int ARROW = 57;
   public static final int COLON = 19;
   public static final int RW_IF = 32;
   public static final int RW_INT = 29;
-  public static final int OPENBRACKET = 52;
+  public static final int OPENBRACKET = 53;
   public static final int RW_VOID = 38;
   public static final int RW_CONST = 39;
   public static final int RW_FOR = 45;
@@ -66,11 +67,13 @@ public class sym {
   public static final int RW_STRING = 31;
   public static final int RW_ELSE = 37;
   public static final int OPENBRACE = 12;
+  public static final int UNDERSCORE = 56;
   public static final int STRING = 3;
   public static final int DOUBLEASTERISK = 17;
-  public static final int RW_LIST = 55;
-  public static final int RW_LENGTH = 59;
-  public static final int RW_TOSTRING = 62;
+  public static final int RW_LIST = 58;
+  public static final int RW_MATCH = 48;
+  public static final int RW_LENGTH = 62;
+  public static final int RW_TOSTRING = 65;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
@@ -120,6 +123,7 @@ public class sym {
   "RW_FOR",
   "RW_START_WITH",
   "RW_RETURN",
+  "RW_MATCH",
   "OR",
   "AND",
   "XOR",
@@ -127,6 +131,8 @@ public class sym {
   "OPENBRACKET",
   "CLOSEBRACKET",
   "DOT",
+  "UNDERSCORE",
+  "ARROW",
   "RW_LIST",
   "RW_NEW",
   "RW_APPEND",

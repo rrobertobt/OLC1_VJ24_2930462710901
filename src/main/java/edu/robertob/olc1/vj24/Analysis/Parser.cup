@@ -40,9 +40,9 @@ terminal ENDLINE, PLUS, MINUS, EQUALS, OPENBRACE, CLOSEBRACE, ASTERISK, SLASH, M
 terminal DOUBLEEQUALS, LESS, GREATER, LESSEQUAL, GREATEREQUAL, NOT_EQUALS;
 terminal OPENPAR, CLOSEPAR;
 terminal RW_PRINT, RW_INT, RW_DOUBLE, RW_STRING, RW_IF, RW_TRUE, RW_FALSE, RW_BOOL, RW_CHAR, RW_ELSE, RW_VOID;
-terminal RW_CONST, RW_VAR, RW_WHILE, RW_BREAK, RW_CONTINUE, RW_DO, RW_FOR, RW_START_WITH, RW_RETURN;
+terminal RW_CONST, RW_VAR, RW_WHILE, RW_BREAK, RW_CONTINUE, RW_DO, RW_FOR, RW_START_WITH, RW_RETURN, RW_MATCH;
 terminal OR, AND, XOR;
-terminal COMMA, OPENBRACKET, CLOSEBRACKET, DOT;
+terminal COMMA, OPENBRACKET, CLOSEBRACKET, DOT, UNDERSCORE, ARROW;
 terminal RW_LIST, RW_NEW, RW_APPEND, RW_REMOVE;
 terminal RW_LENGTH, RW_FIND, RW_ROUND, RW_TOSTRING;
 
@@ -66,6 +66,12 @@ nonterminal Instruction ARGUMENT;
 nonterminal Instruction RETURN_STMT;
 nonterminal Boolean MUTABILITY;
 nonterminal Instruction ITERABLE_FIND;
+
+//match statement
+nonterminal Instruction MATCH_STMT;
+nonterminal LinkedList<MatchCase> MATCH_CASES_LIST;
+nonterminal MatchCase CUSTOM_MATCH_CASE;
+nonterminal MatchCase DEFAULT_MATCH_CASE;
 
 // array related
 nonterminal LinkedList<Instruction> VALUES_LIST;
@@ -113,6 +119,7 @@ STATEMENT ::= IMPRESION: a        {:   RESULT=a;   :}
                 | BREAK:a                   {:   RESULT=a;   :}
                 | CONTINUE:a               {:   RESULT=a;   :}
                 | START_WITH_INVOKE:a {:   RESULT=a;   :}
+                | MATCH_STMT:a         {:   RESULT=a;   :}
                 | METHOD_CALL:a ENDLINE {:   RESULT=a;   :}
                 | METHOD_DECLARATION:a {:   RESULT=a;   :}
                 | error:e ENDLINE       {: :}
@@ -256,6 +263,40 @@ ASSIGNATION ::= ID:a EQUALS EXPRESION:b ENDLINE  {:   RESULT=new SymbolAssignati
             :}
             ;
 
+MATCH_STMT ::=
+  RW_MATCH OPENPAR EXPRESION:a CLOSEPAR OPENBRACE MATCH_CASES_LIST:b DEFAULT_MATCH_CASE:c CLOSEBRACE {:
+    RESULT = new MatchStatement(a, b, c, aleft, aright);
+:}
+| RW_MATCH OPENPAR EXPRESION:a CLOSEPAR OPENBRACE MATCH_CASES_LIST:b CLOSEBRACE {:
+      RESULT = new MatchStatement(a, b, null, aleft, aright);
+  :}
+| RW_MATCH OPENPAR EXPRESION:a CLOSEPAR OPENBRACE DEFAULT_MATCH_CASE:c CLOSEBRACE {:
+      RESULT = new MatchStatement(a, null, c, aleft, aright);
+  :}
+;
+
+
+MATCH_CASES_LIST ::= MATCH_CASES_LIST:a CUSTOM_MATCH_CASE:b {: RESULT = a; a.add(b); :}
+            | CUSTOM_MATCH_CASE:a {: RESULT = new LinkedList<>(); RESULT.add(a); :}
+            ;
+/*
+<EXPRESION> =>{
+<INSTRUCCIONES>
+}
+*/
+CUSTOM_MATCH_CASE ::= EXPRESION:a ARROW OPENBRACE STATEMENTS:b CLOSEBRACE {:
+    RESULT = new MatchCase(a, b, aleft, aright);
+:}
+;
+/*
+_ =>{
+<INSTRUCCIONES>
+}
+*/
+DEFAULT_MATCH_CASE ::= UNDERSCORE ARROW OPENBRACE STATEMENTS:a CLOSEBRACE {:
+    RESULT = new MatchCase(a, aleft, aright);
+:}
+;
 
 IF_STMT ::=
  // if (){...}
