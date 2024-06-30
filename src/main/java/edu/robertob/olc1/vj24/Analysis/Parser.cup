@@ -10,40 +10,6 @@ import edu.robertob.olc1.vj24.Engine.Structs.*;
 import edu.robertob.olc1.vj24.Engine.Statements.*;
 import edu.robertob.olc1.vj24.Engine.Expressions.*;
 
-
-//import edu.robertob.olc1.vj24.Engine.Base.Instruction;
-//import edu.robertob.olc1.vj24.Engine.Structs.Types;
-//import edu.robertob.olc1.vj24.Engine.Structs.JCError;
-//
-//import edu.robertob.olc1.vj24.Engine.Statements.Print;
-//import edu.robertob.olc1.vj24.Engine.Statements.Declaration;
-//import edu.robertob.olc1.vj24.Engine.Statements.SymbolAssignation;
-//import edu.robertob.olc1.vj24.Engine.Expressions.SymbolAccess;
-//import edu.robertob.olc1.vj24.Engine.Statements.StartWithInvoke;
-//import edu.robertob.olc1.vj24.Engine.Statements.MethodDeclaration;
-//import edu.robertob.olc1.vj24.Engine.Statements.ReturnIns;
-//import edu.robertob.olc1.vj24.Engine.Expressions.MethodCall;
-//
-//import edu.robertob.olc1.vj24.Engine.Statements.ArrayAssignation;
-//import edu.robertob.olc1.vj24.Engine.Expressions.ArrayAccess;
-//
-//import edu.robertob.olc1.vj24.Engine.Expressions.Primitive;
-//import edu.robertob.olc1.vj24.Engine.Statements.IfStatement;
-//import edu.robertob.olc1.vj24.Engine.Statements.WhileStatement;
-//import edu.robertob.olc1.vj24.Engine.Statements.DoWhileStatement;
-//import edu.robertob.olc1.vj24.Engine.Statements.ForStatement;
-//import edu.robertob.olc1.vj24.Engine.Statements.Break;
-//import edu.robertob.olc1.vj24.Engine.Statements.Continue;
-//import edu.robertob.olc1.vj24.Engine.Expressions.TypeCast;
-//
-//import edu.robertob.olc1.vj24.Engine.Expressions.Arithmetic;
-//import edu.robertob.olc1.vj24.Engine.Expressions.Comparison;
-//import edu.robertob.olc1.vj24.Engine.Structs.ComparisonOperands;
-//import edu.robertob.olc1.vj24.Engine.Expressions.Logical;
-//import edu.robertob.olc1.vj24.Engine.Structs.LogicalOperands;
-//
-//import edu.robertob.olc1.vj24.Engine.Structs.ArithmeticOperands;
-
 parser code
 {:
     JCLexer s;
