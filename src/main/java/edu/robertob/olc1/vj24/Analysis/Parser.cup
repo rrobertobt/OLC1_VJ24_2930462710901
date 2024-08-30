@@ -449,7 +449,7 @@ TYPES ::= RW_INT       {:   RESULT=Types.INTEGER;   :}
 
 EXPRESION ::=
             OPENPAR TYPES:a CLOSEPAR EXPRESION:b {:   RESULT = new TypeCast(b, a, aleft, aright);   :}
-            | MINUS EXPRESION:a             {:   RESULT = new Arithmetic(a, ArithmeticOperands.NEG, aleft, aright);   :} %prec UNIT_MINUS
+            | MIN   US EXPRESION:a             {:   RESULT = new Arithmetic(a, ArithmeticOperands.NEG, aleft, aright);   :} %prec UNIT_MINUS
             | EXPRESION:a ASTERISK EXPRESION:b{:   RESULT = new Arithmetic(a, b, ArithmeticOperands.MUL, aleft, aright);   :}
             | EXPRESION:a SLASH EXPRESION:b   {:   RESULT = new Arithmetic(a, b, ArithmeticOperands.DIV, aleft, aright);   :}
             | EXPRESION:a DOUBLEASTERISK EXPRESION:b{:   RESULT = new Arithmetic(a, b, ArithmeticOperands.POW, aleft, aright);   :}

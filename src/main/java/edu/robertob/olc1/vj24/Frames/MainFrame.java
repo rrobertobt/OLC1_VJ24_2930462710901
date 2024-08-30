@@ -46,7 +46,8 @@ public class MainFrame extends JFrame {
         consoleOutputLabel.setFont(consoleOutputLabel.getFont().deriveFont(Font.BOLD));
 
         // set monospaced font for the console output, and also set the font size
-        jTextPane1.setFont(new Font("Monospaced", Font.PLAIN, 14));
+//        jTextPane1.setFont(new Font("Monospaced", Font.PLAIN, 14));
+        jTextPane1.setFont(new Font("JetBrainsMono Nerd Font", Font.PLAIN, 14));
     }
 
     /**
@@ -254,7 +255,8 @@ public class MainFrame extends JFrame {
         var tln = new TextLineNumber(textPane, 3);
         scrollPane.setRowHeaderView(tln);
 
-        textPane.setFont(new Font("Monospaced", Font.PLAIN, 15));
+//        textPane.setFont(new Font("Monospaced", Font.PLAIN, 15));
+        textPane.setFont(new Font("CaskaydiaCove Nerd Font", Font.PLAIN, 15));
 
         jTabbedPane1.add(name, scrollPane);
         jTabbedPane1.setTabComponentAt(jTabbedPane1.getTabCount() - 1, new ButtonTabComponent(jTabbedPane1, currentSession));
@@ -382,7 +384,7 @@ public class MainFrame extends JFrame {
             var tln = new TextLineNumber(textPane, 3);
             scrollPane.setRowHeaderView(tln);
 
-            textPane.setFont(new Font("Monospaced", Font.PLAIN, 15));
+            textPane.setFont(new Font("CaskaydiaCove Nerd Font", Font.PLAIN, 15));
 
             jTabbedPane1.add(name, scrollPane);
             jTabbedPane1.setTabComponentAt(jTabbedPane1.getTabCount() - 1, new ButtonTabComponent(jTabbedPane1, currentSession));
